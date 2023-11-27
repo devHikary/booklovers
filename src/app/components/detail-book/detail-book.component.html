@@ -1,0 +1,79 @@
+<div class="container mt-4">
+  <form class="card bg-card p-4" [formGroup]="bookForm" #formDir="ngForm">
+    <div class="row text-center">
+      <h2>Minhas Anotações</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-8 d-flex justify-content-center">
+            <ng-template #t let-fill="fill">
+              <i class="bi-star-fill">
+                <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill"></i>
+              </i>
+            </ng-template>
+
+            <ngb-rating [(rate)]="book.rating" [starTemplate]="t" [readonly]="false" [max]="5"
+              [ariaValueText]="ariaValueText"></ngb-rating>
+          </div>
+          <div class="col-4 ps-5">
+            <ng-template #heart let-fill="fill">
+              <i class="bi-heart-fill">
+                <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
+              </i>
+            </ng-template>
+
+            <ngb-rating [(rate)]="book.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
+              [ariaValueText]="ariaValueText"></ngb-rating>
+          </div>
+        </div>
+        <div class="row">
+          <img class="w-50 mx-auto" src="{{book.thumbnail}}" alt="thumbnail">
+        </div>
+        <!-- <div class="row p-4">
+        <p>{{book.title}}</p>
+      </div> -->
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-10 pb-2">
+          <label for="title" class="form-label">Título
+          </label>
+          <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
+          <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-10 pb-2">
+          <label for="subtitle" class="form-label">subtitle
+          </label>
+          <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle" maxlength="50">
+
+        </div>
+        <div class="col-md-10 pb-2">
+          <label for="authors" class="form-label">authors
+          </label>
+          <input type="text" class="form-control" id="authors" formControlName="authors" name="authors" maxlength="50">
+          <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-10 pb-2">
+          <label for="publisher" class="form-label">publisher
+          </label>
+          <input type="text" class="form-control" id="publisher" formControlName="publisher" name="publisher" maxlength="50">
+          <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <button class="btn btn-light">Cancelar</button>
+      </div>
+      <div class="col d-flex justify-content-end">
+        <button class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </form>
+</div>

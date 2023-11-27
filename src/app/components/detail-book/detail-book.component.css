@@ -1,0 +1,32 @@
+.rowCustom{
+  height: 80vh;
+}
+
+.bg-card{
+  background-color: #bae7fc;
+}
+
+i {
+  position: relative;
+  display: inline-block;
+  font-size: 1.5rem;
+  padding-right: 0.1rem;
+  letter-spacing: 0.5rem;
+  color: #f0f0f0;
+}
+
+.filled {
+  color: yellow;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.filled-heart {
+  color: red;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
