@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="row">
-          <div class="col-8 d-flex justify-content-center">
+          <div class="col-8 d-flex justify-content-end pe-5">
             <ng-template #t let-fill="fill">
               <i class="bi-star-fill">
                 <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill"></i>
@@ -16,7 +16,7 @@
             <ngb-rating [(rate)]="book.rating" [starTemplate]="t" [readonly]="false" [max]="5"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
-          <div class="col-4 ps-5">
+          <div class="col-4">
             <ng-template #heart let-fill="fill">
               <i class="bi-heart-fill">
                 <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
@@ -30,13 +30,16 @@
         <div class="row">
           <img class="w-50 mx-auto" src="{{book.thumbnail}}" alt="thumbnail">
         </div>
-        <!-- <div class="row p-4">
-        <p>{{book.title}}</p>
-      </div> -->
+        <div class="row p-4">
+          <label for="authors" class="form-label">Sinopse </label>
+          <textarea class="form-control" placeholder="Leave a comment here" id="description"
+            formControlName="description" style="height: 100px"></textarea>
+          <!-- <div [innerHtml]="html_string"></div> -->
+        </div>
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-10 pb-2">
+          <div class="col-md-12 pb-2">
             <label for="title" class="form-label">Título
             </label>
             <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
@@ -44,14 +47,14 @@
               Campo Obrigatório
             </div>
           </div>
-          <div class="col-md-10 pb-2">
+          <div class="col-md-12 pb-2">
             <label for="subtitle" class="form-label">Subtítulo
             </label>
             <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle"
               maxlength="50">
 
           </div>
-          <div class="col-md-10 pb-2">
+          <div class="col-md-12 pb-2">
             <label for="authors" class="form-label">Autores
             </label>
             <input type="text" class="form-control" id="authors" formControlName="authors" name="authors"
@@ -60,7 +63,7 @@
               Campo Obrigatório
             </div>
           </div>
-          <div class="col-md-10 pb-2">
+          <div class="col-md-12 pb-2">
             <label for="publisher" class="form-label">publisher
             </label>
             <input type="text" class="form-control" id="publisher" formControlName="publisher" name="publisher"
@@ -70,7 +73,7 @@
             </div>
           </div>
 
-          <div class="col-md-10 pb-2">
+          <div class="col-md-12 pb-2">
             <label for="authors" class="form-label">Data de publicação
             </label>
             <div class="row row-cols-sm-auto">
@@ -86,7 +89,7 @@
             </div>
           </div>
 
-          <div class="col-md-5 pb-2">
+          <div class="col-md-6 pb-2">
             <label for="pages" class="form-label">Páginas
             </label>
             <input type="text" class="form-control" id="pages" formControlName="pages" name="pages" maxlength="50">
@@ -95,7 +98,7 @@
             </div>
           </div>
 
-          <div class="col-md-5 pb-2">
+          <div class="col-md-6 pb-2">
             <label for="id" class="form-label">ISBN 10
             </label>
             <input type="text" class="form-control" id="id" formControlName="id" name="id" maxlength="10">
@@ -105,7 +108,7 @@
           </div>
         </div>
 
-        <div class="col-md-10 pb-2">
+        <div class="col-md-12 pb-2">
           <label for="themes" class="form-label">Temas
           </label>
           <input type="text" class="form-control" id="themes" formControlName="themes" name="themes">

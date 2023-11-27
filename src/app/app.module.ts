@@ -11,6 +11,7 @@ import { DetailBookComponent } from './components/detail-book/detail-book.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomAdapter, CustomDateParserFormatter, CustomDatepickerI18n, I18n } from './services/custom-datapicker.service';
 import { JsonPipe } from '@angular/common';
+import { SideNavComponent } from './shared/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { JsonPipe } from '@angular/common';
     CardBoxVComponent,
     RatingComponent,
     DetailBookComponent,
+    SideNavComponent,
   ],
   imports: [
     BrowserModule,

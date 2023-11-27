@@ -12,6 +12,7 @@ import { NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } fr
 })
 export class DetailBookComponent implements OnInit{
   public book: Book = new Book();
+  html_string: string = "";
 	//public release_dt: string = "";
 
   public bookForm = new FormGroup({
@@ -25,6 +26,7 @@ export class DetailBookComponent implements OnInit{
     favorite: new FormControl(0,),
     release_dt: new FormControl('', ),
     pages: new FormControl('', ),
+    description: new FormControl('', ),
     themes: new FormControl<string[]>([], ),
 
   });
@@ -43,13 +45,14 @@ export class DetailBookComponent implements OnInit{
         console.log(response)
         this.book.title = response.volumeInfo.title;
         this.book.id = response.volumeInfo.industryIdentifiers[0].identifier;
-        this.book.pages = response.volumeInfo.pageCount;
+        this.book.pages = this.handleUndefined(response.volumeInfo.pageCount);
         this.book.themes = response.volumeInfo.categories;
         this.book.release_dt = response.volumeInfo.publishedDate.split('-').reverse().join('/');
-        this.book.authors = response.volumeInfo.authors == undefined ? "Autor não cadastrado"
-                                                      : response.volumeInfo.authors;
-                                                      this.book.publisher = response.volumeInfo.publisher == undefined ? "Editora não cadastrado"
-                                                      : response.volumeInfo.publisher;
+        this.book.authors = this.handleUndefined(response.volumeInfo.authors);
+        this.book.publisher = this.handleUndefined(response.volumeInfo.publisher);
+        //this.book.description = this.handleUndefined(response.volumeInfo.description).split('<b>').reverse().join(' ');
+        this.book.description = this.removeHTMLTags(this.handleUndefined(response.volumeInfo.description));
+        this.html_string = response.volumeInfo.description;
 
         if(response.volumeInfo.imageLinks == undefined)
           this.book.thumbnail = "/./assets/images/noImage.png";
@@ -60,6 +63,15 @@ export class DetailBookComponent implements OnInit{
 
       })
     })
+  }
+
+  handleUndefined(variable: string) {
+    return variable == undefined ? "Informação não cadastrada"
+                    : variable;
+  }
+
+  removeHTMLTags(str: string) {
+    return str.replace(/<[^>]*>/g, '');
   }
 
   loadBook() {
@@ -75,6 +87,7 @@ export class DetailBookComponent implements OnInit{
       release_dt: this.book.release_dt,
       pages: this.book.pages,
       themes: this.book.themes,
+      description: this.book.description,
     });
   }
 
@@ -114,6 +127,9 @@ export class DetailBookComponent implements OnInit{
   }
   get themes() {
     return this.bookForm.get('themes');
+  }
+  get description() {
+    return this.bookForm.get('description');
   }
 
   get today() {

@@ -1,1 +1,33 @@
+aside {
+  background-color: white;
+  float: right;
+  display: fixed;
+  /* top: 2rem;
+  left: 2rem; */
+}
 
+.container {
+  background-color: #f5f5f5;
+}
+
+.header-filter{
+  margin: 0.1rem;
+  margin-top: 1rem;
+  background-color: #D9D9D9;
+}
+
+a{
+  color: black;
+  padding-left: 1rem;
+}
+
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+  color: #2396C8;
+}
