@@ -1,5 +1,12 @@
 <div class="container">
   <div class="row">
+    <div class="col">
+      <label for="id" class="form-label">Procurar
+      </label>
+      <input type="text" class="form-control" id="themes" formControlName="themes" name="themes">
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-3 d-flex align-items-stretch pt-2" *ngFor="let book of bookList">
 
       <app-card-box-v [book]="book"></app-card-box-v>

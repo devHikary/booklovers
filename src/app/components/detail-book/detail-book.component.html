@@ -35,44 +35,93 @@
       </div> -->
       </div>
       <div class="col-md-6">
-        <div class="col-md-10 pb-2">
-          <label for="title" class="form-label">Título
-          </label>
-          <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
-          <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
+        <div class="row">
+          <div class="col-md-10 pb-2">
+            <label for="title" class="form-label">Título
+            </label>
+            <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
+            <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
           </div>
-        </div>
-        <div class="col-md-10 pb-2">
-          <label for="subtitle" class="form-label">subtitle
-          </label>
-          <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle" maxlength="50">
+          <div class="col-md-10 pb-2">
+            <label for="subtitle" class="form-label">Subtítulo
+            </label>
+            <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle"
+              maxlength="50">
 
-        </div>
-        <div class="col-md-10 pb-2">
-          <label for="authors" class="form-label">authors
-          </label>
-          <input type="text" class="form-control" id="authors" formControlName="authors" name="authors" maxlength="50">
-          <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
+          </div>
+          <div class="col-md-10 pb-2">
+            <label for="authors" class="form-label">Autores
+            </label>
+            <input type="text" class="form-control" id="authors" formControlName="authors" name="authors"
+              maxlength="50">
+            <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
+          </div>
+          <div class="col-md-10 pb-2">
+            <label for="publisher" class="form-label">publisher
+            </label>
+            <input type="text" class="form-control" id="publisher" formControlName="publisher" name="publisher"
+              maxlength="50">
+            <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
+          </div>
+
+          <div class="col-md-10 pb-2">
+            <label for="authors" class="form-label">Data de publicação
+            </label>
+            <div class="row row-cols-sm-auto">
+              <div i18n class="col-12">
+                <div class="input-group">
+                  <input class="form-control" placeholder="dd/mm/yyyy" name="d2" formControlName="release_dt"
+                    ngbDatepicker #d2="ngbDatepicker" />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-5 pb-2">
+            <label for="pages" class="form-label">Páginas
+            </label>
+            <input type="text" class="form-control" id="pages" formControlName="pages" name="pages" maxlength="50">
+            <div *ngIf="pages?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
+          </div>
+
+          <div class="col-md-5 pb-2">
+            <label for="id" class="form-label">ISBN 10
+            </label>
+            <input type="text" class="form-control" id="id" formControlName="id" name="id" maxlength="10">
+            <div *ngIf="id?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
           </div>
         </div>
+
         <div class="col-md-10 pb-2">
-          <label for="publisher" class="form-label">publisher
+          <label for="themes" class="form-label">Temas
           </label>
-          <input type="text" class="form-control" id="publisher" formControlName="publisher" name="publisher" maxlength="50">
-          <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+          <input type="text" class="form-control" id="themes" formControlName="themes" name="themes">
+          <div *ngIf="themes?.errors?.['required'] && formDir.submitted" class="msgError">
             Campo Obrigatório
           </div>
         </div>
       </div>
     </div>
+
     <div class="row mt-4">
       <div class="col">
-        <button class="btn btn-light">Cancelar</button>
+        <button class="btn btn-light" (click)="cancel()">Cancelar</button>
       </div>
       <div class="col d-flex justify-content-end">
-        <button class="btn btn-primary">Salvar</button>
+        <button class="btn btn-primary" (click)="save()">Salvar</button>
       </div>
     </div>
   </form>
