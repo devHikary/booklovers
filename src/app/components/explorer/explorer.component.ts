@@ -78,6 +78,8 @@ export class ExplorerComponent implements OnInit {
         const rndIntb = this.randomIntFromInterval(0, 1)
         bookAux.favorite = rndIntb;
 
+        bookAux.description = element.volumeInfo.description;
+
         // ToDo: retirar - fim
         this.bookList.push(bookAux);
       });

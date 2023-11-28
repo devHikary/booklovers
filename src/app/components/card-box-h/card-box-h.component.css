@@ -1,9 +1,9 @@
 i {
   position: relative;
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding-right: 0.1rem;
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.25rem;
   color: #d3d3d3;
 }
 
@@ -29,9 +29,17 @@ i {
 
 .max-width{
   max-width: 16rem;
+  max-height: 16rem;
 }
 
-.card-width{
-  width: 16rem;
+.card-size{
+  width: 100%;
 }
 
+.img-size{
+  max-height: 200px;
+}
+
+.wrap-text{
+  word-wrap:  normal;
+}
