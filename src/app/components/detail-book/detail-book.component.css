@@ -30,3 +30,9 @@ i {
   top: 0;
   left: 0;
 }
+
+
+.badge-hover:hover {
+  text-decoration: none;
+  color: #303030;
+}

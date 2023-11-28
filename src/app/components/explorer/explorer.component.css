@@ -31,3 +31,21 @@ a:hover {
   text-decoration: none;
   color: #2396C8;
 }
+
+#colorInput {
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+}
+#colorInput::-webkit-color-swatch {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+}
+#colorInput::-webkit-color-swatch-wrapper {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+}

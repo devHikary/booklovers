@@ -22,6 +22,7 @@ export class DetailBookComponent implements OnInit {
   public book: Book = new Book();
   html_string: string = '';
   localUrl: any;
+  myVar: boolean = false; // TODO: retirar
 
   //selectedFile: ImageSnippet = new ImageSnippet('', '');
 
@@ -168,10 +169,9 @@ export class DetailBookComponent implements OnInit {
 
   processFile(imageInput: any) {
     const file: File = imageInput.files[0];
-     const reader = new FileReader();
+    const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-
       const b64Data = event.target.result.split(',')[1];
 
       this.converterBlobtoImg(b64Data);
@@ -197,17 +197,16 @@ export class DetailBookComponent implements OnInit {
     });
 
     reader.readAsDataURL(file);
-
   }
 
-  converterBlobtoImg(b64Data: Blob, contentType:string = "image/png"){
+  converterBlobtoImg(b64Data: Blob, contentType: string = 'image/png') {
     const blob = this.b64toBlob(b64Data, contentType);
-      const blobUrl = URL.createObjectURL(blob);
+    const blobUrl = URL.createObjectURL(blob);
 
-      this.book.thumbnail = blobUrl;
+    this.book.thumbnail = blobUrl;
   }
 
-  b64toBlob(b64Data: any, contentType = '', sliceSize = 512){
+  b64toBlob(b64Data: any, contentType = '', sliceSize = 512) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -225,6 +224,10 @@ export class DetailBookComponent implements OnInit {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
-  };
-}
+  }
 
+  // TODO: retirar
+  toggleTeste() {
+    this.myVar = !this.myVar;
+  }
+}
