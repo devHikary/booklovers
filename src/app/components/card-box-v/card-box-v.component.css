@@ -1,7 +1,7 @@
 i {
   position: relative;
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding-right: 0.1rem;
   letter-spacing: 0.5rem;
   color: #d3d3d3;
@@ -24,11 +24,13 @@ i {
 }
 
 .card-img-top{
-  max-height: 350px;
+  height: 260px;
+  width: 192px;
+  object-fit: fill;
 }
 
 .max-width{
-  max-width: 16rem;
+  max-width: 10rem;
 }
 
 .card-width{

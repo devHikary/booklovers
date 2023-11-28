@@ -67,15 +67,15 @@ export class ExplorerComponent implements OnInit {
       // ToDo: voltar essa implementação do id
       //bookAux.id = element.volumeInfo.industryIdentifiers[0].identifier;
 
-      bookAux.title = element.volumeInfo.title;
+      bookAux.title = element.volumeInfo.title.toLowerCase();
       bookAux.authors =
         element.volumeInfo.authors == undefined
           ? 'Autor não cadastrado'
-          : element.volumeInfo.authors;
+          : element.volumeInfo.authors.toString().toLowerCase();
       bookAux.publisher =
         element.volumeInfo.publisher == undefined
           ? 'Editora não cadastrado'
-          : element.volumeInfo.publisher;
+          : element.volumeInfo.publisher.toString().toLowerCase();
 
       if (element.volumeInfo.imageLinks == undefined)
         bookAux.thumbnail = '/./assets/images/noImage.png';

@@ -16,6 +16,7 @@ import { CardBoxHComponent } from './components/card-box-h/card-box-h.component'
 import { HomeComponent } from './components/home/home.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { NgChartsModule } from 'ng2-charts';
+import { CardBoxMiniComponent } from './components/card-box-mini/card-box-mini.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { NgChartsModule } from 'ng2-charts';
     CardBoxHComponent,
     HomeComponent,
     StatisticComponent,
+    CardBoxMiniComponent,
   ],
   imports: [
     BrowserModule,

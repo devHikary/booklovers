@@ -1,4 +1,4 @@
-<div class="container my-2 rounded ps-4">
+<div class="container-explorer mx-4 my-2 rounded">
   <div class="row d-flex justify-content-center p-2">
     <div class="col-md-6">
       <label for="title" class="form-label">Procurar
@@ -13,8 +13,8 @@
     </div>
 
   </div>
-  <div class="row justify-content-center">
-    <aside class="col-md-3 h-75 rounded">
+  <div class="row justify-content-center mx-2">
+    <aside class="col-md-3 h-75 rounded ">
       <div class="header-filter row rounded">
         <div class="col-9 d-flex align-items-center">
           <h4 class="pt-2">Filtro</h4>
@@ -32,10 +32,11 @@
       </a>
 
     </aside>
-    <article class="col-md-9 ">
+    <article class="col-md-9 bg-grade">
       <div class="row">
-        <div class="col-lg-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
-          <app-card-box-h [book]="book"></app-card-box-h>
+        <div class="col-lg-3 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
+
+          <app-card-box-v [book]="book"></app-card-box-v>
         </div>
       </div>
     </article>

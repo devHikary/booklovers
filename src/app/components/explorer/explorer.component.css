@@ -1,13 +1,15 @@
 aside {
   background-color: white;
   float: right;
-  display: fixed;
-  /* top: 2rem;
-  left: 2rem; */
+
 }
 
-.container {
+.container-explorer {
   background-color: #f5f5f5;
+}
+
+.bg-grade{
+  background-image: url(../../../assets/images/grade-wh.png);
 }
 
 .header-filter{
