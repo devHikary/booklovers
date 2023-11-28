@@ -103,9 +103,9 @@
           </div>
 
           <div class="col-md-6 pb-2">
-            <label for="id" class="form-label">ISBN 13
+            <label for="isbn_13" class="form-label">ISBN 13
             </label>
-            <input type="text" class="form-control" id="id" formControlName="id" name="id" maxlength="10">
+            <input type="text" class="form-control" id="isbn_13" formControlName="isbn_13" name="isbn_13" maxlength="14">
             <div *ngIf="id?.errors?.['required'] && formDir.submitted" class="msgError">
               Campo Obrigatório
             </div>
