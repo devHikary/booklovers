@@ -4,8 +4,7 @@ export class Book{
   subtitle: string = "";
   authors: string = "";
   publisher: string = "";
-  thumbnail: string | null | Blob = null;
-  thumbnail_url: string | null = null;
+  thumbnail: string = "";
   pages: string = "";
   release_dt: string = "";
   themes: string[] = [];
@@ -13,7 +12,6 @@ export class Book{
 
 
   rating: number = 0;
-  isbn_13: string = "";
   favorite: number = 0;
 
 }

@@ -3,9 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from 'src/app/models/book';
 import { BooksService } from 'src/app/services/books.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProcessFile } from 'src/app/shared/processFile/processFile';
-import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-explorer',
@@ -18,10 +15,6 @@ export class ExplorerComponent implements OnInit {
   public titleSearch: string = ''; // TODO: retirar
   closeResult = ''; // TODO: retirar
 
-  public tagForm = new FormGroup({
-    colorInput: new FormControl(''),
-    title: new FormControl('', [Validators.required]),
-  });
 
   constructor(
     private booksService: BooksService,
@@ -35,15 +28,12 @@ export class ExplorerComponent implements OnInit {
       console.log('name', e.name);
     });
     console.log('mock', this.themeList);
+
   }
 
   loadListBooks(titleSch: string): void {
-    // this.booksService.getAllByTitle(titleSch).subscribe((books: any) => {
-    //   this.loadListGoogle(books);
-    // })
-    this.booksService.getAllBooks().subscribe((books: any) => {
-      console.log(books);
-      this.loadBooks(books);
+    this.booksService.getAllByTitle(titleSch).subscribe((books: any) => {
+      this.loadList(books);
     });
   }
   //  ToDo: retirar depois
@@ -55,24 +45,21 @@ export class ExplorerComponent implements OnInit {
   searchBook() {
     const t = this.titleSearch.split(' ').join('%');
     console.log(t);
-    this.booksService.getAllByTitle(t).subscribe((books: any) => {
-      this.loadListGoogle(books);
-    });
+    this.loadListBooks(t);
   }
 
   filterSide(id: string) {
     this.booksService.getAllByCategories(id).subscribe((books) => {
-      this.loadListGoogle(books);
+      this.loadList(books);
     });
   }
 
-  loadListGoogle(books: any) {
+  loadList(books: any) {
     console.log(books);
     var list: any[] = [];
     this.bookList = [];
 
     list = books.items;
-
     list.forEach((element) => {
       var bookAux = new Book();
       // ToDo:retirar
@@ -94,7 +81,6 @@ export class ExplorerComponent implements OnInit {
         bookAux.thumbnail = '/./assets/images/noImage.png';
       else bookAux.thumbnail = element.volumeInfo.imageLinks?.thumbnail;
 
-      console.log(element.volumeInfo.imageLinks);
       //  ToDo: retirar
       const rndInt = this.randomIntFromInterval(1, 5);
       bookAux.rating = rndInt;
@@ -106,35 +92,6 @@ export class ExplorerComponent implements OnInit {
       // ToDo: retirar - fim
       this.bookList.push(bookAux);
     });
-  }
-
-  loadBooks(books: any) {
-    this.bookList = [];
-    books.forEach((book: any) => {
-      var bookAux = new Book();
-
-      bookAux.id = book.id;
-      bookAux.title = book.title;
-      bookAux.publisher = book.publisher;
-      bookAux.description = book.description;
-      book.Authors.forEach((author: any) => {
-        bookAux.authors += bookAux.authors + author.name;
-      });
-      if(book.thumbnail === null && (book.thumbnail_url === null)){
-        bookAux.thumbnail = '/./assets/images/noImage.png';
-      } else if(book.thumbnail_url === null){
-        const t = Buffer.from(book.thumbnail).toString();
-
-        const blobUrl = "data:image/png;base64, " + t;
-        bookAux.thumbnail = blobUrl;
-      } else{
-        bookAux.thumbnail = book.thumbnail_url
-      }
-
-      this.bookList.push(bookAux);
-    });
-    // var base64 = this.getBase64Image(document.getElementById("imageid"));
-    // console.log(base64)
   }
 
   open(content: any) {
@@ -149,6 +106,8 @@ export class ExplorerComponent implements OnInit {
         }
       );
   }
+
+
 }
 
 const themeMock = [
