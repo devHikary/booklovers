@@ -7,7 +7,7 @@ export class Book{
   subtitle: string = "";
   authors: Author[] = [];
   publisher: string = "";
-  thumbnail: string | null | Blob = null;
+  thumbnail: string | null = null;
   thumbnail_url: string | null = null;
   pages: string = "";
   release_dt: string = "";

@@ -1,8 +1,4 @@
 <div class="container mt-4">
-  <div class="badge rounded-pill text-bg-primary" [hidden]="myVar">
-    <span>Fantasia</span>
-    <i class="bi bi-x badge-hover" (click)="toggleTeste()"></i>
-  </div>
   <form class="card bg-card p-4" [formGroup]="bookForm" #formDir="ngForm">
     <div class="row text-center">
       <div class="col-12">
@@ -33,14 +29,26 @@
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
         </div>
-        <div class="row">
-          <img class="w-50 mx-auto" [src]="book.thumbnail" alt="thumbnail">
+        <div class="row text-center">
+          <a href="javascript:;" title="Adicionar capa do livro" (click)="collapseThumbnail.toggle()"
+            [attr.aria-expanded]="!isCollapsedThumbnail" aria-controls="Adicionar autores">
+            <img class="w-50 mx-auto" [src]="book.thumbnail" alt="thumbnail">
+          </a>
+          <div #collapseThumbnail="ngbCollapse" [(ngbCollapse)]="isCollapsedThumbnail"
+            class="row justify-content-center mt-1">
+            <div class="col-8">
+              <input type="text" class="form-control" [(ngModel)]="uploadCover" [ngModelOptions]="{standalone: true}"
+                id="uploadCover" placeholder="Endereço da imagem. Ex: https://...">
+            </div>
+            <div class="col-2">
+              <button class="btn btn-primary" (click)="clickUploadCover()">Upload</button>
+            </div>
+          </div>
         </div>
         <div class="row p-4">
-          <label for="authors" class="form-label">Sinopse </label>
+          <label for="description" class="form-label">Sinopse </label>
           <textarea class="form-control" placeholder="Leave a comment here" id="description"
             formControlName="description" style="height: 100px"></textarea>
-          <!-- <div [innerHtml]="html_string"></div> -->
         </div>
       </div>
       <div class="col-md-6">
@@ -50,15 +58,16 @@
             </label>
             <div class="input-group">
 
-              <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
-              <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
-                Campo Obrigatório
-              </div>
+              <input type="text" class="form-control text-capitalize" id="title" formControlName="title" name="title"
+                maxlength="50">
               <button type="button" class="btn btn-outline-dark" (click)="open(content)">Ajuda preenc.</button>
+            </div>
+            <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
             </div>
           </div>
           <div class="col-md-12 pb-2">
-            <label for="subtitle" class="form-label">Subtítulo
+            <label for="subtitle" class="form-label text-capitalize">Subtítulo
             </label>
             <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle"
               maxlength="50">
@@ -66,10 +75,10 @@
           </div>
           <div>
             <label for="author" class="form-label">Autores
-              <button type="button" class="btn btn-outline-primary" (click)="collapse.toggle()"
-                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-                Toggle with Function
-              </button>
+              <a title="Adicionar autores" href="javascript:;" (click)="collapse.toggle()"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="Adicionar autores" class="ms-1">
+                <i class="bi bi-plus-circle size_iPlus text-primary"></i>
+              </a>
             </label>
             <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
               <input class="form-control ms-0" placeholder="Adicionar autor..." #authorInput [formControl]="authorCtrl"
@@ -104,26 +113,28 @@
           <div class="col-md-6 pb-2">
             <label for="publisher" class="form-label">publisher
             </label>
-            <input type="text" class="form-control" id="publisher" formControlName="publisher" name="publisher"
-              maxlength="50">
-            <div *ngIf="authors?.errors?.['required'] && formDir.submitted" class="msgError">
+            <input type="text" class="form-control text-capitalize" id="publisher" formControlName="publisher"
+              name="publisher" maxlength="50">
+            <div *ngIf="publisher?.errors?.['required'] && formDir.submitted" class="msgError">
               Campo Obrigatório
             </div>
           </div>
 
           <div class="col-md-6 pb-2">
-            <label for="authors" class="form-label">Data de publicação
+            <label for="release_dtn" class="form-label">Data de publicação
             </label>
             <div class="row row-cols-sm-auto">
               <div i18n class="col-12">
                 <div class="input-group">
-                  <input class="form-control" placeholder="dd/mm/yyyy" name="d2" formControlName="release_dt"
-                    ngbDatepicker #d2="ngbDatepicker" />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                  <input class="form-control" placeholder="dd/mm/yyyy" name="release_dtn" formControlName="release_dt"
+                    ngbDatepicker #release_dtn="ngbDatepicker" removeNgbDpDefaultValidation required/>
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="release_dtn.toggle()"
                     type="button"></button>
                 </div>
               </div>
-
+              <div *ngIf="release_dt?.errors?.['required'] && formDir.submitted" class="msgError">
+                Campo Obrigatório
+              </div>
             </div>
           </div>
 
@@ -141,7 +152,7 @@
             </label>
             <input type="text" class="form-control" id="isbn_13" formControlName="isbn_13" name="isbn_13"
               maxlength="14">
-            <div *ngIf="id?.errors?.['required'] && formDir.submitted" class="msgError">
+            <div *ngIf="isbn_13?.errors?.['required'] && formDir.submitted" class="msgError">
               Campo Obrigatório
             </div>
           </div>
@@ -150,16 +161,24 @@
           <div>
             <label for="isbn_13" class="form-label">Temas
             </label>
-            <input class="form-control ms-0" placeholder="Adicionar tema..." #themeInput [formControl]="themeCtrl"
-              [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              (matChipInputTokenEnd)="add($event)" matAutocompletePosition='above' />
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" [displayWith]="displayFn">
-              <ng-container *ngFor="let theme of filteredThemes | async">
-                <mat-option [value]="theme" *ngIf="!isThemeSelected(theme)">
-                  {{theme.name}}
-                </mat-option>
-              </ng-container>
-            </mat-autocomplete>
+            <a title="Adicionar temas" href="javascript:;" (click)="collapseTheme.toggle()"
+              [attr.aria-expanded]="!isCollapsedTheme" aria-controls="Adicionar temas" class="ms-1">
+              <i class="bi bi-plus-circle size_iPlus text-primary"></i>
+            </a>
+            <div #collapseTheme="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
+              <input class="form-control ms-0" placeholder="Adicionar tema..." #themeInput [formControl]="themeCtrl"
+                [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+                matAutocompletePosition='above' />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" [displayWith]="displayFn">
+                <ng-container *ngFor="let theme of filteredThemes | async">
+                  <mat-option [value]="theme" *ngIf="!isThemeSelected(theme)">
+                    {{theme.name}}
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+            </div>
+
           </div>
           <div class="mt-1">
             <div class="example-chip-list no-wrap card">
@@ -190,10 +209,6 @@
       <span>Select Image</span>
       <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
     </label>
-    <div>
-      <input type="text" [(ngModel)]="uploadCover" [ngModelOptions]="{standalone: true}">
-      <button (click)="clickUploadCover()">upload</button>
-    </div>
   </form>
 </div>
 
@@ -205,9 +220,7 @@
   <div class="modal-body" *ngFor="let bookM of bookListModal">
     <a title="Detalhes do livro" href="javascript:;" (dblclick)="selectedInfo(bookM.id)">
       <app-card-box-mini [book]="bookM"></app-card-box-mini>
-
     </a>
-
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Salvar</button>

@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from 'src/app/models/book';
 import { BooksService } from 'src/app/services/books.service';
@@ -7,6 +7,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProcessFile } from 'src/app/shared/processFile/processFile';
 import { Buffer } from 'buffer';
 import { GoogleBooksService } from 'src/app/services/google-books.service';
+import { Observable, map, startWith } from 'rxjs';
+import { Router } from '@angular/router';
+import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-explorer',
@@ -19,6 +22,10 @@ export class ExplorerComponent implements OnInit {
   public titleSearch: string = ''; // TODO: retirar
   closeResult = ''; // TODO: retirar
 
+  titleSearchCtr = new FormControl('');
+  options: string[] = [];
+  filteredOptions: Observable<string[]>;
+
   public tagForm = new FormGroup({
     colorInput: new FormControl(''),
     title: new FormControl('', [Validators.required]),
@@ -28,26 +35,24 @@ export class ExplorerComponent implements OnInit {
     private booksService: BooksService,
     private modalService: NgbModal,
     private googleService: GoogleBooksService,
+    private router: Router,
+    private themeService: ThemeService,
   ) {}
 
   ngOnInit(): void {
-    this.loadListBooks('a%rainha%vermelha');
-    this.themeList = themeMock;
-    this.themeList.forEach((e) => {
-      console.log('name', e.name);
-    });
-    console.log('mock', this.themeList);
-  }
-
-  loadListBooks(titleSch: string): void {
-    // this.booksService.getAllByTitle(titleSch).subscribe((books: any) => {
-    //   this.loadListGoogle(books);
-    // })
+    this.filteredOptions = this.titleSearchCtr.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
     this.booksService.getAllBooks().subscribe((books: any) => {
       console.log(books);
       this.loadBooks(books);
     });
+    this.themeService.getAll().subscribe((themes: any) => {
+      this.themeList = themes;
+    });
   }
+
   //  ToDo: retirar depois
   randomIntFromInterval(min: number, max: number) {
     // min and max included
@@ -55,16 +60,16 @@ export class ExplorerComponent implements OnInit {
   }
 
   searchBook() {
-    const t = this.titleSearch.split(' ').join('%');
-    console.log(t);
-    this.googleService.getAllByTitle(t).subscribe((books: any) => {
-      this.loadListGoogle(books);
+    // const t = this.titleSearchCtr.value.split(' ').join('%');
+    // console.log(t);
+    this.booksService.getByTitle(this.titleSearchCtr.value).subscribe((books: any) => {
+      this.loadBooks(books);
     });
   }
 
   filterSide(id: string) {
-    this.googleService.getAllByCategories(id).subscribe((books) => {
-      this.loadListGoogle(books);
+    this.themeService.getById(id).subscribe((books) => {
+      this.loadBooks(books);
     });
   }
 
@@ -112,11 +117,13 @@ export class ExplorerComponent implements OnInit {
 
   loadBooks(books: any) {
     this.bookList = [];
+    this.options = [];
     books.forEach((book: any) => {
       var bookAux = new Book();
 
       bookAux.id = book.id;
       bookAux.title = book.title;
+      this.options.push(book.title);
       bookAux.publisher = book.publisher;
       bookAux.description = book.description;
       bookAux.authors = book.Authors;
@@ -143,6 +150,16 @@ export class ExplorerComponent implements OnInit {
           this.closeResult = `Dismissed`;
         }
       );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  detailBook(id: string){
+    this.router.navigate(['/booklovers/detail-book/', id]);
   }
 }
 

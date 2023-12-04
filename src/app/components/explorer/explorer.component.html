@@ -1,14 +1,34 @@
 <div class="container-explorer mx-4 my-2 rounded">
   <div class="row d-flex justify-content-center p-2">
+    <div class="col-3"></div>
     <div class="col-md-6">
       <label for="title" class="form-label">Procurar
       </label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="title" [(ngModel)]="titleSearch" name="title"
+        <input type="text" class="form-control" id="titleSearch" name="titleSearch"
+          aria-label="Procurar por título" matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto"
           placeholder="Nome do livro" (keyup.enter)="searchBook()">
-        <button class="btn btn-primary ms-2" (click)="searchBook()">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <button class="btn btn-dark ms-2" (click)="searchBook()">
           <i class="bi bi-search"></i>
         </button>
+
+      </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <div class="d-flex align-items-end">
+        <div class="col-12">
+          <button class="btn btn-outline-dark ms-5" (click)="detailBook('new')">
+            Cadastrar livro
+          </button>
+
+        </div>
+
       </div>
     </div>
 
@@ -33,11 +53,18 @@
 
     </aside>
     <article class="col-md-9 bg-grade">
-      <div class="row">
+      <div class="row" *ngIf="bookList.length > 0; else elseBlock">
         <div class="col-lg-3 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
           <app-card-box-v [book]="book"></app-card-box-v>
         </div>
       </div>
+      <ng-template #elseBlock >
+        <div class="d-flex flex-column text-center mt-3">
+          <h5>Não encontrou o seu livro?</h5>
+          <p>Ajude nossa comunidade! :)</p>
+          <p>Cadastre o seu livro<a href="javascript;;" type="button" class="ps-0" click="detailBook(new)"> aqui</a>!</p>
+        </div>
+      </ng-template>
     </article>
   </div>
 </div>

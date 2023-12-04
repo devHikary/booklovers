@@ -31,6 +31,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { Theme } from 'src/app/models/theme';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { Author } from 'src/app/models/author';
+import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
   selector: 'app-detail-book',
@@ -46,11 +47,10 @@ export class DetailBookComponent implements OnInit {
   closeResult: string = ''; // TODO: retirar
   b64Data: any;
   localUrl: any;
-  myVar: boolean = false; // TODO: retirar
   autorTeste: any; // TODO: retirar
   uploadCover: any;
-
-  public isCollapsed = true;
+  public isCollapsedThumbnail= true;
+  isNew: boolean = true;
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
   themeCtrl = new FormControl();
@@ -59,6 +59,7 @@ export class DetailBookComponent implements OnInit {
   allThemes: any[] = [];
   @ViewChild('themeInput') themeInput: ElementRef<HTMLInputElement> =
     {} as ElementRef;
+  public isCollapsedTheme = true;
 
   authorCtrl = new FormControl();
   filteredAuthors: Observable<any[]> = new Observable<any[]>();
@@ -66,42 +67,25 @@ export class DetailBookComponent implements OnInit {
   allAuthors: any[] = [];
   @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement> =
     {} as ElementRef;
-  // allThemes: any[] = [
-  //   { id: 1, name: "Apple" },
-  //   {
-  //     id: 2,
-  //     name: "Orange"
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Banana"
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Malta"
-  //   }
-  // ];
-
-  //selectedFile: ImageSnippet = new ImageSnippet('', '');
+  public isCollapsed = true;
 
   selectedFile!: File;
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
-  //public release_dt: string = "";
 
   public bookForm = new FormGroup({
-    id: new FormControl(''),
+    id: new FormControl(null),
     title: new FormControl('', [Validators.required]),
     subtitle: new FormControl(''),
-    authors: new FormControl<Author[]>([], [Validators.required]),
+    authors: new FormControl<Author[]>([]),
     publisher: new FormControl('', [Validators.required]),
-    thumbnail: new FormControl<string | null | Blob>(''),
+    thumbnail: new FormControl(''),
     rating: new FormControl(0),
     favorite: new FormControl(0),
     isbn_13: new FormControl('', [Validators.required]),
-    release_dt: new FormControl(''),
+    release_dt: new FormControl('', [Validators.required]),
     pages: new FormControl('', [Validators.required]),
     description: new FormControl(''),
   });
@@ -116,7 +100,8 @@ export class DetailBookComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private modalService: NgbModal,
     private googleService: GoogleBooksService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private authorService: AuthorService
   ) {
     this.filteredThemes = this.themeCtrl.valueChanges.pipe(
       startWith(''),
@@ -137,15 +122,22 @@ export class DetailBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.book.thumbnail = '/./assets/images/noImage.png';
     this.themeService.getAll().subscribe((response: any) => {
       this.allThemes = response;
     });
+    this.authorService.getAll().subscribe((response: any) => {
+      this.allAuthors = response;
+    });
     this.activatedRoute.params.subscribe((params) => {
-      this.bookService.getById(params['id']).subscribe((response: any) => {
-        this.loadBook(response);
+      if(params['id'] != 'new'){
+        this.bookService.getById(params['id']).subscribe((response: any) => {
+          this.isNew = false;
+          this.loadBook(response);
 
-        this.setBook();
-      });
+          this.setBook();
+        });
+      }
     });
   }
 
@@ -220,14 +212,22 @@ export class DetailBookComponent implements OnInit {
   get description() {
     return this.bookForm.get('description');
   }
+  get isbn_13() {
+    return this.bookForm.get('isbn_13');
+  }
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
   save() {
+    console.log('form **3333** ', this.bookForm);
+    if(this.bookForm.invalid)
+      return;
+
     this.getBook();
-    if (this.book.id === null) {
+
+    if (this.isNew) {
       this.bookService.add(this.book).subscribe(
         (response) => {
           Swal.fire({
@@ -236,7 +236,7 @@ export class DetailBookComponent implements OnInit {
             icon: 'success',
             timer: 2000,
           });
-          //this.router.navigate(['/emicol/talhao']);
+          this.router.navigate(['/booklovers/explorer']);
         },
         (e) => {
           Swal.fire({
@@ -255,8 +255,9 @@ export class DetailBookComponent implements OnInit {
             text: 'Registro salvo com sucesso',
             icon: 'success',
             timer: 2000,
+          }).then(() => {
+            this.router.navigate(['/booklovers/explorer']);
           });
-          //this.router.navigate(['/emicol/talhao']);
         },
         (e) => {
           console.log(e.error);
@@ -312,15 +313,12 @@ export class DetailBookComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  // TODO: retirar
-  toggleTeste() {
-    this.myVar = !this.myVar;
-  }
-
   loadByAPIGoogle(response: any) {
-    console.log(response);
     this.book.title = response.volumeInfo.title;
-    this.book.isbn_13 = response.volumeInfo.industryIdentifiers[1].identifier;
+    const sub_string = [];
+    sub_string[0] = response.volumeInfo.industryIdentifiers[1].identifier.substr(0,3)
+    sub_string[1] = response.volumeInfo.industryIdentifiers[1].identifier.substr(3)
+    this.book.isbn_13 = sub_string.join('-');
     this.book.pages = this.handleUndefined(response.volumeInfo.pageCount);
     this.book.release_dt = response.volumeInfo.publishedDate
       .split('-')
@@ -351,7 +349,10 @@ export class DetailBookComponent implements OnInit {
     this.book.description = book.description;
     this.book.pages = book.pages;
     this.book.release_dt = book.release_dt;
-    this.book.isbn_13 = book.isbn_13;
+    const sub_string = [];
+    sub_string[0] = book.isbn_13.substring(0,3);
+    sub_string[1] = book.isbn_13.substring(3);
+    this.book.isbn_13 = sub_string.join("-");
     this.book.themes = book.Themes;
     this.book.release_dt = book.release_dt.split('-').reverse().join('/');
 
@@ -362,23 +363,33 @@ export class DetailBookComponent implements OnInit {
     } else {
       this.book.thumbnail = book.thumbnail;
     }
-
   }
 
   getBook() {
+    console.log(this.bookForm.value.id!)
     this.book.id = this.bookForm.value.id!;
-    this.book.title = this.bookForm.value.title!;
-    this.book.subtitle = this.bookForm.value.subtitle!;
+    console.log(this.bookForm.value.title!)
+    console.log(this.bookForm.value.title!.toLowerCase())
+    this.book.title = this.bookForm.value.title!.toLowerCase();
+    this.book.subtitle = this.bookForm.value.subtitle!.toLowerCase();
+    this.book.publisher = this.bookForm.value.publisher!.toLowerCase();
     //this.book.authors = this.bookForm.value.authors;
     this.book.pages = this.bookForm.value.pages!;
-    this.book.isbn_13 = this.bookForm.value.isbn_13!;
+    console.log(this.bookForm.value.isbn_13.indexOf("-") != -1)
+    if(this.bookForm.value.isbn_13.indexOf("-") == -1){
+      this.book.isbn_13 = this.bookForm.value.isbn_13!;
+    } else{
+      this.book.isbn_13 = this.bookForm.value.isbn_13!.replace("-", "");
+    }
     this.book.thumbnail = this.bookForm.value.thumbnail!;
+    if(this.book.thumbnail == '')
+      this.book.thumbnail = null;
     this.book.release_dt = this.bookForm.value
       .release_dt!.split('/')
       .reverse()
       .join('-');
 
-      console.log('save **** ', this.book);
+    console.log('save **** ', this.book);
   }
 
   open(content: any) {
@@ -403,7 +414,6 @@ export class DetailBookComponent implements OnInit {
   }
 
   loadListGoogle(books: any) {
-    console.log(books);
     var list: any[] = [];
     this.bookListModal = [];
 
@@ -557,8 +567,8 @@ export class DetailBookComponent implements OnInit {
 
   clickUploadCover() {
     this.book.thumbnail = this.uploadCover;
-    console.log("imagemmmm", this.book.thumbnail)
+    console.log('imagemmmm', this.book.thumbnail);
     this.bookForm.controls['thumbnail'].setValue(this.uploadCover);
-    this.uploadCover = "";
+    this.uploadCover = '';
   }
 }

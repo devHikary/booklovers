@@ -3,7 +3,7 @@
 }
 
 .bg-card {
-  background-color: #bae7fc;
+  background-color: #e4e4e4;
 }
 
 i {
@@ -48,7 +48,6 @@ a:visited {
 }
 a:hover {
   text-decoration: none;
-  background-color: #2396c8;
 }
 
 .example-chip-list {
@@ -81,4 +80,12 @@ mat-chip {
 .example {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.size_iPlus{
+  font-size: 1rem;
+}
+
+.msgError{
+  color: red;
 }

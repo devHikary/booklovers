@@ -1,0 +1,115 @@
+<div class="container-fluid section1-container">
+  <div class="row text-center">
+    <h3>BOOKLOVERS</h3>
+    <hr>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="m-auto" style="width: 400px;">
+        <img class="w-100 mb-5" src="../../../assets/images/logo.png" alt="Imagem de um desenho orgânico de uma estante de livros">
+
+      </div>
+
+    </div>
+    <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
+      <div *ngIf="!isLogin; else elseBlock" >
+        <div class="row fw-semibold">
+          <p>Plataforma para gerenciar suas leituras! :)</p>
+        </div>
+        <div class="row mb-3">
+          <button class="btn btn-outline-dark" (click)="open(content)">Cadastre-se</button>
+        </div>
+        <div class="row text-center">
+          <p class="text-muted">Já tem conta? Acesse <a href="javascript:;" type="button" (click)="toggleLogin()">aqui</a></p>
+
+        </div>
+      </div>
+      <ng-template #elseBlock >
+        <form [formGroup]="loginForm" #formDir="ngForm" (keydown.enter)="$event.preventDefault()">
+          <div class="col-12 pb-2" style="width: 300px;">
+            <label for="username-bl" class="form-label">Username
+            </label>
+            <input type="text" class="form-control" id="username-bl" formControlName="username"
+              name="username-bl" maxlength="50">
+            <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
+          </div>
+          <div class="col-12 pb-2">
+            <label for="password-bl" class="form-label">Senha
+            </label>
+            <input type="password" class="form-control" id="password-bl" formControlName="password"
+              name="password-bl" maxlength="50">
+            <div *ngIf="password?.errors?.['required'] && formDir.submitted" class="msgError">
+              Campo Obrigatório
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col">
+              <button class="btn btn-outline-dark" (click)="cancel()">Cancelar</button>
+            </div>
+            <div class="col d-flex justify-content-end">
+              <button type="submit" class="btn btn-dark" (click)="login()">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+      </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Cadastre-se</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="signupForm" #formDir="ngForm" (keydown.enter)="$event.preventDefault()">
+      <div class="col-12 pb-2">
+        <label for="name_snp" class="form-label">Nome
+        </label>
+        <input type="text" class="form-control" id="name_snp" formControlName="name_snp"
+          name="name_snp" maxlength="50">
+        <div *ngIf="name_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+          Campo Obrigatório
+        </div>
+      </div>
+      <div class="col-12 pb-2">
+        <label for="email_snp" class="form-label">E-mail
+        </label>
+        <input type="email" class="form-control" id="email_snp" formControlName="email_snp"
+          name="email_snp" maxlength="50">
+        <div *ngIf="email_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+          Campo Obrigatório
+        </div>
+      </div>
+      <div class="col-12 pb-2">
+        <label for="username_snp" class="form-label">Username
+        </label>
+        <input type="text" class="form-control" id="username_snp" formControlName="username_snp"
+          name="username_snp" maxlength="50">
+        <div *ngIf="username_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+          Campo Obrigatório
+        </div>
+      </div>
+      <div class="col-12 pb-2">
+        <label for="password_snp" class="form-label">Senha
+        </label>
+        <input type="password" class="form-control" id="password_snp" formControlName="password_snp"
+          name="password_snp" maxlength="50">
+        <div *ngIf="password_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+          Campo Obrigatório
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Cancelar</button>
+    <button type="button" class="btn btn-dark" (click)="saveUser(modal)">Salvar</button>
+  </div>
+</ng-template>
+
+

@@ -22,6 +22,10 @@ export class BooksService {
     return this.http.get(`${urlAPI}${this.controllerName}${id}`);
   }
 
+  getByTitle(title: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}title/${title}`);
+  }
+
   public add(b: Book) {
     let request = `${urlAPI}${this.controllerName}`;
     return this.http.post(request, b);
