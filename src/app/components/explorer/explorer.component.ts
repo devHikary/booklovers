@@ -6,6 +6,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProcessFile } from 'src/app/shared/processFile/processFile';
 import { Buffer } from 'buffer';
+import { GoogleBooksService } from 'src/app/services/google-books.service';
 
 @Component({
   selector: 'app-explorer',
@@ -25,7 +26,8 @@ export class ExplorerComponent implements OnInit {
 
   constructor(
     private booksService: BooksService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private googleService: GoogleBooksService,
   ) {}
 
   ngOnInit(): void {
@@ -55,13 +57,13 @@ export class ExplorerComponent implements OnInit {
   searchBook() {
     const t = this.titleSearch.split(' ').join('%');
     console.log(t);
-    this.booksService.getAllByTitle(t).subscribe((books: any) => {
+    this.googleService.getAllByTitle(t).subscribe((books: any) => {
       this.loadListGoogle(books);
     });
   }
 
   filterSide(id: string) {
-    this.booksService.getAllByCategories(id).subscribe((books) => {
+    this.googleService.getAllByCategories(id).subscribe((books) => {
       this.loadListGoogle(books);
     });
   }
@@ -117,18 +119,11 @@ export class ExplorerComponent implements OnInit {
       bookAux.title = book.title;
       bookAux.publisher = book.publisher;
       bookAux.description = book.description;
-      book.Authors.forEach((author: any) => {
-        bookAux.authors += bookAux.authors + author.name;
-      });
-      if(book.thumbnail === null && (book.thumbnail_url === null)){
+      bookAux.authors = book.Authors;
+      if(book.thumbnail === null){
         bookAux.thumbnail = '/./assets/images/noImage.png';
-      } else if(book.thumbnail_url === null){
-        const t = Buffer.from(book.thumbnail).toString();
-
-        const blobUrl = "data:image/png;base64, " + t;
-        bookAux.thumbnail = blobUrl;
-      } else{
-        bookAux.thumbnail = book.thumbnail_url
+      } else {
+        bookAux.thumbnail = book.thumbnail;
       }
 
       this.bookList.push(bookAux);

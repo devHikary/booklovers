@@ -8,8 +8,7 @@ const { urlAPI } = environment;
   providedIn: 'root'
 })
 export class BooksService {
-  private urlAPIg = "https://www.googleapis.com/books";
-  private verApig = "/v1/volumes?q=";
+
   private controllerName = "books/";
   constructor(
     private http: HttpClient,
@@ -19,16 +18,7 @@ export class BooksService {
     return this.http.get(`${urlAPI}${this.controllerName}`);
   }
 
-  getAllByTitle(title: string) {
-    return this.http.get(`${this.urlAPIg}${this.verApig}intitle:${title}`);
-  }
-
-  getAllByCategories(categories: string) {
-    return this.http.get(`${this.urlAPIg}${this.verApig}subject:${categories}`);
-  }
-
   getById(id: string) {
-    // return this.http.get(`${id}`);
     return this.http.get(`${urlAPI}${this.controllerName}${id}`);
   }
 

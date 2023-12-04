@@ -1,14 +1,17 @@
+import { Author } from "./author";
+import { Theme } from "./theme";
+
 export class Book{
   id: string = "";
   title: string = "";
   subtitle: string = "";
-  authors: string = "";
+  authors: Author[] = [];
   publisher: string = "";
   thumbnail: string | null | Blob = null;
   thumbnail_url: string | null = null;
   pages: string = "";
   release_dt: string = "";
-  themes: string[] = [];
+  themes: Theme[] = [];
   description: string = "";
 
 

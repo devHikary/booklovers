@@ -29,9 +29,19 @@
   </div>
   <img class="card-img-top" src="{{book.thumbnail}}" alt="thumbnail">
   <div class="card-body p-2 w-100">
-    <h5 class="card-title text-truncate max-width text-capitalize">{{book.title}}</h5>
-    <p class="card-text text-truncate max-width text-capitalize">{{book.authors}}</p>
-    <p class="card-text"><small class="text-muted text-truncate max-width text-capitalize">{{book.publisher}}</small></p>
+    <h5 class="card-title text-truncate max-width text-capitalize">{{book.title? book.title : "Não cadastrado"}}</h5>
+    <p class="card-text text-truncate max-width text-capitalize">
+      <ng-container *ngIf="book.authors.length == 0; else elseBlock">
+        Não cadastrado
+      </ng-container>
+    <ng-template #elseBlock >
+      <ng-container *ngFor="let author of book.authors">
+        {{author.name + "; "}}
+      </ng-container>
+    </ng-template>
+    </p>
+    <p class="card-text"><small class="text-muted text-truncate max-width text-capitalize">{{book.publisher?
+        book.publisher : "Não cadastrado"}}</small></p>
 
   </div>
 
