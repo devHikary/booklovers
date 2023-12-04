@@ -7,6 +7,8 @@ import { HomeComponent } from './components/home/home.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { RoleGuard } from './services/role.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -17,29 +19,39 @@ const routes: Routes = [
   {
     path: "booklovers/explorer",
     component: ExplorerComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/detail-book/:id",
     component: DetailBookComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/home",
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/my-books",
+    component: ExplorerComponent,
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/statistic",
     component: StatisticComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
+  {
+    path: "emicol/error",
+    component: ErrorPageComponent,
+  },
+  { path: '**', component: ErrorPageComponent, canActivate: [AuthGuard]},
 ]
 
 @NgModule({
   declarations: [],
   exports: [ RouterModule ],
   imports: [ RouterModule.forRoot(routes) ],
-  providers: [AuthGuard]
+  providers: [AuthGuard, RoleGuard]
 })
 export class AppRoutingModule { }

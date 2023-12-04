@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { CardBoxVComponent } from './components/card-box-v/card-box-v.component';
 import { RatingComponent } from './components/rating/rating.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DetailBookComponent } from './components/detail-book/detail-book.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomAdapter, CustomDateParserFormatter, CustomDatepickerI18n, I18n } from './services/custom-datapicker.service';
@@ -23,6 +23,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
+import { Interceptor } from './services/interceptor.service';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { LoginComponent } from './components/login/login.component';
     StatisticComponent,
     CardBoxMiniComponent,
     LoginComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,11 @@ import { LoginComponent } from './components/login/login.component';
     [{ provide: NgbDateAdapter, useClass: CustomAdapter },
 		{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },],
     [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

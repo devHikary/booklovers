@@ -1,3 +1,4 @@
+import { Route } from './../../models/route';
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit {
 
   getLogin(){
     this.loginObj.username = this.loginForm.value.username;
-    this.loginObj.password = this.localService.encrypt(this.loginForm.value.password);
+    this.loginObj.password = this.localService.encryptPWD(this.loginForm.value.password);
     const de = this.localService.decrypt(this.loginObj.password);
     console.log(de)
     console.log(this.loginForm.value.password)
@@ -90,7 +91,17 @@ export class LoginComponent implements OnInit {
 
     this.loginService.auth(this.loginObj).subscribe((response: any) =>{
       console.log(response);
+      this.localService.saveToken(response['token'])
+
+      this.router.navigate(['/booklovers/explorer']);
+
+      const payload = this.localService.decodePayloadJWT(response['token']);
+      this.localService.saveData("bS", JSON.stringify(payload['permissions']));
+      this.localService.saveData("id", JSON.stringify(payload['id']));
+
+      console.log(payload['permissions']);
     })
+
   }
 
   cancel(){
@@ -118,7 +129,7 @@ export class LoginComponent implements OnInit {
     this.user.name = this.signupForm.value.name_snp!;
     this.user.email = this.signupForm.value.email_snp!;
     this.user.username = this.signupForm.value.username_snp!;
-    this.user.password = this.signupForm.value.password_snp!;
+    this.user.password = this.localService.encryptPWD(this.signupForm.value.password_snp!);
     this.user.role_id = "6ccc7600-ded8-4676-8b05-8f28cad4b028";
     console.log(this.user)
   }
@@ -140,6 +151,7 @@ export class LoginComponent implements OnInit {
           timer: 2000,
         });
         modal.close('savepwd');
+        this.signupForm.reset();
       },
       (e) => {
         Swal.fire({
