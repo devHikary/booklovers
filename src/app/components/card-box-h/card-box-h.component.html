@@ -35,7 +35,7 @@
               </i>
             </ng-template>
 
-            <ngb-rating [(rate)]="book.rating" [starTemplate]="t" [readonly]="false" [max]="5"
+            <ngb-rating [(rate)]="book.annotation.rating" [starTemplate]="t" [readonly]="false" [max]="5"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
           <div class="col-3 ps-0">
@@ -45,7 +45,7 @@
               </i>
             </ng-template>
 
-            <ngb-rating [(rate)]="book.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
+            <ngb-rating [(rate)]="book.annotation.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
         </div>

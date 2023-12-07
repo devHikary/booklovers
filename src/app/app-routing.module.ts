@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { RoleGuard } from './services/role.guard';
+import { EditBookComponent } from './components/edit-book/edit-book.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -24,7 +25,12 @@ const routes: Routes = [
   {
     path: "booklovers/detail-book/:id",
     component: DetailBookComponent,
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "booklovers/edit-book/:id",
+    component: EditBookComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: "booklovers/home",

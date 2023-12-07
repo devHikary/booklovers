@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Book } from 'src/app/models/book';
+import { Book } from 'src/app/models/Book';
 
 @Component({
   selector: 'app-card-box-h',

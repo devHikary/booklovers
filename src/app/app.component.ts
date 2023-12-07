@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { LocalService } from './services/local.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +9,8 @@ export class AppComponent {
   title = 'book';
 
   constructor(
-    private localService: LocalService,
-    private router: Router,
   ){}
 
-  logout(){
-    this.localService.clearStorage();
-    this.router.navigateByUrl('/booklovers/login');
-  }
+
+
 }

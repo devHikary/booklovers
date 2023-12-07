@@ -25,6 +25,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { Interceptor } from './services/interceptor.service';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { EditBookComponent } from './components/edit-book/edit-book.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import { HeaderNavComponent } from './shared/header-nav/header-nav.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,8 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     CardBoxMiniComponent,
     LoginComponent,
     ErrorPageComponent,
+    EditBookComponent,
+    HeaderNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +67,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     AsyncPipe,
     BrowserAnimationsModule,
     NgbCollapseModule,
+
   ],
   providers: [
     [{ provide: NgbDateAdapter, useClass: CustomAdapter },

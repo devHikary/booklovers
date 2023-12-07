@@ -7,18 +7,22 @@
         </i>
       </ng-template>
 
-      <ngb-rating [(rate)]="book.rating" [starTemplate]="t" [readonly]="false" [max]="5"
+      <ngb-rating [(rate)]="book.annotation === null? 0 : book.annotation.rating" [starTemplate]="t" [readonly]="false" [max]="5" (rateChange)="toggleRate()"
         [ariaValueText]="ariaValueText"></ngb-rating>
     </div>
     <div class="col">
-      <ng-template #heart let-fill="fill">
+      <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()">
+        <i class="bi-heart-fill" [class]="book.annotation === null?  '' :  book.annotation.favorite == 1? 'filled-heart' : ''" ></i>
+      </a>
+
+      <!-- <ng-template #heart let-fill="fill">
         <i class="bi-heart-fill">
           <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
         </i>
       </ng-template>
 
       <ngb-rating [(rate)]="book.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
-        [ariaValueText]="ariaValueText"></ngb-rating>
+        [ariaValueText]="ariaValueText"></ngb-rating> -->
     </div>
     <div class="col-2 d-flex justify-content-end">
       <a title="Detalhes do livro" href="javascript:;" (click)="detailBook(book.id)">

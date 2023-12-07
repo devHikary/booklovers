@@ -1,14 +1,14 @@
-import { Route } from './../../models/route';
+import { Route } from '../../models/Route';
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/models/User';
 import { LocalService } from 'src/app/services/local.service';
 import { LoginService } from 'src/app/services/login.service';
-import { Login } from 'src/app/models/login';
+import { Login } from 'src/app/models/Login';
 
 @Component({
   selector: 'app-login',
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.localService.clearStorage();
   }
 
   get username(){
@@ -76,10 +76,6 @@ export class LoginComponent implements OnInit {
     this.loginObj.username = this.loginForm.value.username;
     this.loginObj.password = this.localService.encryptPWD(this.loginForm.value.password);
     const de = this.localService.decrypt(this.loginObj.password);
-    console.log(de)
-    console.log(this.loginForm.value.password)
-    console.log(this.loginObj.password)
-
 
   }
 

@@ -19,8 +19,6 @@ export class RoleGuard implements CanActivate {
     console.log(userRoles)
     let isAuthorized = false;
     userRoles.forEach((role: any) => {
-      console.log(next.routeConfig?.path)
-      console.log(next.routeConfig?.path?.includes(role.url))
       if (next.routeConfig?.path?.includes(role.url)) {
         isAuthorized = true;
         // if ((next.routeConfig?.path?.includes("edit") && role.readOnly == true)) isAuthorized = false;

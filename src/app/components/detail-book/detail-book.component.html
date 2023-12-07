@@ -1,198 +1,175 @@
 <div class="container mt-4">
-  <form class="card bg-card p-4" [formGroup]="bookForm" #formDir="ngForm">
+  <div class="card bg-card p-4">
     <div class="row text-center">
-      <div class="col-12">
-        <h2>Minhas Anotações</h2>
+      <div class="col-12 mb-2">
+        <h2>Sobre o livro <a title="Editar informações do livro" href="javascript:;" (click)="editBook(book.id)">
+            <i class="bi bi-pencil-square"></i>
+          </a></h2>
+
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <div class="row">
-          <div class="col-8 d-flex justify-content-end pe-5">
+          <div class="col-7 d-flex justify-content-end pe-0">
             <ng-template #t let-fill="fill">
               <i class="bi-star-fill">
                 <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill"></i>
               </i>
             </ng-template>
 
-            <ngb-rating [(rate)]="book.rating" [starTemplate]="t" [readonly]="false" [max]="5"
+            <ngb-rating [(rate)]="annotationObj.rating" [starTemplate]="t" [readonly]="false" [max]="5"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
-          <div class="col-4">
-            <ng-template #heart let-fill="fill">
-              <i class="bi-heart-fill">
-                <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
-              </i>
-            </ng-template>
-
-            <ngb-rating [(rate)]="book.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
-              [ariaValueText]="ariaValueText"></ngb-rating>
+          <div class="col-5 ps-5">
+            <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()">
+              <i class="bi-heart-fill" [class]="annotationObj.favorite == 1? 'filled-heart' : ''"></i>
+            </a>
           </div>
         </div>
         <div class="row text-center">
-          <a href="javascript:;" title="Adicionar capa do livro" (click)="collapseThumbnail.toggle()"
-            [attr.aria-expanded]="!isCollapsedThumbnail" aria-controls="Adicionar autores">
-            <img class="w-50 mx-auto" [src]="book.thumbnail" alt="thumbnail">
-          </a>
-          <div #collapseThumbnail="ngbCollapse" [(ngbCollapse)]="isCollapsedThumbnail"
-            class="row justify-content-center mt-1">
-            <div class="col-8">
-              <input type="text" class="form-control" [(ngModel)]="uploadCover" [ngModelOptions]="{standalone: true}"
-                id="uploadCover" placeholder="Endereço da imagem. Ex: https://...">
-            </div>
-            <div class="col-2">
-              <button class="btn btn-primary" (click)="clickUploadCover()">Upload</button>
-            </div>
-          </div>
+          <img class="w-50 mx-auto" [src]="book.thumbnail" alt="thumbnail">
         </div>
         <div class="row p-4">
-          <label for="description" class="form-label">Sinopse </label>
-          <textarea class="form-control" placeholder="Leave a comment here" id="description"
-            formControlName="description" style="height: 100px"></textarea>
+          <p class="fw-semibold text-muted">Sinopse:</p>
+          <div class="card scrollCard" style="height: 160px">
+            <p class="text-wrap" placeholder="Leave a comment here" id="description" style="height: 100px">
+              {{book.description}}</p>
+
+          </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="row">
+          <div class="col-md-12  ">
+            <p class=" text-muted text-capitalize mb-1">
+              <span class="fw-semibold">Título: </span>
+              {{book.title}}
+            </p>
+
+          </div>
+          <div class="col-md-12  " *ngIf="book.subtitle != ''">
+            <p class=" text-muted text-capitalize mb-1">
+              <span class="fw-semibold">Subtítulo: </span>
+              {{book.subtitle}}
+            </p>
+          </div>
+          <div class="col-md-12  ">
+            <p class="fw-semibold text-muted mb-1">Autores:
+              <span class="fw-normal" *ngFor="let author of book.authors">
+                {{author.name + "; "}}
+              </span>
+            </p>
+
+          </div>
+
+
+          <div class="col-md-6  ">
+            <p class=" text-muted text-capitalize mb-1">
+              <span class="fw-semibold">Editora: </span>
+              {{book.publisher}}
+            </p>
+          </div>
+
+          <div class="col-md-6  ">
+            <p class=" text-muted mb-1">
+              <span class="fw-semibold">Publicação: </span>
+              {{book.release_dt}}
+            </p>
+          </div>
+
+          <div class="col-md-6  ">
+            <p class=" text-muted mb-1">
+              <span class="fw-semibold">Páginas: </span>
+              {{book.pages}}
+            </p>
+          </div>
+
+          <div class="col-md-6  ">
+            <p class=" text-muted mb-1">
+              <span class="fw-semibold">ISBN 13: </span>
+              {{book.isbn_13}}
+            </p>
+          </div>
+
+
+          <div class="col-md-6  ">
+            <p class="fw-semibold text-muted mb-1">Temas:
+              <span class="fw-normal" *ngFor="let theme of book.themes">
+                {{theme.name + "; "}}
+              </span>
+            </p>
+          </div>
+          <hr>
+        </div>
+        <form class="row">
+          <h4>Minhas Anotações</h4>
+
           <div class="col-md-12 pb-2">
-            <label for="title" class="form-label">Título
+            <label for="review" class="form-label">Citação/ avaliação </label>
+            <textarea class="form-control" placeholder="Leave a review here" id="review" name="review"
+              [(ngModel)]="annotationObj.review" style="height: 200px"></textarea>
+          </div>
+
+          <div class="col-md-6 pb-2">
+            <label for="dpFromDate" class="form-label">Data de Início
+            </label>
+            <div class="dp-hidden position-absolute">
+
+              <div class="input-group">
+                <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                  [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="b"
+                  outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" />
+                <ng-template #b let-date let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                type="button"></button>
+            </div>
+          </div>
+          <div class="col-md-6 pb-2">
+            <label for="dpToDate" class="form-label">Data de Fim
             </label>
             <div class="input-group">
-
-              <input type="text" class="form-control text-capitalize" id="title" formControlName="title" name="title"
-                maxlength="50">
-              <button type="button" class="btn btn-outline-dark" (click)="open(content)">Ajuda preenc.</button>
+              <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                type="button"></button>
             </div>
-            <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
-              Campo Obrigatório
+          </div>
+
+          <div class="col-md-6 pb-2">
+            <label for="page_read" class="form-label">Páginas lidas
+            </label>
+            <input type="number" class="form-control" id="page_read" [(ngModel)]="annotationObj.page_read"
+              name="page_read" maxlength="14" (change)="pages_readChanged()" max="{{book.pages}}" min="0">
+          </div>
+          <div class="col-md-6 pb-2">
+            <label for="percent" class="form-label">Porcentagem
+            </label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="percent" [(ngModel)]="annotationObj.progress" name="percent"
+                maxlength="14" (change)="percentChanged()" max="100" min="0">
+              <span class="input-group-text">%</span>
             </div>
           </div>
           <div class="col-md-12 pb-2">
-            <label for="subtitle" class="form-label text-capitalize">Subtítulo
+            <label for="progress" class="form-label">Progresso
             </label>
-            <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle"
-              maxlength="50">
-
+            <ngb-progressbar type="secondary" textType="light" [value]="annotationObj.progress"
+              [showValue]="true"></ngb-progressbar>
           </div>
-          <div>
-            <label for="author" class="form-label">Autores
-              <a title="Adicionar autores" href="javascript:;" (click)="collapse.toggle()"
-                [attr.aria-expanded]="!isCollapsed" aria-controls="Adicionar autores" class="ms-1">
-                <i class="bi bi-plus-circle size_iPlus text-primary"></i>
-              </a>
-            </label>
-            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
-              <input class="form-control ms-0" placeholder="Adicionar autor..." #authorInput [formControl]="authorCtrl"
-                [matChipInputFor]="chipGridAuthor" [matAutocomplete]="autoAuthor"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addAuthor($event)"
-                matAutocompletePosition='above' />
-              <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selectedAuthor($event)"
-                [displayWith]="displayFnAuthor">
-                <ng-container *ngFor="let author of filteredAuthors | async">
-                  <mat-option [value]="author" *ngIf="!isAuthorSelected(author)">
-                    {{author.name}}
-                  </mat-option>
-                </ng-container>
-              </mat-autocomplete>
-            </div>
-
-
-          </div>
-          <div class="mt-1 pb-2">
-            <div class="example-chip-list no-wrap card">
-              <mat-chip-grid #chipGridAuthor aria-label="Seleção de autores" class="no-wrap">
-                <mat-chip-row *ngFor="let author of selectedAuthors" (removed)="removeAuthor(author)">
-                  {{author.name}}
-                  <button matChipRemove [attr.aria-label]="'remove ' + author">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-chip-row>
-              </mat-chip-grid>
-            </div>
-          </div>
-
-          <div class="col-md-6 pb-2">
-            <label for="publisher" class="form-label">publisher
-            </label>
-            <input type="text" class="form-control text-capitalize" id="publisher" formControlName="publisher"
-              name="publisher" maxlength="50">
-            <div *ngIf="publisher?.errors?.['required'] && formDir.submitted" class="msgError">
-              Campo Obrigatório
-            </div>
-          </div>
-
-          <div class="col-md-6 pb-2">
-            <label for="release_dtn" class="form-label">Data de publicação
-            </label>
-            <div class="row row-cols-sm-auto">
-              <div i18n class="col-12">
-                <div class="input-group">
-                  <input class="form-control" placeholder="dd/mm/yyyy" name="release_dtn" formControlName="release_dt"
-                    ngbDatepicker #release_dtn="ngbDatepicker" removeNgbDpDefaultValidation required/>
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="release_dtn.toggle()"
-                    type="button"></button>
-                </div>
-              </div>
-              <div *ngIf="release_dt?.errors?.['required'] && formDir.submitted" class="msgError">
-                Campo Obrigatório
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 pb-2">
-            <label for="pages" class="form-label">Páginas
-            </label>
-            <input type="text" class="form-control" id="pages" formControlName="pages" name="pages" maxlength="50">
-            <div *ngIf="pages?.errors?.['required'] && formDir.submitted" class="msgError">
-              Campo Obrigatório
-            </div>
-          </div>
-
-          <div class="col-md-6 pb-2">
-            <label for="isbn_13" class="form-label">ISBN 13
-            </label>
-            <input type="text" class="form-control" id="isbn_13" formControlName="isbn_13" name="isbn_13"
-              maxlength="14">
-            <div *ngIf="isbn_13?.errors?.['required'] && formDir.submitted" class="msgError">
-              Campo Obrigatório
-            </div>
-          </div>
-
-
-          <div>
-            <label for="isbn_13" class="form-label">Temas
-            </label>
-            <a title="Adicionar temas" href="javascript:;" (click)="collapseTheme.toggle()"
-              [attr.aria-expanded]="!isCollapsedTheme" aria-controls="Adicionar temas" class="ms-1">
-              <i class="bi bi-plus-circle size_iPlus text-primary"></i>
-            </a>
-            <div #collapseTheme="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
-              <input class="form-control ms-0" placeholder="Adicionar tema..." #themeInput [formControl]="themeCtrl"
-                [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-                matAutocompletePosition='above' />
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" [displayWith]="displayFn">
-                <ng-container *ngFor="let theme of filteredThemes | async">
-                  <mat-option [value]="theme" *ngIf="!isThemeSelected(theme)">
-                    {{theme.name}}
-                  </mat-option>
-                </ng-container>
-              </mat-autocomplete>
-            </div>
-
-          </div>
-          <div class="mt-1">
-            <div class="example-chip-list no-wrap card">
-              <mat-chip-grid #chipGrid aria-label="Fruit selection" class="no-wrap">
-                <mat-chip-row *ngFor="let theme of selectedThemes" (removed)="remove(theme)">
-                  {{theme.name}}
-                  <button matChipRemove [attr.aria-label]="'remove ' + theme">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-chip-row>
-              </mat-chip-grid>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
 
     </div>
@@ -202,27 +179,12 @@
         <button class="btn btn-light" (click)="cancel()">Cancelar</button>
       </div>
       <div class="col d-flex justify-content-end">
-        <button class="btn btn-primary" (click)="save()">Salvar</button>
+        <button class="btn btn-secondary" (click)="save()">Salvar</button>
       </div>
     </div>
-    <label class="image-upload-container btn btn-bwm">
+    <!-- <label class="image-upload-container btn btn-bwm">
       <span>Select Image</span>
       <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
-    </label>
-  </form>
+    </label> -->
+  </div>
 </div>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Livros relacionados</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body" *ngFor="let bookM of bookListModal">
-    <a title="Detalhes do livro" href="javascript:;" (dblclick)="selectedInfo(bookM.id)">
-      <app-card-box-mini [book]="bookM"></app-card-box-mini>
-    </a>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Salvar</button>
-  </div>
-</ng-template>

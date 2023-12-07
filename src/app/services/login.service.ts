@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
-import { Login } from '../models/login';
+import { User } from '../models/User';
+import { Login } from '../models/Login';
 const { urlAPI } = environment;
 
 @Injectable({

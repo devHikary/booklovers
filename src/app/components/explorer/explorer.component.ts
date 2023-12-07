@@ -1,7 +1,8 @@
+import { Annotation } from 'src/app/models/Annotation';
 import Swal from 'sweetalert2';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { Book } from 'src/app/models/book';
+import { Book } from 'src/app/models/Book';
 import { BooksService } from 'src/app/services/books.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProcessFile } from 'src/app/shared/processFile/processFile';
@@ -104,9 +105,9 @@ export class ExplorerComponent implements OnInit {
       console.log(element.volumeInfo.imageLinks);
       //  ToDo: retirar
       const rndInt = this.randomIntFromInterval(1, 5);
-      bookAux.rating = rndInt;
+      bookAux.annotation.rating = rndInt;
       const rndIntb = this.randomIntFromInterval(0, 1);
-      bookAux.favorite = rndIntb;
+      bookAux.annotation.favorite = rndIntb;
 
       bookAux.description = element.volumeInfo.description;
 
@@ -118,19 +119,25 @@ export class ExplorerComponent implements OnInit {
   loadBooks(books: any) {
     this.bookList = [];
     this.options = [];
-    books.forEach((book: any) => {
+    books.forEach((obj: any) => {
       var bookAux = new Book();
+      console.log(obj)
 
-      bookAux.id = book.id;
-      bookAux.title = book.title;
-      this.options.push(book.title);
-      bookAux.publisher = book.publisher;
-      bookAux.description = book.description;
-      bookAux.authors = book.Authors;
-      if(book.thumbnail === null){
+      bookAux.id = obj.book.id;
+      bookAux.title = obj.book.title;
+      this.options.push(obj.book.title);
+      bookAux.publisher = obj.book.publisher;
+      bookAux.description = obj.book.description;
+      bookAux.authors = obj.book.Authors;
+      if(obj.book.thumbnail === null){
         bookAux.thumbnail = '/./assets/images/noImage.png';
       } else {
-        bookAux.thumbnail = book.thumbnail;
+        bookAux.thumbnail = obj.book.thumbnail;
+      }
+      bookAux.annotation = obj.annotation; //TODO
+      if(obj.annotation){
+        bookAux.annotation.rating = obj.annotation.rating;
+        bookAux.annotation.favorite = obj.annotation.favorite;
       }
 
       this.bookList.push(bookAux);
@@ -159,7 +166,7 @@ export class ExplorerComponent implements OnInit {
   }
 
   detailBook(id: string){
-    this.router.navigate(['/booklovers/detail-book/', id]);
+    this.router.navigate(['/booklovers/edit-book/', id]);
   }
 }
 

@@ -17,10 +17,6 @@ i {
 
 .filled-heart {
   color: red;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .card-img-top{

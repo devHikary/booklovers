@@ -25,7 +25,10 @@ i {
 
 .filled-heart {
   color: red;
-
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .badge-hover:hover {
@@ -66,52 +69,4 @@ mat-chip {
   display: block;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-wrap::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.example {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.size_iPlus{
-  font-size: 1rem;
-}
-
-.msgError{
-  color: red;
-}
-
-.scrollCard{
-  overflow: auto;
-}
-
-.dp-hidden {
-  width: 0;
-  margin: 0;
-  border: none;
-  padding: 0;
-}
-.custom-day {
-  text-align: center;
-  padding: 0.185rem 0.25rem;
-  display: inline-block;
-  height: 2rem;
-  width: 2rem;
-}
-.custom-day.focused {
-  background-color: #e6e6e6;
-}
-.custom-day.range,
-.custom-day:hover {
-  background-color: rgb(2, 117, 216);
-  color: white;
-}
-.custom-day.faded {
-  background-color: rgba(2, 117, 216, 0.5);
 }
