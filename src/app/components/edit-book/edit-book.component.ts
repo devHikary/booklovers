@@ -230,7 +230,7 @@ export class EditBookComponent implements OnInit{
             icon: 'success',
             timer: 2000,
           });
-          this.router.navigate(['/booklovers/detail-book/', this.book_id]);
+          this.router.navigate(['/booklovers/explorer/']);
         },
         (e) => {
           Swal.fire({

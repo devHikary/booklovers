@@ -21,7 +21,7 @@ export class Interceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let token = this.localService.getToken();
 
-    if (token != '' && !request.url.includes('/booklovers/login')) {
+    if (token != '' && !request.url.includes('/booklovers/login') && !request.url.includes('https://www.googleapis')) {
       request = request.clone({
         setHeaders: {
           Authorization: 'Bearer ' + token,

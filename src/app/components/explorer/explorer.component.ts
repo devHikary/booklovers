@@ -11,6 +11,7 @@ import { GoogleBooksService } from 'src/app/services/google-books.service';
 import { Observable, map, startWith } from 'rxjs';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.service';
+import { LocalService } from 'src/app/services/local.service';
 
 @Component({
   selector: 'app-explorer',
@@ -22,6 +23,7 @@ export class ExplorerComponent implements OnInit {
   themeList: any[] = [];
   public titleSearch: string = ''; // TODO: retirar
   closeResult = ''; // TODO: retirar
+  user_id: string = '';
 
   titleSearchCtr = new FormControl('');
   options: string[] = [];
@@ -38,14 +40,16 @@ export class ExplorerComponent implements OnInit {
     private googleService: GoogleBooksService,
     private router: Router,
     private themeService: ThemeService,
+    private localService: LocalService,
   ) {}
 
   ngOnInit(): void {
+    this.user_id = this.localService.getUserId();
     this.filteredOptions = this.titleSearchCtr.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    this.booksService.getAllBooks().subscribe((books: any) => {
+    this.booksService.getAllBooks(this.user_id).subscribe((books: any) => {
       console.log(books);
       this.loadBooks(books);
     });
@@ -63,13 +67,14 @@ export class ExplorerComponent implements OnInit {
   searchBook() {
     // const t = this.titleSearchCtr.value.split(' ').join('%');
     // console.log(t);
-    this.booksService.getByTitle(this.titleSearchCtr.value).subscribe((books: any) => {
+    this.booksService.getByTitle(this.titleSearchCtr.value, this.user_id).subscribe((books: any) => {
       this.loadBooks(books);
     });
   }
 
   filterSide(id: string) {
-    this.themeService.getById(id).subscribe((books) => {
+    console.log("id", id)
+    this.themeService.getById(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

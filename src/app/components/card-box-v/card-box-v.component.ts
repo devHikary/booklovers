@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Annotation } from 'src/app/models/Annotation';
@@ -32,14 +33,20 @@ export class CardBoxVComponent {
     else{
       this.book.annotation.favorite = 1;
     }
-    console.log(this.book)
+    this.saveAnnotation();
   }
 
   toggleRate(){
-    console.log(this.annotation)
+    this.saveAnnotation();
   }
 
   saveAnnotation(){
     console.log(this.annotation)
+    if (this.annotation === null) {
+      this.annotationService.add(this.annotation).subscribe();
+
+    } else {
+      this.annotationService.update(this.annotation).subscribe();
+    }
   }
 }

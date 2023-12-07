@@ -41,7 +41,7 @@ export class DetailBookComponent implements OnInit {
   public annotationObj: Annotation = new Annotation();
   public isCollapsedThumbnail = true;
   isNew: boolean = true;
-  user_id: string = this.localService.getUserId();
+  user_id: string = '';
 
   hoveredDate: NgbDate | null = null;
 
@@ -66,11 +66,12 @@ export class DetailBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user_id = this.localService.getUserId()
     this.book.thumbnail = '/./assets/images/noImage.png';
 
     this.activatedRoute.params.subscribe((params) => {
       if (params['id'] != 'new') {
-        this.bookService.getByIdUser(params['id']).subscribe((response: any) => {
+        this.bookService.getByIdUser(params['id'], this.user_id).subscribe((response: any) => {
           console.log(response)
           this.isNew = false;
           this.loadBook(response['book']);
@@ -187,7 +188,7 @@ export class DetailBookComponent implements OnInit {
       return;
     }
     this.annotationObj.id = annotation.id;
-    this.annotationObj.page_read = annotation.pages_read;
+    this.annotationObj.pages_read = annotation.pages_read;
     this.annotationObj.progress = annotation.progress;
     this.annotationObj.rating = annotation.rating;
     this.annotationObj.review = annotation.review;
@@ -198,14 +199,14 @@ export class DetailBookComponent implements OnInit {
 
   percentChanged() {
     if (this.annotationObj.progress < 0) {
-      this.annotationObj.page_read = 0;
+      this.annotationObj.pages_read = 0;
       this.annotationObj.progress = 0;
     }
     if (this.annotationObj.progress > 100) {
-      this.annotationObj.page_read = +this.book.pages;
+      this.annotationObj.pages_read = +this.book.pages;
       this.annotationObj.progress = 100;
     } else {
-      this.annotationObj.page_read = Math.round(
+      this.annotationObj.pages_read = Math.round(
         (+this.book.pages * this.annotationObj.progress) / 100
       );
     }
@@ -213,16 +214,16 @@ export class DetailBookComponent implements OnInit {
   }
 
   pages_readChanged() {
-    if (this.annotationObj.page_read < 0) {
-      this.annotationObj.page_read = 0;
+    if (this.annotationObj.pages_read < 0) {
+      this.annotationObj.pages_read = 0;
       this.annotationObj.progress = 0;
     }
-    if (this.annotationObj.page_read > +this.book.pages) {
-      this.annotationObj.page_read = +this.book.pages;
+    if (this.annotationObj.pages_read > +this.book.pages) {
+      this.annotationObj.pages_read = +this.book.pages;
       this.annotationObj.progress = 100;
     } else {
       this.annotationObj.progress = Math.round(
-        (this.annotationObj.page_read / +this.book.pages) * 100
+        (this.annotationObj.pages_read / +this.book.pages) * 100
       );
     }
   }

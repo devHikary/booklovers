@@ -9,7 +9,6 @@ const { urlAPI } = environment;
   providedIn: 'root'
 })
 export class BooksService {
-  user_id: string = this.localService.getUserId();
   private controllerName = "books/";
 
   constructor(
@@ -17,20 +16,20 @@ export class BooksService {
     private localService: LocalService,
   ) { }
 
-  getAllBooks(){
-    return this.http.get(`${urlAPI}${this.controllerName}${this.user_id}`);
+  getAllBooks(user_id: string){
+    return this.http.get(`${urlAPI}${this.controllerName}${user_id}`);
   }
 
   getById(id: string) {
     return this.http.get(`${urlAPI}${this.controllerName}id/${id}`);
   }
 
-  getByIdUser(id: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}${id}/u/${this.user_id}`);
+  getByIdUser(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}${id}/u/${user_id}`);
   }
 
-  getByTitle(title: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}title/${title}/u/${this.user_id}`);
+  getByTitle(title: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}title/${title}/u/${user_id}`);
   }
 
   public add(b: Book) {
