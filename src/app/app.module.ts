@@ -29,6 +29,9 @@ import { EditBookComponent } from './components/edit-book/edit-book.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { HeaderNavComponent } from './shared/header-nav/header-nav.component';
+import { MyBooksComponent } from './components/my-books/my-books.component';
+import {MatSelectModule} from '@angular/material/select';
+import { MyListComponent } from './components/my-list/my-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { HeaderNavComponent } from './shared/header-nav/header-nav.component';
     ErrorPageComponent,
     EditBookComponent,
     HeaderNavComponent,
+    MyBooksComponent,
+    MyListComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +72,7 @@ import { HeaderNavComponent } from './shared/header-nav/header-nav.component';
     AsyncPipe,
     BrowserAnimationsModule,
     NgbCollapseModule,
+    MatSelectModule,
 
   ],
   providers: [

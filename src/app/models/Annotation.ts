@@ -1,3 +1,4 @@
+import { List } from "./List";
 import { Tag } from "./Tag";
 
 export class Annotation{
@@ -8,8 +9,9 @@ export class Annotation{
   progress: number = 0;
   rating: number = 0;
   review: string = "";
-  date_start: string = "";
-  date_end: string = "";
+  date_start: string | null = null;
+  date_end: string | null = null;
   favorite: number = 0;
   tags: Tag[] = [];
+  lists: List[] = [];
 }

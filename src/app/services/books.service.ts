@@ -29,7 +29,8 @@ export class BooksService {
   }
 
   getByTitle(title: string, user_id: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}title/${title}/u/${user_id}`);
+    // return this.http.get(`${urlAPI}${this.controllerName}title/${title}/u/${user_id}`);
+    return this.http.get(`${urlAPI}${this.controllerName}title/t?t=${title}&u=${user_id}`);
   }
 
   public add(b: Book) {

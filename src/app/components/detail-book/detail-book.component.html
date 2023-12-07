@@ -2,9 +2,7 @@
   <div class="card bg-card p-4">
     <div class="row text-center">
       <div class="col-12 mb-2">
-        <h2>Sobre o livro <a title="Editar informações do livro" href="javascript:;" (click)="editBook(book.id)">
-            <i class="bi bi-pencil-square"></i>
-          </a></h2>
+        <h2>Sobre o livro </h2>
 
       </div>
     </div>
@@ -18,11 +16,11 @@
               </i>
             </ng-template>
 
-            <ngb-rating [(rate)]="annotationObj.rating" [starTemplate]="t" [readonly]="false" [max]="5"
+            <ngb-rating [(rate)]="annotationObj.rating" [starTemplate]="t" [readonly]="false" [max]="5" [formControl]="rateCtrl"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
           <div class="col-5 ps-5">
-            <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()">
+            <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()" >
               <i class="bi-heart-fill" [class]="annotationObj.favorite == 1? 'filled-heart' : ''"></i>
             </a>
           </div>
@@ -30,17 +28,10 @@
         <div class="row text-center">
           <img class="w-50 mx-auto" [src]="book.thumbnail" alt="thumbnail">
         </div>
-        <div class="row p-4">
-          <p class="fw-semibold text-muted">Sinopse:</p>
-          <div class="card scrollCard" style="height: 160px">
-            <p class="text-wrap" placeholder="Leave a comment here" id="description" style="height: 100px">
-              {{book.description}}</p>
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
         <div class="row">
+          <h4>Sobre o livro <a title="Editar informações do livro" href="javascript:;" (click)="editBook(book.id)">
+              <i class="bi bi-pencil-square"></i>
+            </a></h4>
           <div class="col-md-12  ">
             <p class=" text-muted text-capitalize mb-1">
               <span class="fw-semibold">Título: </span>
@@ -100,14 +91,24 @@
               </span>
             </p>
           </div>
-          <hr>
         </div>
-        <form class="row">
+        <div class="row">
+          <p class="fw-semibold text-muted">Sinopse:</p>
+          <div class="card scrollCard" style="height: 160px">
+            <p class="text-wrap" placeholder="Escreva um resumo do livro aqui 😄" id="description"
+              style="height: 100px">
+              {{book.description}}</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <form class="row" #f="ngForm">
           <h4>Minhas Anotações</h4>
 
           <div class="col-md-12 pb-2">
             <label for="review" class="form-label">Citação/ avaliação </label>
-            <textarea class="form-control" placeholder="Leave a review here" id="review" name="review"
+            <textarea class="form-control" placeholder="Escreva uma citação do livro aqui 😄" id="review" name="review"
               [(ngModel)]="annotationObj.review" style="height: 200px"></textarea>
           </div>
 
@@ -131,7 +132,7 @@
             </div>
 
             <div class="input-group">
-              <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+              <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate"
                 [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
                 type="button"></button>
@@ -141,7 +142,7 @@
             <label for="dpToDate" class="form-label">Data de Fim
             </label>
             <div class="input-group">
-              <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+              <input #dpToDate class="form-control" placeholder="dd/mm/yyyy" name="dpToDate"
                 [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)" />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
                 type="button"></button>
@@ -169,6 +170,40 @@
             <ngb-progressbar type="secondary" textType="light" [value]="annotationObj.progress"
               [showValue]="true"></ngb-progressbar>
           </div>
+          <div>
+            <label for="author" class="form-label">Tags
+              <a title="Adicionar autores" href="javascript:;" (click)="collapse.toggle()"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="Adicionar autores" class="ms-1">
+                <i class="bi bi-plus-circle size_iPlus text-primary"></i>
+              </a>
+            </label>
+            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+              <input class="form-control ms-0" placeholder="Adicionar tag..." #authorInput [formControl]="tagCtrl"
+                [matChipInputFor]="chipGridTag" [matAutocomplete]="autoTag"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addTag($event)"
+                matAutocompletePosition='above' />
+              <mat-autocomplete #autoTag="matAutocomplete" (optionSelected)="selectedAuthor($event)"
+                [displayWith]="displayFnTag">
+                <ng-container *ngFor="let author of filteredTags | async">
+                  <mat-option [value]="author" *ngIf="!isTagSelected(author)">
+                    {{author.name}}
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+            </div>
+            <div class="mt-1 pb-2">
+              <div class="example-chip-list no-wrap card">
+                <mat-chip-grid #chipGridTag aria-label="Seleção de tags" class="no-wrap">
+                  <mat-chip-row *ngFor="let author of selectedTags" (removed)="removeTag(author)">
+                    {{author.name}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + author">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
 
@@ -179,7 +214,7 @@
         <button class="btn btn-light" (click)="cancel()">Cancelar</button>
       </div>
       <div class="col d-flex justify-content-end">
-        <button class="btn btn-secondary" (click)="save()">Salvar</button>
+        <button class="btn btn-secondary" (click)="save(f)">Salvar</button>
       </div>
     </div>
     <!-- <label class="image-upload-container btn btn-bwm">

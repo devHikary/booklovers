@@ -27,7 +27,7 @@
       <ng-template #elseBlock >
         <form [formGroup]="loginForm" #formDir="ngForm" (keydown.enter)="$event.preventDefault()">
           <div class="col-12 pb-2" style="width: 300px;">
-            <label for="username-bl" class="form-label">Username
+            <label for="username-bl" class="form-label">Usuário
             </label>
             <input type="text" class="form-control" id="username-bl" formControlName="username"
               name="username-bl" maxlength="50">
@@ -50,7 +50,7 @@
               <button class="btn btn-outline-dark" (click)="cancel()">Cancelar</button>
             </div>
             <div class="col d-flex justify-content-end">
-              <button type="submit" class="btn btn-dark" (click)="login()">Salvar</button>
+              <button type="submit" class="btn btn-dark" (click)="login()">Login</button>
             </div>
           </div>
         </form>
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="col-12 pb-2">
-        <label for="username_snp" class="form-label">Username
+        <label for="username_snp" class="form-label">Usuário
         </label>
         <input type="text" class="form-control" id="username_snp" formControlName="username_snp"
           name="username_snp" maxlength="50">

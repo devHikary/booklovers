@@ -27,6 +27,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 import { LocalService } from 'src/app/services/local.service';
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-edit-book',
@@ -97,6 +98,7 @@ export class EditBookComponent implements OnInit{
     private themeService: ThemeService,
     private authorService: AuthorService,
     private localService: LocalService,
+    private location: Location,
   ) {
     this.filteredThemes = this.themeCtrl.valueChanges.pipe(
       startWith(''),
@@ -230,7 +232,8 @@ export class EditBookComponent implements OnInit{
             icon: 'success',
             timer: 2000,
           });
-          this.router.navigate(['/booklovers/explorer/']);
+          //this.router.navigate(['/booklovers/explorer/']);
+          this.location.back();
         },
         (e) => {
           Swal.fire({
@@ -250,7 +253,8 @@ export class EditBookComponent implements OnInit{
             icon: 'success',
             timer: 2000,
           }).then(() => {
-            this.router.navigate(['/booklovers/detail-book/', this.book_id]);
+            this.location.back();
+            // this.router.navigate(['/booklovers/detail-book/', this.book_id]);
           });
         },
         (e) => {
@@ -267,10 +271,7 @@ export class EditBookComponent implements OnInit{
   }
 
   cancel() {
-    if(this.book_id != 'new')
-      this.router.navigate(['/booklovers/detail-book/', this.book_id]);
-    else
-    this.router.navigate(['/booklovers/explorer/']);
+    this.location.back();
   }
 
   processFile(imageInput: any) {

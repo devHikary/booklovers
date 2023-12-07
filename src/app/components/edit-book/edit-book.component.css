@@ -70,3 +70,7 @@ mat-chip {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.no-wrap::-webkit-scrollbar {
+  display: none;
+}

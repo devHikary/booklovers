@@ -7,7 +7,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from 'src/app/models/Book';
 import { BooksService } from 'src/app/services/books.service';
@@ -29,6 +29,8 @@ import { AuthorService } from 'src/app/services/author.service';
 import { Annotation } from 'src/app/models/Annotation';
 import { LocalService } from 'src/app/services/local.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { Location } from '@angular/common';
+import { TagService } from 'src/app/services/tag.service';
 
 @Component({
   selector: 'app-detail-book',
@@ -42,11 +44,22 @@ export class DetailBookComponent implements OnInit {
   public isCollapsedThumbnail = true;
   isNew: boolean = true;
   user_id: string = '';
+  isSaveDisabled: boolean = true;
 
   hoveredDate: NgbDate | null = null;
-
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  tagCtrl = new FormControl();
+  rateCtrl = new FormControl();
+  favoriteCtrl = new FormControl();
+  filteredTags: Observable<any[]> = new Observable<any[]>();
+  selectedTags: any[] = [];
+  allTags: any[] = [];
+  @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement> =
+    {} as ElementRef;
+  public isCollapsed = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,26 +72,41 @@ export class DetailBookComponent implements OnInit {
     private calendar: NgbCalendar,
     public formatter: NgbDateParserFormatter,
     public localService: LocalService,
-    public annotationService: AnnotationService
+    public annotationService: AnnotationService,
+    private location: Location,
+    private tagService: TagService
   ) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    // this.fromDate = calendar.getToday();
+    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
   ngOnInit(): void {
-    this.user_id = this.localService.getUserId()
+    this.user_id = this.localService.getUserId();
+    this.filteredTags = this.tagCtrl.valueChanges.pipe(
+      startWith(''),
+      map((value) => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name ? this._filterAuthor(name as string) : this.allTags.slice();
+      })
+    );
+    this.tagService.getAllUser(this.user_id).subscribe((response: any) => {
+      this.allTags = response;
+    });
+
     this.book.thumbnail = '/./assets/images/noImage.png';
 
     this.activatedRoute.params.subscribe((params) => {
       if (params['id'] != 'new') {
-        this.bookService.getByIdUser(params['id'], this.user_id).subscribe((response: any) => {
-          console.log(response)
-          this.isNew = false;
-          this.loadBook(response['book']);
-          this.loadAnnotation(response['annotation'])
+        this.bookService
+          .getByIdUser(params['id'], this.user_id)
+          .subscribe((response: any) => {
+            console.log(response);
+            this.isNew = false;
+            this.loadBook(response['book']);
+            this.loadAnnotation(response['annotation']);
 
-          this.setBook();
-        });
+            this.setBook();
+          });
       }
     });
   }
@@ -103,7 +131,8 @@ export class DetailBookComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
-  save() {
+  save(f: any) {
+
     this.getAnnotation();
 
     if (this.isNew) {
@@ -115,7 +144,8 @@ export class DetailBookComponent implements OnInit {
             icon: 'success',
             timer: 2000,
           });
-          this.router.navigate(['/booklovers/explorer']);
+          //this.router.navigate(['/booklovers/explorer']);
+          this.location.back();
         },
         (e) => {
           Swal.fire({
@@ -135,7 +165,8 @@ export class DetailBookComponent implements OnInit {
             icon: 'success',
             timer: 2000,
           }).then(() => {
-            this.router.navigate(['/booklovers/explorer']);
+            //this.router.navigate(['/booklovers/explorer']);
+            this.location.back();
           });
         },
         (e) => {
@@ -152,7 +183,8 @@ export class DetailBookComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/booklovers/explorer/']);
+    //this.router.navigate(['/booklovers/explorer/']);
+    this.location.back();
   }
 
   loadBook(book: any) {
@@ -182,8 +214,8 @@ export class DetailBookComponent implements OnInit {
     }
   }
 
-  loadAnnotation(annotation: any){
-    if(!annotation){
+  loadAnnotation(annotation: any) {
+    if (!annotation) {
       this.isNew = true;
       return;
     }
@@ -195,6 +227,20 @@ export class DetailBookComponent implements OnInit {
     this.annotationObj.date_start = annotation.date_start;
     this.annotationObj.date_end = annotation.date_end;
     this.annotationObj.favorite = annotation.favorite;
+    this.annotationObj.tags = annotation.tags;
+
+    if (annotation.date_start != null) {
+      let start = annotation.date_start.substring(0, 10).split('-').reverse();
+      this.fromDate = new NgbDate(+start[2], +start[1], +start[0]);
+    }
+
+    if (annotation.date_end != null) {
+      let end = annotation.date_end.substring(0, 10).split('-').reverse();
+      this.toDate = new NgbDate(+end[2], +end[1], +end[0]);
+    }
+
+    this.selectedTags = [];
+    this.selectedTags = annotation.tags;
   }
 
   percentChanged() {
@@ -210,7 +256,6 @@ export class DetailBookComponent implements OnInit {
         (+this.book.pages * this.annotationObj.progress) / 100
       );
     }
-
   }
 
   pages_readChanged() {
@@ -233,13 +278,27 @@ export class DetailBookComponent implements OnInit {
     this.annotationObj.book_id = this.book.id;
     // this.annotationObj.date_start = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
     // this.annotationObj.date_end = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
-    this.annotationObj.date_start =
-      this.fromDate.month + '/' + this.fromDate.day + '/' + this.fromDate.year;
-    this.annotationObj.date_end =
-      this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year;
+    console.log('this.fromDate', this.fromDate);
+    if (this.fromDate != undefined) {
+      this.annotationObj.date_start =
+        this.fromDate.month +
+        '/' +
+        this.fromDate.day +
+        '/' +
+        this.fromDate.year;
+      this.annotationObj.date_start = null;
+    }
+    console.log('this.fromDate', this.annotationObj.date_start);
+
+    if (this.toDate != undefined) {
+      this.annotationObj.date_end =
+        this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year;
+      this.annotationObj.date_end = null;
+    }
     // this.annotationObj.rating = this.book.rating;
     // this.annotationObj.favorite = this.book.favorite;
-    this.annotationObj.tags = null;
+    this.annotationObj.tags = this.selectedTags;
+    if (this.selectedTags.length < 0) this.annotationObj.tags = null;
 
     console.log(this.fromDate);
     console.log(this.toDate);
@@ -302,11 +361,60 @@ export class DetailBookComponent implements OnInit {
     this.router.navigate(['/booklovers/edit-book/', id]);
   }
 
-  toggleFavorite(){
-    if(this.annotationObj.favorite == 1)
-      this.annotationObj.favorite = 0;
-    else{
+  toggleFavorite() {
+    if (this.annotationObj.favorite == 1) this.annotationObj.favorite = 0;
+    else {
       this.annotationObj.favorite = 1;
     }
+  }
+
+  addTag(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.selectedTags.push({ id: null, name: value.trim() });
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.tagCtrl.setValue(null);
+    // console.log(this.selectedThemes)
+  }
+
+  removeTag(author: string): void {
+    const index = this.selectedTags.indexOf(author);
+
+    if (index >= 0) {
+      this.selectedTags.splice(index, 1);
+    }
+  }
+
+  selectedAuthor(event: MatAutocompleteSelectedEvent): void {
+    this.selectedTags.push(event.option.value);
+    this.authorInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
+  }
+
+  private _filterAuthor(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allTags.filter((option) =>
+      option.name.toLowerCase().includes(filterValue)
+    );
+  }
+
+  displayFnTag(author: any): string {
+    return author && author.name ? author.name : '';
+  }
+
+  isTagSelected(author: any): boolean {
+    const e = this.selectedTags.find((t) => t.name == author.name);
+    if (e) return true;
+    else return false;
   }
 }

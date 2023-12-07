@@ -10,6 +10,8 @@ import { AuthGuard } from './services/auth.guard';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { RoleGuard } from './services/role.guard';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
+import { MyBooksComponent } from './components/my-books/my-books.component';
+import { MyListComponent } from './components/my-list/my-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -35,11 +37,11 @@ const routes: Routes = [
   {
     path: "booklovers/home",
     component: HomeComponent,
-    canActivate: [AuthGuard, RoleGuard],
+    // canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/my-books",
-    component: ExplorerComponent,
+    component: MyBooksComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
   {
@@ -48,8 +50,13 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
   {
-    path: "emicol/error",
+    path: "booklovers/error",
     component: ErrorPageComponent,
+  },
+  {
+    path: "booklovers/my-list",
+    component: MyListComponent,
+    // canActivate: [AuthGuard, RoleGuard],
   },
   { path: '**', component: ErrorPageComponent, canActivate: [AuthGuard]},
 ]

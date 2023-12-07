@@ -67,7 +67,7 @@ export class ExplorerComponent implements OnInit {
   searchBook() {
     // const t = this.titleSearchCtr.value.split(' ').join('%');
     // console.log(t);
-    this.booksService.getByTitle(this.titleSearchCtr.value, this.user_id).subscribe((books: any) => {
+    this.booksService.getByTitle(this.titleSearchCtr.value.toLowerCase(), this.user_id).subscribe((books: any) => {
       this.loadBooks(books);
     });
   }

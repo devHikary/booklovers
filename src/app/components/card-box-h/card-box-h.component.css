@@ -1,9 +1,9 @@
 i {
   position: relative;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding-right: 0.1rem;
-  letter-spacing: 0.25rem;
+  letter-spacing: 0.4rem;
   color: #d3d3d3;
 }
 
@@ -17,10 +17,7 @@ i {
 
 .filled-heart {
   color: red;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
+
 }
 
 .card-img-top{
@@ -42,4 +39,58 @@ i {
 
 .wrap-text{
   word-wrap:  normal;
+}
+
+.my-field.mat-mdc-select-panel {
+  background-color: #fffefe;
+}
+
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+.mat-mdc-text-field-wrapper{
+  height: 40px !important;
+}
+
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label{
+  top:20px;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+  padding-top: 10px;
+}
+
+.mat-mdc-form-field-subscript-wrapper  {
+  display: none;
+}
+
+
+
+.example-chip-list {
+  width: 100%;
+  height: 40px;
+}
+
+.bg-chip {
+  background-color: white;
+}
+
+mat-chip {
+  display: inline-block;
+}
+
+.no-wrap {
+  flex-wrap: nowrap;
+  overflow: auto;
+  display: block;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.chip-font{
+  font-size: 12px;
 }

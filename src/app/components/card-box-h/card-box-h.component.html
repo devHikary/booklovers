@@ -1,22 +1,44 @@
 <div class="card h-100 card-size">
-  <div class="row justify-content-end mt-1">
-    <div class="col-2 ps-4">
+  <div class="row justify-content-center mt-1">
+    <div class="col-10" >
+
+      <div class="example-chip-list no-wrap text-muted" *ngIf="tags != null">
+        <input class="form-control d-none" placeholder="Adicionar autor..." #authorInput
+          [matChipInputFor]="chipGridTag" />
+        <mat-chip-grid #chipGridTag aria-label="Seleção de tags" class="no-wrap">
+          <mat-chip-row *ngFor="let tag of tags" class="chip-font">
+            {{tag.name}}
+          </mat-chip-row>
+        </mat-chip-grid>
+      </div>
+
+    </div>
+    <div class="col-1 ps-3 text-center">
       <a title="Detalhes do livro" href="javascript:;" (click)="detailBook(book.id)">
         <i class="bi bi-pencil-square"></i>
       </a>
     </div>
   </div>
   <div class="row g-0">
+
     <div class="col-4">
 
-      <img class="card-img-top img-size ms-1 mt-3" src="{{book.thumbnail}}" alt="thumbnail">
+      <img class="card-img-top img-size ms-2 mt-1" src="{{book.thumbnail}}" alt="thumbnail">
 
     </div>
     <div class="col-8">
 
-      <div class="card-body">
-        <h5 class="card-title text-truncate max-width">{{book.title}}</h5>
-        <p class="card-text">{{book.authors}}</p>
+      <div class="card-body pe-2 pt-2 ">
+        <h5 class="card-title text-truncate max-width text-capitalize">{{book.title}}</h5>
+        <p class="card-text"><ng-container *ngIf="book.authors.length == 0; else elseBlock">
+            Não cadastrado
+          </ng-container>
+          <ng-template #elseBlock>
+            <ng-container *ngFor="let author of book.authors">
+              {{author.name + "; "}}
+            </ng-container>
+          </ng-template>
+        </p>
         <p class="card-text"><small class="text-muted max-width rap-text">{{book.description}}</small></p>
 
       </div>
@@ -36,23 +58,22 @@
             </ng-template>
 
             <ngb-rating [(rate)]="book.annotation.rating" [starTemplate]="t" [readonly]="false" [max]="5"
-              [ariaValueText]="ariaValueText"></ngb-rating>
+              [ariaValueText]="ariaValueText" (rateChange)="toggleRate()"></ngb-rating>
           </div>
           <div class="col-3 ps-0">
-            <ng-template #heart let-fill="fill">
-              <i class="bi-heart-fill">
-                <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
-              </i>
-            </ng-template>
-
-            <ngb-rating [(rate)]="book.annotation.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
-              [ariaValueText]="ariaValueText"></ngb-rating>
+            <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()">
+              <i class="bi-heart-fill"
+                [class]="book.annotation === null?  '' :  book.annotation.favorite == 1? 'filled-heart' : ''"></i>
+            </a>
           </div>
         </div>
       </div>
       <div class="col-7 px-1 mt-1">
-        <ngb-progressbar [showValue]="true" type="info" [value]="100" [max]="150"></ngb-progressbar>
+        <ngb-progressbar [showValue]="true" type="info" [value]="book.annotation.progress"
+          [max]="100"></ngb-progressbar>
       </div>
     </div>
 
+
   </div>
+</div>
