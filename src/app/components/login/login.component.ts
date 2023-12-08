@@ -9,6 +9,7 @@ import { User } from 'src/app/models/User';
 import { LocalService } from 'src/app/services/local.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Login } from 'src/app/models/Login';
+import { HeaderService } from 'src/app/services/header.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   loginObj:Login =new Login();
   public isLogin: boolean = false;
   public closeResult: string = '';
+
 
   public loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -39,6 +41,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private localService: LocalService,
     private loginService: LoginService,
+    private headerService: HeaderService,
   ){}
 
   ngOnInit(): void {
@@ -92,7 +95,7 @@ export class LoginComponent implements OnInit {
     this.loginService.auth(this.loginObj).subscribe((response: any) =>{
       console.log(response);
       this.localService.saveToken(response['token'])
-
+      this.headerService.updateToggle(true);
       this.router.navigate(['/booklovers/explorer']);
 
       const payload = this.localService.decodePayloadJWT(response['token']);

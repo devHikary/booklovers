@@ -10,10 +10,15 @@ import {
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { LocalService } from './local.service';
 import { Router } from '@angular/router';
+import { HeaderService } from './header.service';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
-  constructor(private localService: LocalService, private router: Router) {}
+  constructor(
+    private localService: LocalService,
+    private router: Router,
+    private headerService: HeaderService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -21,7 +26,11 @@ export class Interceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let token = this.localService.getToken();
 
-    if (token != '' && !request.url.includes('/booklovers/login') && !request.url.includes('https://www.googleapis')) {
+    if (
+      token != '' &&
+      !request.url.includes('/booklovers/login') &&
+      !request.url.includes('https://www.googleapis')
+    ) {
       request = request.clone({
         setHeaders: {
           Authorization: 'Bearer ' + token,
@@ -36,6 +45,7 @@ export class Interceptor implements HttpInterceptor {
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     //handle your auth error or rethrow
     if (err.status === 401 || err.status === 403) {
+      this.headerService.updateToggle(false);
       this.localService.clearStorage();
       this.router.navigateByUrl(`booklovers/login`);
       // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.

@@ -36,6 +36,7 @@ import { GoalComponent } from './components/my-goals/goal/goal.component';
 import { CardGoalHComponent } from './components/card-goal-h/card-goal-h.component';
 import { ReportFailureListComponent } from './components/report-failure-list/report-failure-list.component';
 import { ReportFailureComponent } from './components/report-failure-list/report-failure/report-failure.component';
+import { HeaderService } from './services/header.service';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { ReportFailureComponent } from './components/report-failure-list/report-
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true
-    }
+    },
+    HeaderService,
   ],
   bootstrap: [AppComponent],
 })
