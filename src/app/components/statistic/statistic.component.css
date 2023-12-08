@@ -19,3 +19,41 @@
   height: 100%;
   width: 100%;
 }
+
+.bg-dot{
+  background-image: url(../../../assets/images/dot.png);
+}
+
+.bg-postit{
+  background-image: url(../../../assets/images/postit-bl.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.n-book{
+  background-color: #D9D9D9;
+}
+
+.o-book{
+  background-color: #B2EC9D;
+}
+
+.d-book{
+  background-color: #A0A1EC;
+}
+
+.i-rating {
+  position: relative;
+  display: inline-block;
+  padding-right: 0.1rem;
+  letter-spacing: 0.4rem;
+  color: #d3d3d3;
+}
+
+.filled {
+  color: yellow;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

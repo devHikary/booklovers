@@ -105,7 +105,7 @@ export class MyBooksComponent implements OnInit{
     this.objSelect.type = 'theme'
     console.log("obj tema", obj)
 
-    this.themeService.getById(obj.id, this.user_id).subscribe((books) => {
+    this.themeService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

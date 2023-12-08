@@ -20,8 +20,12 @@ export class ThemeService {
     return this.http.get(`${urlAPI}${this.controllerName}`);
   }
 
+  getByIdUser(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}u?id=${id}&user_id=${user_id}`);
+  }
+
   getById(id: string, user_id: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}${id}/u/${user_id}`);
+    return this.http.get(`${urlAPI}${this.controllerName}id?id=${id}&user_id=${user_id}`);
   }
 
 }

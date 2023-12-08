@@ -1,18 +1,72 @@
-<div class="container">
-  <div class="row">
+<div class="bg-dot">
+  <div class="row m-0 p-4 text-center">
+    <h3>Estatística</h3>
+    <hr>
+  </div>
+  <div class="row m-0 p-4">
     <div class="col-12 col-md-6">
-      <div class="card" >
-        <div class="row p-3">
+      <div class="card p-2 shadow-sm ">
+        <div class="row text-center">
+          <h4>{{currentYear}}</h4>
+        </div>
+        <div class="row px-3 pt-2">
           <div class="col-2 d-flex flex-column align-items-center" *ngFor="let m of dataList">
-            <div class="bg-circle rounded-circle" [ngStyle]="{'background-color': bgColor(m.status)}"></div>
-            <div class="rounded-circle">{{m.id}}</div>
+            <div class="bg-circle rounded-circle" [ngStyle]="{'background-color': bgColor(m.status)}"
+              ngbTooltip="{{m.status > 1? m.status+' livros': m.status+' livro' }}"></div>
+            <div class="rounded-circle" ngbTooltip="{{m.name}}">{{m.label}}</div>
+          </div>
+          <div class="row m-2">
+            <h5>Legenda:</h5>
+            <div class="d-flex m-2">
+              <div class="bg-circle rounded-circle n-book"></div>
+              <div class="rounded-circle ms-3">Nenhum livro</div>
+            </div>
+            <div class="d-flex m-2">
+              <div class="bg-circle rounded-circle o-book"></div>
+              <div class="rounded-circle ms-3">1 livro</div>
+            </div>
+            <div class="d-flex m-2">
+              <div class="bg-circle rounded-circle d-book"></div>
+              <div class="rounded-circle ms-3">2 ou mais livros</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <div class="chart-container">
-        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"> </canvas>
+      <div class=" ps-2 pe-5 bg-postit h-100 d-flex justify-content-center align-items-center">
+        <div class="col-6 text-center h-25">
+          <p class="fs-3">Em {{textPostit.year}}, </p>
+          <p class="fs-3">você leu {{textPostit.count >1 ? textPostit.count + ' livros' : textPostit.count + ' livro'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 p-4">
+    <div class="col-12 col-md-6">
+      <div class="card px-5 pt-2 shadow-sm">
+        <h4>Livros por ano</h4>
+        <div class="chart-container pt-2 pb-3">
+          <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"> </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card px-5 pt-2 text-center shadow-sm h-100 d-flex justify-content-center align-items-center">
+        <p class="fs-3">São {{rating.count}} livros com {{rating.rating}} estrelas</p>
+        <div class="d-flex justify-content-center">
+          <ng-template #t let-fill="fill">
+            <i class="bi-star-fill i-rating fs-3">
+              <i *ngIf="fill > 0" class="bi-star-fill filled i-rating" [style.width.%]="fill"></i>
+            </i>
+          </ng-template>
+
+          <ngb-rating [(rate)]="rating.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+        </div>
+        <p class="fs-3">Você favoritou {{favoriteCount >1 ? favoriteCount + ' livros' : favoriteCount + ' livro'}}</p>
+        <p class="fs-3">
+          <i class="bi bi-heart-fill text-danger"></i>
+        </p>
       </div>
     </div>
   </div>
