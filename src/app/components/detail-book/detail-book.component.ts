@@ -104,7 +104,6 @@ export class DetailBookComponent implements OnInit {
         this.bookService
           .getByIdUser(params['id'], this.user_id)
           .subscribe((response: any) => {
-            console.log(response);
             this.isNew = false;
             this.loadBook(response['book']);
             this.loadAnnotation(response['annotation']);
@@ -169,7 +168,6 @@ export class DetailBookComponent implements OnInit {
           });
         },
         (e) => {
-          console.log(e.error);
           Swal.fire({
             title: 'Erro!',
             text: e.error.error,
@@ -277,7 +275,6 @@ export class DetailBookComponent implements OnInit {
     this.annotationObj.book_id = this.book.id;
     // this.annotationObj.date_start = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
     // this.annotationObj.date_end = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
-    console.log('this.fromDate', this.fromDate);
     this.annotationObj.date_start = null;
     if (this.fromDate != undefined) {
       this.annotationObj.date_start =
@@ -287,7 +284,6 @@ export class DetailBookComponent implements OnInit {
         '/' +
         this.fromDate.year;
     }
-    console.log('this.fromDate', this.annotationObj.date_start);
 
     this.annotationObj.date_end = null;
     if (this.toDate != undefined) {
@@ -299,32 +295,7 @@ export class DetailBookComponent implements OnInit {
     this.annotationObj.tags = this.selectedTags;
     if (this.selectedTags.length < 1) this.annotationObj.tags = null;
 
-    console.log(this.fromDate);
-    console.log(this.toDate);
-
-    // this.book.release_dt = this.bookForm.value
-    //   .release_dt!.split('/')
-    //   .reverse()
-    //   .join('-');
-
-    console.log('save **** ', this.annotationObj);
   }
-
-  // onDateSelection(date: NgbDate) {
-  //   if (!this.fromDate && !this.toDate) {
-  //     this.fromDate = date;
-  //   } else if (
-  //     this.fromDate &&
-  //     !this.toDate &&
-  //     date &&
-  //     date.after(this.fromDate)
-  //   ) {
-  //     this.toDate = date;
-  //   } else {
-  //     this.toDate = null;
-  //     this.fromDate = date;
-  //   }
-  // }
 
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
@@ -362,9 +333,6 @@ export class DetailBookComponent implements OnInit {
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
     const parsed = this.formatter.parse(input);
-    console.log("parsed",parsed);
-    console.log("NgbDate.from(parsed)",NgbDate.from(parsed));
-    console.log("currentValue",currentValue);
     return parsed && this.calendar.isValid(NgbDate.from(parsed))
       ? NgbDate.from(parsed)
       : null;
@@ -396,7 +364,6 @@ export class DetailBookComponent implements OnInit {
     }
 
     this.tagCtrl.setValue(null);
-    // console.log(this.selectedThemes)
   }
 
   removeTag(author: string): void {

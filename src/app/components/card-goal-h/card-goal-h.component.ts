@@ -19,7 +19,6 @@ export class CardGoalHComponent {
 
   handleProgress(target: number, amount: number): number{
 
-    console.log(Math.round((amount/target) *100))
     return Math.round((amount/target) *100);
   }
 

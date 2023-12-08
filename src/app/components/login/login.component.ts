@@ -100,7 +100,6 @@ export class LoginComponent implements OnInit {
 
     this.loginService.auth(this.loginObj).subscribe(
       (response: any) => {
-        console.log(response);
         this.localService.saveToken(response['token']);
         this.headerService.updateToggle(true);
         this.headerService.updateUser(this.loginObj.username);
@@ -117,7 +116,6 @@ export class LoginComponent implements OnInit {
           JSON.stringify(payload['username'])
         );
 
-        console.log(payload['permissions']);
       },
       (err) => {
         this.isError = true;
@@ -157,7 +155,6 @@ export class LoginComponent implements OnInit {
       this.signupForm.value.password_snp!
     );
     this.user.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
-    console.log(this.user);
   }
 
   saveUser(modal: any) {

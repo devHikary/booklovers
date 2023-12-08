@@ -33,7 +33,8 @@
             </div> -->
         </div>
         <div ngbDropdown class="d-inline-block" display="dynamic">
-          <button type="button" class="btn btn-outline-light" id="dropdownBasic2" ngbDropdownToggle>{{usernameLabel}}</button>
+          <button type="button" class="btn btn-outline-light" id="dropdownBasic2"
+            ngbDropdownToggle>{{usernameLabel}}</button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
             <button ngbDropdownItem (click)="open(contentUser)">Meu cadastro</button>
             <button ngbDropdownItem (click)="logout()">Logout</button>
@@ -56,33 +57,103 @@
         <div class="col-md-12 pb-2">
           <label for="name_user" class="form-label text-center">Nome
           </label>
-          <input type="text" class="form-control" id="name_user" formControlName="name_user" name="name_user" maxlength="50">
-          <div *ngIf="name_user?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
+          <input type="text" class="form-control" id="name_user" formControlName="name_user" name="name_user"
+            maxlength="50">
+          <div *ngIf="name_user?.errors?.['required'] && formDir.submitted" class="text-danger ">
+            <small>Campo Obrigatório </small>
           </div>
         </div>
         <div class="col-md-12 pb-2">
           <label for="username" class="form-label text-center">Usuário
           </label>
           <input type="text" class="form-control" id="name" formControlName="username" name="username" maxlength="50">
-          <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
+          <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="text-danger ">
+            <small>Campo Obrigatório </small>
           </div>
         </div>
         <div class="col-md-12 pb-2">
           <label for="email" class="form-label text-center">Email
           </label>
           <input type="text" class="form-control" id="email" formControlName="email" name="email" maxlength="50">
-          <div *ngIf="email?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
+          <div *ngIf="email?.errors?.['required'] && formDir.submitted" class="text-danger">
+            <small>Campo Obrigatório </small>
           </div>
         </div>
       </div>
-
+      <div class="col-md-12 text-center py-2 d-flex justify-content-center ">
+        <a class="alert-link" role="button" (click)="open(contentCngPwd)">Alterar senha</a>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-outline-danger" (click)="deleteUser(contentUser)">Deletar meu
+          perfil</button>
+        <button type="submit" class="btn btn-outline-dark" (click)="saveUser(contentUser)">Salvar</button>
+      </div>
     </form>
   </div>
-  <div class="modal-footer justify-content-between">
-    <button type="button" class="btn btn-outline-danger" (click)="deleteUser(contentUser)">Deletar meu perfil</button>
-      <button type="button" class="btn btn-outline-dark" (click)="saveUser(contentUser)">Salvar</button>
+</ng-template>
+
+<ng-template #contentCngPwd let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Atualização da senha</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
+  <div class="modal-body">
+    <form class="row g-3" [formGroup]="passwordForm" #formDirPwd="ngForm" autocomplete="off">
+      <div class="col-md-12">
+        <label for="pwdCurrent" class="form-label">Senha Atual
+
+        </label>
+        <input type={{typePwd}} class="form-control" id="pwdCurrent" formControlName="pwdCurrent" maxlength="50"
+          name="pwdCurrent">
+        <div *ngIf="pwdCurrent?.errors?.['required'] && formDirPwd.submitted" class="text-danger ">
+          <small>Campo Obrigatório</small>
+
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label for="passwordUser" class="form-label">Senha Nova
+
+        </label>
+        <input type={{typePwd}} class="form-control" id="passwordUser" formControlName="passwordUser" maxlength="50"
+          name="passwordUser">
+        <div *ngIf="passwordUser?.errors?.['required'] && formDirPwd.submitted" class="text-danger ">
+          <small>Campo Obrigatório </small>
+        </div>
+        <div *ngIf="passwordUser?.errors?.['pattern'] && formDirPwd.submitted" class="text-danger">
+          <small>
+            A senha deve conter ao menos um número,
+            uma letra maiúscula,
+            um caracter especial e ter no mínimo 8 caracteres. Não deve conter espaços
+          </small>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label for="confirmPwd" class="form-label">Confirmação Senha Nova
+        </label>
+        <input type={{typePwd}} class="form-control" id="confirmPwd" formControlName="confirmPwd" maxlength="50"
+          name="confirmPwd">
+        <div *ngIf="confirmPwd?.errors?.['required'] && formDirPwd.submitted" class="text-danger ">
+          <small>Campo Obrigatório </small>
+        </div>
+        <div *ngIf="passwordForm.errors?.['PasswordNoMatch']&& formDirPwd.submitted" class="text-danger ">
+          <small>As senhas são diferentes </small>
+        </div>
+      </div>
+      <div class=" col-md-12 d-flex justify-content-between">
+        <div class=" d-flex justify-content-end">
+          <p class="pt-2 mr-2">Visualizar senhas</p>
+          <a class="pt-1 ml-2" title="Visualizar senha" href="javascript:;" (click)="togglePwd()" role="button"
+            disabled="isReadOnly">
+            <mat-icon aria-hidden="false" aria-label="Visualizar senha" fontIcon={{visibPwd}}></mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <div class="modal-footer button-container">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('cancel')">Cancelar</button>
+        <button type="submit" class="btn btn-outline-dark" (click)="savePassword(modal)">Salvar</button>
+      </div>
+    </form>
+  </div>
+
 </ng-template>

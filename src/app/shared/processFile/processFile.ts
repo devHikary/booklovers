@@ -3,9 +3,7 @@ export class ProcessFile{
 
   public static converterBlobtoImg(b64Data: Blob, contentType:string = "image/png"): string{
     const blob = this.b64toBlob(b64Data, contentType);
-    console.log("blob",blob)
     const blobUrl = URL.createObjectURL(blob);
-    console.log("blobUrl",blobUrl)
 
       return blobUrl;
   }
@@ -25,7 +23,6 @@ export class ProcessFile{
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
-    console.log("byteArray",byteArrays)
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   };

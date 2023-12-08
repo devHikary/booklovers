@@ -57,7 +57,6 @@ export class CardBoxHComponent implements OnInit {
   }
 
   saveAnnotation(){
-    console.log(this.annotation)
     if (this.annotation === null) {
       this.annotationService.add(this.annotation).subscribe();
 
@@ -79,9 +78,7 @@ export class CardBoxHComponent implements OnInit {
 
   saveList(book_id: string){
     let obj = {book_id: book_id, list_id: this.listCtr.value}
-    console.log(obj)
     this.listService.addBook(obj).subscribe(
-
     );
 
   }

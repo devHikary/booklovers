@@ -41,7 +41,6 @@ export class CardBoxVComponent {
   }
 
   saveAnnotation(){
-    console.log(this.annotation)
     if (this.annotation === null) {
       this.annotationService.add(this.annotation).subscribe();
 

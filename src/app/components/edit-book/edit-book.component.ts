@@ -165,7 +165,6 @@ export class EditBookComponent implements OnInit{
     this.selectedAuthors = [];
     this.selectedAuthors = this.book.authors;
 
-    console.log(this.book);
   }
 
   ariaValueText(current: number, max: number) {
@@ -217,7 +216,6 @@ export class EditBookComponent implements OnInit{
   }
 
   save() {
-    console.log('form **3333** ', this.bookForm);
     if(this.bookForm.invalid)
       return;
 
@@ -258,7 +256,6 @@ export class EditBookComponent implements OnInit{
           });
         },
         (e) => {
-          console.log(e.error);
           Swal.fire({
             title: 'Erro!',
             text: e.error.error,
@@ -281,13 +278,11 @@ export class EditBookComponent implements OnInit{
     reader.addEventListener('load', (event: any) => {
       const b64Data = event.target.result.split(',')[1];
 
-      console.log('b64Data', b64Data);
       const blob = ProcessFile.converterBlobtoImg(b64Data);
       //const blobUrl = URL.createObjectURL(blob);
       this.b64Data = b64Data;
 
       this.book.thumbnail = ProcessFile.converterBlobtoImg(b64Data);
-      console.log('upload----', this.book.thumbnail);
       // this.imageService.uploadImage(b64Data).subscribe(
       //   (res: any) => {
       //     Swal.fire({
@@ -341,7 +336,6 @@ export class EditBookComponent implements OnInit{
   }
 
   loadBook(book: any) {
-    console.log("qqqqq", book)
     this.book.id = book.id;
     this.book.title = book.title;
     this.book.publisher = book.publisher;
@@ -365,16 +359,12 @@ export class EditBookComponent implements OnInit{
   }
 
   getBook() {
-    console.log(this.bookForm.value.id!)
     this.book.id = this.bookForm.value.id!;
-    console.log(this.bookForm.value.title!)
-    console.log(this.bookForm.value.title!.toLowerCase())
     this.book.title = this.bookForm.value.title!.toLowerCase();
     this.book.subtitle = this.bookForm.value.subtitle!.toLowerCase();
     this.book.publisher = this.bookForm.value.publisher!.toLowerCase();
     //this.book.authors = this.bookForm.value.authors;
     this.book.pages = this.bookForm.value.pages!;
-    console.log(this.bookForm.value.isbn_13.indexOf("-") != -1)
     if(this.bookForm.value.isbn_13.indexOf("-") == -1){
       this.book.isbn_13 = this.bookForm.value.isbn_13!;
     } else{
@@ -388,7 +378,6 @@ export class EditBookComponent implements OnInit{
       .reverse()
       .join('-');
 
-    console.log('save **** ', this.book);
   }
 
   open(content: any) {
@@ -404,7 +393,6 @@ export class EditBookComponent implements OnInit{
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
-          console.log(this.bookModal);
         },
         (reason) => {
           this.closeResult = `Dismissed`;
@@ -441,7 +429,6 @@ export class EditBookComponent implements OnInit{
         bookAux.thumbnail = '/./assets/images/noImage.png';
       else bookAux.thumbnail = element.volumeInfo.imageLinks?.thumbnail;
 
-      console.log(element.volumeInfo.imageLinks);
       //  ToDo: retirar
       // const rndInt = this.randomIntFromInterval(1, 5);
       // bookAux.rating = rndInt;
@@ -478,7 +465,6 @@ export class EditBookComponent implements OnInit{
     }
 
     this.themeCtrl.setValue(null);
-    console.log(this.selectedThemes);
   }
 
   remove(fruit: string): void {
@@ -493,7 +479,6 @@ export class EditBookComponent implements OnInit{
     this.selectedThemes.push(event.option.value);
     this.themeInput.nativeElement.value = '';
     this.themeCtrl.setValue(null);
-    console.log(this.selectedThemes);
   }
 
   private _filter(value: string): string[] {
@@ -529,7 +514,6 @@ export class EditBookComponent implements OnInit{
     }
 
     this.authorCtrl.setValue(null);
-    // console.log(this.selectedThemes)
   }
 
   removeAuthor(author: string): void {
@@ -566,7 +550,6 @@ export class EditBookComponent implements OnInit{
 
   clickUploadCover() {
     this.book.thumbnail = this.uploadCover;
-    console.log('imagemmmm', this.book.thumbnail);
     this.bookForm.controls['thumbnail'].setValue(this.uploadCover);
     this.uploadCover = '';
   }

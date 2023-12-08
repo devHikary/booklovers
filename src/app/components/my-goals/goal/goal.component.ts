@@ -47,7 +47,6 @@ export class GoalComponent implements OnInit{
         this.goalService
           .getById(params['id'])
           .subscribe((response: any) => {
-            console.log(response);
             this.isNew = false;
 
 
@@ -134,9 +133,6 @@ export class GoalComponent implements OnInit{
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
     const parsed = this.formatter.parse(input);
-    console.log("parsed",parsed);
-    console.log("NgbDate.from(parsed)",NgbDate.from(parsed));
-    console.log("currentValue",currentValue);
     return parsed && this.calendar.isValid(NgbDate.from(parsed))
       ? NgbDate.from(parsed)
       : null;
@@ -151,7 +147,6 @@ export class GoalComponent implements OnInit{
       this.goalForm.controls.date_end.setValue(this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year);
     if(this.fromDate != undefined)
       this.goalForm.controls.date_start.setValue(this.fromDate.month + '/' + this.fromDate.day + '/' + this.fromDate.year);
-    console.log(this.goalForm)
 
     if(this.goalForm.invalid)
       return

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/User';
+import { Password } from '../models/Password';
 const { urlAPI } = environment;
 
 @Injectable({
@@ -29,6 +30,11 @@ export class UserService {
   public update(u: User) {
     let request = `${urlAPI}${this.controllerName}`;
     return this.http.put(request, u);
+  }
+
+  public updatePass(p: Password) {
+    let request = `${urlAPI}${this.controllerName}updatePwd`;
+    return this.http.put(request, p);
   }
 
   delete(id: string) {

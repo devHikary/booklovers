@@ -50,7 +50,6 @@ export class ExplorerComponent implements OnInit {
       map(value => this._filter(value || '')),
     );
     this.booksService.getAllBooks(this.user_id).subscribe((books: any) => {
-      console.log(books);
       this.loadBooks(books);
     });
     this.themeService.getAll().subscribe((themes: any) => {
@@ -66,21 +65,18 @@ export class ExplorerComponent implements OnInit {
 
   searchBook() {
     // const t = this.titleSearchCtr.value.split(' ').join('%');
-    // console.log(t);
     this.booksService.getByTitle(this.titleSearchCtr.value.toLowerCase(), this.user_id).subscribe((books: any) => {
       this.loadBooks(books);
     });
   }
 
   filterSide(id: string) {
-    console.log("id", id)
     this.themeService.getById(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }
 
   loadListGoogle(books: any) {
-    console.log(books);
     var list: any[] = [];
     this.bookList = [];
 
@@ -107,7 +103,6 @@ export class ExplorerComponent implements OnInit {
         bookAux.thumbnail = '/./assets/images/noImage.png';
       else bookAux.thumbnail = element.volumeInfo.imageLinks?.thumbnail;
 
-      console.log(element.volumeInfo.imageLinks);
       //  ToDo: retirar
       const rndInt = this.randomIntFromInterval(1, 5);
       bookAux.annotation.rating = rndInt;
@@ -126,7 +121,6 @@ export class ExplorerComponent implements OnInit {
     this.options = [];
     books.forEach((obj: any) => {
       var bookAux = new Book();
-      console.log(obj)
 
       bookAux.id = obj.book.id;
       bookAux.title = obj.book.title;
@@ -148,7 +142,7 @@ export class ExplorerComponent implements OnInit {
       this.bookList.push(bookAux);
     });
     // var base64 = this.getBase64Image(document.getElementById("imageid"));
-    // console.log(base64)
+    // g(base64)
   }
 
   open(content: any) {

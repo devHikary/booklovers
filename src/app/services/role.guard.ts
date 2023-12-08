@@ -19,7 +19,6 @@ export class RoleGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let userRoles = JSON.parse(this.localservice.getData('bS'));
     this.headerService.updateAdm(userRoles.some(p => p.name === "Gerenciamento"))
-console.log("oermissoes",userRoles )
     let isAuthorized = false;
     userRoles.forEach((role: any) => {
       if (next.routeConfig?.path?.includes(role.url)) {

@@ -23,7 +23,6 @@ export class ReportFailureListComponent implements OnInit{
     this.user_id = this.localService.getUserId();
     this.reportService.getAll().subscribe((response: any) =>{
       this.reportList = response;
-      console.log(this.reportList);
     })
   }
 

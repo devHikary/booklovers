@@ -47,31 +47,27 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentWindowWidth = window.innerWidth;
-    console.log(this.currentWindowWidth)
     this.user_id = this.localService.getUserId();
     this.annotationService
       .getFavorite(this.user_id)
       .subscribe((response: any) => {
         this.favoriteList = this.loadBooks(response);
-        // console.log('this.favoriteList', this.favoriteList);
+        // g('this.favoriteList', this.favoriteList);
       });
     this.annotationService
       .getFinished(this.user_id)
       .subscribe((response: any) => {
         this.finishedList = this.loadBooks(response);
-        // console.log('this.finishedList', this.finishedList);
+        // g('this.finishedList', this.finishedList);
       });
     this.annotationService
       .getReading(this.user_id)
       .subscribe((response: any[]) => {
         this.readingListSmall = this.loadBooks(response);
         this.readingList = this.separar(this.readingListSmall, 2);
-        console.log('this.readingListSmall', this.readingListSmall);
-        console.log('this.readingList', this.readingList);
       });
     this.goalService.getAndamento(this.user_id).subscribe((response: any[]) => {
       this.andamentoList = response['goals'];
-      console.log(this.andamentoList);
     });
   }
 
@@ -82,7 +78,6 @@ export class HomeComponent implements OnInit {
 
   separar(base: any, max: any) {
     var res = [];
-    console.log(base);
     if (base != undefined) {
       for (var i = 0; i < base.length; i = i + (max - 1)) {
         res.push(base.slice(i, i + max));
@@ -100,7 +95,6 @@ export class HomeComponent implements OnInit {
     if (books.length > 0) {
       books.forEach((obj: any) => {
         var bookAux = new Book();
-        console.log(obj);
 
         bookAux.id = obj.book.id;
         bookAux.title = obj.book.title;

@@ -42,7 +42,6 @@ export class ReportFailureComponent implements OnInit{
         this.reportService
           .getById(params['id'])
           .subscribe((response: any) => {
-            console.log(response);
             this.isNew = false;
 
             this.setReport(response);

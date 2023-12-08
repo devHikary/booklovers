@@ -60,7 +60,6 @@ export class MyBooksComponent implements OnInit{
       this.tagList = tags;
     });
     this.listService.getAllBooks(this.user_id).subscribe((books: any) => {
-      console.log(books)
       this.loadBooks(books);
     });
   }
@@ -103,7 +102,6 @@ export class MyBooksComponent implements OnInit{
   filterSideTheme(obj: any) {
     this.objSelect = obj;
     this.objSelect.type = 'theme'
-    console.log("obj tema", obj)
 
     this.themeService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
@@ -116,8 +114,6 @@ export class MyBooksComponent implements OnInit{
     this.tagObj.id = obj.id
     this.tagForm.controls.title.setValue(this.objSelect.name);
 
-    console.log("objSelect", this.objSelect)
-
     this.tagService.getById(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
@@ -129,7 +125,6 @@ export class MyBooksComponent implements OnInit{
     this.listObj.id = obj.id
     this.listForm.controls.name.setValue(this.objSelect.name);
 
-    console.log("objSelect", this.objSelect)
 
     this.listService.getById(this.objSelect.id).subscribe((books) => {
       this.loadBooks(books);
@@ -140,11 +135,9 @@ export class MyBooksComponent implements OnInit{
     this.bookList = [];
     this.options = [];
 
-    console.log("books",books)
     if (books.length > 0 ){
       books.forEach((obj: any) => {
         var bookAux = new Book();
-        console.log(obj)
 
         bookAux.id = obj.book.id;
         bookAux.title = obj.book.title;
@@ -171,7 +164,6 @@ export class MyBooksComponent implements OnInit{
   }
 
     deleteList(modal: any){
-    console.log('delete')
 
     Swal.fire({
       title: 'Tem certeza?',
@@ -246,7 +238,6 @@ export class MyBooksComponent implements OnInit{
   }
 
   deleteTag(modal: any){
-    console.log('delete')
 
     Swal.fire({
       title: 'Tem certeza?',
@@ -289,7 +280,6 @@ export class MyBooksComponent implements OnInit{
   }
 
   saveTag(modal: any){
-    console.log(modal)
     if (this.tagForm.invalid) {
       return;
     }

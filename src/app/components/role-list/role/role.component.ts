@@ -69,9 +69,6 @@ export class RoleComponent implements OnInit {
       return permission;
     })
 
-    console.log("teste", teste);
-    console.log(response);
-    console.log(this.permissionList);
   }
 
   get name() {

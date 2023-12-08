@@ -14,7 +14,6 @@ export class ImageService {
 
     formData.append('image', image);
 
-    console.log(formData)
     return this.http.post('/api/v1/image-upload', formData);
   }
 }
