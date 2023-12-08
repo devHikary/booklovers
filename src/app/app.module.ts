@@ -1,7 +1,7 @@
 import { AppRoutingModule } from './app-routing.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbCarouselModule, NgbCollapseModule, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbDatepickerModule, NgbModule, NgbProgressbarModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbCollapseModule, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbDatepickerModule, NgbModule, NgbProgressbarModule, NgbRatingModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { CardBoxVComponent } from './components/card-box-v/card-box-v.component';
@@ -37,6 +37,12 @@ import { CardGoalHComponent } from './components/card-goal-h/card-goal-h.compone
 import { ReportFailureListComponent } from './components/report-failure-list/report-failure-list.component';
 import { ReportFailureComponent } from './components/report-failure-list/report-failure/report-failure.component';
 import { HeaderService } from './services/header.service';
+import { ManagementComponent } from './components/management/management.component';
+import { PermissionListComponent } from './components/permission-list/permission-list.component';
+import { PermissionComponent } from './components/permission-list/permission/permission.component';
+import { RoleListComponent } from './components/role-list/role-list.component';
+import { RoleComponent } from './components/role-list/role/role.component';
+import { ToastGlobalComponent } from './shared/toast-global/toast-global.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +66,12 @@ import { HeaderService } from './services/header.service';
     CardGoalHComponent,
     ReportFailureListComponent,
     ReportFailureComponent,
+    ManagementComponent,
+    PermissionListComponent,
+    PermissionComponent,
+    RoleListComponent,
+    RoleComponent,
+    ToastGlobalComponent,
 
   ],
   imports: [
@@ -84,6 +96,7 @@ import { HeaderService } from './services/header.service';
     NgbCollapseModule,
     MatSelectModule,
     NgbCarouselModule,
+    NgbToastModule,
   ],
   providers: [
     [{ provide: NgbDateAdapter, useClass: CustomAdapter },

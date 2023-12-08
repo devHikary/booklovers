@@ -10,18 +10,19 @@ import { LocalService } from 'src/app/services/local.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Login } from 'src/app/models/Login';
 import { HeaderService } from 'src/app/services/header.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   user: User = new User();
-  loginObj:Login =new Login();
+  loginObj: Login = new Login();
   public isLogin: boolean = false;
+  public isError: boolean = false;
   public closeResult: string = '';
-
 
   public loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -30,9 +31,17 @@ export class LoginComponent implements OnInit {
 
   public signupForm = new FormGroup({
     name_snp: new FormControl('', [Validators.required]),
-    email_snp: new FormControl('', [Validators.required]),
+    email_snp: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}'),
+    ]),
     username_snp: new FormControl('', [Validators.required]),
-    password_snp: new FormControl('', [Validators.required]),
+    password_snp: new FormControl('', [
+      Validators.required,
+      Validators.pattern(
+        '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])[0-9a-zA-Z\\W_]{8,}'
+      ),
+    ]),
   });
 
   constructor(
@@ -42,76 +51,88 @@ export class LoginComponent implements OnInit {
     private localService: LocalService,
     private loginService: LoginService,
     private headerService: HeaderService,
-  ){}
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.localService.clearStorage();
   }
 
-  get username(){
+  get username() {
     return this.loginForm.get('username');
   }
 
-  get password(){
+  get password() {
     return this.loginForm.get('password');
   }
 
-  get password_snp(){
+  get password_snp() {
     return this.signupForm.get('password_snp');
   }
-  get username_snp(){
+  get username_snp() {
     return this.signupForm.get('username_snp');
   }
 
-  get email_snp(){
+  get email_snp() {
     return this.signupForm.get('email_snp');
   }
 
-  get name_snp(){
+  get name_snp() {
     return this.signupForm.get('name_snp');
   }
 
-  get role_id_snp(){
+  get role_id_snp() {
     return this.signupForm.get('role_id_snp');
   }
 
-  getLogin(){
+  getLogin() {
     this.loginObj.username = this.loginForm.value.username;
-    this.loginObj.password = this.localService.encryptPWD(this.loginForm.value.password);
-    const de = this.localService.decrypt(this.loginObj.password);
-    console.log(de)
-    console.log(this.loginForm.value.password)
-    console.log(this.loginObj.password)
-
-
+    this.loginObj.password = this.localService.encryptPWD(
+      this.loginForm.value.password
+    );
   }
 
-  login(){
-    if(this.loginForm.invalid)
-      return;
+  login() {
+    this.isError = false;
+    if (this.loginForm.invalid) return;
 
     this.getLogin();
 
-    this.loginService.auth(this.loginObj).subscribe((response: any) =>{
-      console.log(response);
-      this.localService.saveToken(response['token'])
-      this.headerService.updateToggle(true);
-      this.router.navigate(['/booklovers/explorer']);
+    this.loginService.auth(this.loginObj).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.localService.saveToken(response['token']);
+        this.headerService.updateToggle(true);
+        this.headerService.updateUser(this.loginObj.username);
+        this.router.navigate(['/booklovers/explorer']);
 
-      const payload = this.localService.decodePayloadJWT(response['token']);
-      this.localService.saveData("bS", JSON.stringify(payload['permissions']));
-      this.localService.saveData("id", JSON.stringify(payload['id']));
+        const payload = this.localService.decodePayloadJWT(response['token']);
+        this.localService.saveData(
+          'bS',
+          JSON.stringify(payload['permissions'])
+        );
+        this.localService.saveData('id', JSON.stringify(payload['id']));
+        this.localService.saveData(
+          'username',
+          JSON.stringify(payload['username'])
+        );
 
-      console.log(payload['permissions']);
-    })
-
+        console.log(payload['permissions']);
+      },
+      (err) => {
+        this.isError = true;
+        this.toastService.show('Atenção! Usuário ou senha incorreta', {
+          classname: 'bg-danger text-light',
+        });
+      }
+    );
   }
 
-  cancel(){
+  cancel() {
     this.isLogin = false;
   }
 
-  toggleLogin(){
+  toggleLogin() {
     this.isLogin = true;
   }
 
@@ -128,20 +149,21 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  getUser(){
+  getUser() {
     this.user.name = this.signupForm.value.name_snp!;
     this.user.email = this.signupForm.value.email_snp!;
     this.user.username = this.signupForm.value.username_snp!;
-    this.user.password = this.localService.encryptPWD(this.signupForm.value.password_snp!);
-    this.user.role_id = "6ccc7600-ded8-4676-8b05-8f28cad4b028";
-    console.log(this.user)
+    this.user.password = this.localService.encryptPWD(
+      this.signupForm.value.password_snp!
+    );
+    this.user.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
+    console.log(this.user);
   }
 
-  saveUser(modal: any){
+  saveUser(modal: any) {
     if (this.signupForm.invalid) {
       return;
     }
-
 
     this.getUser();
 

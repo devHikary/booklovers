@@ -3,6 +3,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
   inject,
@@ -32,17 +33,21 @@ import { Goal } from 'src/app/models/Goal';
 export class HomeComponent implements OnInit {
   favoriteList: Book[] = [];
   readingList: any[] = [];
+  readingListSmall: any[] = [];
   finishedList: Book[] = [];
   andamentoList: Goal[] = [];
   user_id: string = '';
+  public currentWindowWidth: number;
 
   constructor(
     private localService: LocalService,
     private annotationService: AnnotationService,
-    private goalService: GoalService,
+    private goalService: GoalService
   ) {}
 
   ngOnInit(): void {
+    this.currentWindowWidth = window.innerWidth;
+    console.log(this.currentWindowWidth)
     this.user_id = this.localService.getUserId();
     this.annotationService
       .getFavorite(this.user_id)
@@ -59,29 +64,30 @@ export class HomeComponent implements OnInit {
     this.annotationService
       .getReading(this.user_id)
       .subscribe((response: any[]) => {
-        let list = this.loadBooks(response);
-        this.readingList = this.separar(list, 2)
+        this.readingListSmall = this.loadBooks(response);
+        this.readingList = this.separar(this.readingListSmall, 2);
+        console.log('this.readingListSmall', this.readingListSmall);
+        console.log('this.readingList', this.readingList);
       });
-    this.goalService
-      .getAndamento(this.user_id)
-      .subscribe((response: any[]) => {
-        this.andamentoList = response["goals"];
-        console.log(this.andamentoList )
-      });
+    this.goalService.getAndamento(this.user_id).subscribe((response: any[]) => {
+      this.andamentoList = response['goals'];
+      console.log(this.andamentoList);
+    });
+  }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.currentWindowWidth = window.innerWidth;
   }
 
   separar(base: any, max: any) {
     var res = [];
-    console.log(base)
-    if(base != undefined){
-      for (var i = 0; i < base.length; i = i+(max-1)) {
-
-        res.push(base.slice(i,(i+max)));
+    console.log(base);
+    if (base != undefined) {
+      for (var i = 0; i < base.length; i = i + (max - 1)) {
+        res.push(base.slice(i, i + max));
         max++;
-
       }
-
     }
     //res[res.length-1].push(base[0]); acrescentar o livro 1 no último grupo
 
@@ -117,7 +123,6 @@ export class HomeComponent implements OnInit {
 
         list.push(bookAux);
       });
-
 
       return list;
     }

@@ -297,7 +297,7 @@ export class DetailBookComponent implements OnInit {
     // this.annotationObj.rating = this.book.rating;
     // this.annotationObj.favorite = this.book.favorite;
     this.annotationObj.tags = this.selectedTags;
-    if (this.selectedTags.length < 0) this.annotationObj.tags = null;
+    if (this.selectedTags.length < 1) this.annotationObj.tags = null;
 
     console.log(this.fromDate);
     console.log(this.toDate);

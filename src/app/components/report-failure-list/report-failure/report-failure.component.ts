@@ -37,8 +37,6 @@ export class ReportFailureComponent implements OnInit{
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
-      console.log(params)
-      console.log( params['id'])
       this.book_id = params['b'];
       if (params['id'] != 'new') {
         this.reportService
@@ -46,7 +44,6 @@ export class ReportFailureComponent implements OnInit{
           .subscribe((response: any) => {
             console.log(response);
             this.isNew = false;
-
 
             this.setReport(response);
           });
@@ -95,7 +92,6 @@ export class ReportFailureComponent implements OnInit{
               icon: 'success',
               timer: 2000,
             });
-            //this.router.navigate(['/booklovers/explorer/']);
             this.location.back();
           },
           (e) => {
@@ -116,7 +112,6 @@ export class ReportFailureComponent implements OnInit{
               icon: 'success',
               timer: 2000,
             });
-            //this.router.navigate(['/booklovers/explorer/']);
             this.location.back();
           },
           (e) => {

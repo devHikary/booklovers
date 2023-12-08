@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <div class="card h-75">
+      <div class="card p-3">
         <h5 class="m-2">Desafio</h5>
         <div class="m-2">
           <ngb-carousel [interval]="0">
@@ -25,15 +25,18 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-9" style="height: 500px;">
-      <div class="card h-75 bg-section2">
+  <div class="row m-2 mb-4">
+    <div class="col-md-9 col-12 mt-2">
+      <div class="card  bg-section2 p-3">
         <h5 class="m-2">Lendo...</h5>
 
-        <ngb-carousel [interval]="0">
+        <div *ngIf="currentWindowWidth >= 800">
+          <ngb-carousel [interval]="0">
+
+
           <ng-template ngbSlide *ngFor="let books of readingList">
             <div class="row">
-              <div class="col-6" *ngFor="let book of books">
+              <div class="col-md-6 col-12" *ngFor="let book of books">
                 <app-card-box-h [book]="book" [annotation]="book.annotation"
                   [tags]="book.annotation.tags"></app-card-box-h>
               </div>
@@ -41,14 +44,32 @@
             </div>
           </ng-template>
 
+
         </ngb-carousel>
+      </div>
+
+        <div *ngIf="currentWindowWidth < 800">
+          <ngb-carousel [interval]="0">
+
+
+          <ng-template ngbSlide *ngFor="let book of readingListSmall">
+            <div class="row">
+                <app-card-box-h [book]="book" [annotation]="book.annotation"
+                  [tags]="book.annotation.tags"></app-card-box-h>
+
+            </div>
+          </ng-template>
+
+
+        </ngb-carousel>
+      </div>
 
 
 
       </div>
     </div>
-    <div class="col-3">
-      <div class="card h-75 bg-section2">
+    <div class="col-md-3 col-12 mt-2">
+      <div class="card bg-section2 p-3">
         <h5 class="my-2">Favoritos</h5>
         <div class="col-12 d-flex justify-content-evenly my-1" *ngFor="let book of favoriteList">
           <app-card-box-mini [book]="book" [annotation]="book.annotation"
@@ -59,7 +80,7 @@
   </div>
   <div class="row bg-section3">
     <h5 class="my-2">Livros Finalizados</h5>
-    <div class="col-2 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
+    <div class="col-md-2 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
       <app-card-box-v [book]="book" [annotation]="book.annotation"></app-card-box-v>
     </div>
   </div>

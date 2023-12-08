@@ -17,8 +17,21 @@ export class UserService {
     return this.http.get(`${urlAPI}${this.controllerName}`);
   }
 
+  getById(id: string){
+    return this.http.get(`${urlAPI}${this.controllerName}${id}`);
+  }
+
   public add(u: User) {
     let request = `${urlAPI}${this.controllerName}`;
     return this.http.post(request, u);
+  }
+
+  public update(u: User) {
+    let request = `${urlAPI}${this.controllerName}`;
+    return this.http.put(request, u);
+  }
+
+  delete(id: string) {
+    return this.http.delete(`${urlAPI}${this.controllerName}${id}`);
   }
 }

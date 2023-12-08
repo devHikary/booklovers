@@ -1,4 +1,7 @@
-<div class="container-fluid section1-container">
+<!-- <ngb-toast [autohide]="true" [delay]="5000" *ngIf="isError" class="bg-danger text-light toast"> I am a simple static toast. </ngb-toast> -->
+<app-toast-global></app-toast-global>
+
+<div class="container-fluid section1-container my-2 pt-2 rounded">
   <div class="row text-center">
     <h3>BOOKLOVERS</h3>
     <hr>
@@ -31,7 +34,7 @@
             </label>
             <input type="text" class="form-control" id="username-bl" formControlName="username"
               name="username-bl" maxlength="50">
-            <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="msgError">
+            <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="text-danger">
               Campo Obrigatório
             </div>
           </div>
@@ -40,7 +43,7 @@
             </label>
             <input type="password" class="form-control" id="password-bl" formControlName="password"
               name="password-bl" maxlength="50">
-            <div *ngIf="password?.errors?.['required'] && formDir.submitted" class="msgError">
+            <div *ngIf="password?.errors?.['required'] && formDir.submitted" class="text-danger">
               Campo Obrigatório
             </div>
           </div>
@@ -65,13 +68,13 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="signupForm" #formDir="ngForm" (keydown.enter)="$event.preventDefault()">
+    <form [formGroup]="signupForm" #formDirSnp="ngForm" (keydown.enter)="$event.preventDefault()">
       <div class="col-12 pb-2">
         <label for="name_snp" class="form-label">Nome
         </label>
         <input type="text" class="form-control" id="name_snp" formControlName="name_snp"
           name="name_snp" maxlength="50">
-        <div *ngIf="name_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+        <div *ngIf="name_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
       </div>
@@ -80,8 +83,11 @@
         </label>
         <input type="email" class="form-control" id="email_snp" formControlName="email_snp"
           name="email_snp" maxlength="50">
-        <div *ngIf="email_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+        <div *ngIf="email_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
+        </div>
+        <div *ngIf="(email_snp?.errors?.['email'] || email_snp?.errors?.['pattern']) && formDirSnp.submitted" class="text-danger">
+          Insira um e-mail válido.
         </div>
       </div>
       <div class="col-12 pb-2">
@@ -89,7 +95,7 @@
         </label>
         <input type="text" class="form-control" id="username_snp" formControlName="username_snp"
           name="username_snp" maxlength="50">
-        <div *ngIf="username_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+        <div *ngIf="username_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
       </div>
@@ -98,18 +104,25 @@
         </label>
         <input type="password" class="form-control" id="password_snp" formControlName="password_snp"
           name="password_snp" maxlength="50">
-        <div *ngIf="password_snp?.errors?.['required'] && formDir.submitted" class="msgError">
+        <div *ngIf="password_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
+        </div>
+        <div *ngIf="password_snp?.errors?.['pattern'] && formDirSnp.submitted" class="text-danger">
+          A senha deve conter ao menos um número,
+          uma letra maiúscula,
+          um caracter especial e ter no mínimo 8 caracteres. Não deve conter espaços
         </div>
       </div>
 
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-dark" (click)="saveUser(modal)">Salvar</button>
+      </div>
 
     </form>
   </div>
-  <div class="modal-footer d-flex justify-content-between">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Cancelar</button>
-    <button type="button" class="btn btn-dark" (click)="saveUser(modal)">Salvar</button>
-  </div>
 </ng-template>
+
+
 
 

@@ -8,19 +8,81 @@
       <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
 
       <!-- Step 2: Add the ngbCollapse directive to the element below. -->
-      <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-between">
         <div class="navbar-nav">
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/home']">Home</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/my-books']">Meus livros</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/explorer']">Explorar</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/my-goals']">Desafios</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/statistic']">Estatísticas</a>
-          <a class="nav-link" [routerLinkActive]="['active']"
-            [routerLink]="['/booklovers/report-failure-list']">Relatório</a>
-          <a class="nav-link disabled">Disabled</a>
-          <a class="nav-link" type="button" (click)="logout()">Logout</a>
+          <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/report-failure-list']"
+            *ngIf="isAdm">Gerenciamento</a>
+
+
+
+
+          <!-- <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown button
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="nav-link" type="button" (click)="logout()">Logout</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div> -->
+        </div>
+        <div ngbDropdown class="d-inline-block" display="dynamic">
+          <button type="button" class="btn btn-outline-light" id="dropdownBasic2" ngbDropdownToggle>{{usernameLabel}}</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+            <button ngbDropdownItem (click)="open(contentUser)">Meu cadastro</button>
+            <button ngbDropdownItem (click)="logout()">Logout</button>
+          </div>
         </div>
       </div>
     </div>
   </nav>
 </div>
+
+<ng-template #contentUser let-modal>
+  <div class="modal-header">
+
+    <h4 class="modal-title" id="modal-basic-title">Meu cadastro</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm" #formDir="ngForm">
+      <div class="mb-3">
+        <div class="col-md-12 pb-2">
+          <label for="name_user" class="form-label text-center">Nome
+          </label>
+          <input type="text" class="form-control" id="name_user" formControlName="name_user" name="name_user" maxlength="50">
+          <div *ngIf="name_user?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-12 pb-2">
+          <label for="username" class="form-label text-center">Usuário
+          </label>
+          <input type="text" class="form-control" id="name" formControlName="username" name="username" maxlength="50">
+          <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-12 pb-2">
+          <label for="email" class="form-label text-center">Email
+          </label>
+          <input type="text" class="form-control" id="email" formControlName="email" name="email" maxlength="50">
+          <div *ngIf="email?.errors?.['required'] && formDir.submitted" class="msgError">
+            Campo Obrigatório
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer justify-content-between">
+    <button type="button" class="btn btn-outline-danger" (click)="deleteUser(contentUser)">Deletar meu perfil</button>
+      <button type="button" class="btn btn-outline-dark" (click)="saveUser(contentUser)">Salvar</button>
+  </div>
+</ng-template>
