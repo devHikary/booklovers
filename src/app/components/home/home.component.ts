@@ -1,74 +1,125 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, ViewChild, inject} from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {MatIconModule} from '@angular/material/icon';
-import {NgFor, AsyncPipe} from '@angular/common';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { LocalService } from './../../services/local.service';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteModule,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { AnnotationService } from 'src/app/services/annotation.service';
+import { Book } from 'src/app/models/Book';
+import { GoalService } from 'src/app/services/goal.service';
+import { Goal } from 'src/app/models/Goal';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl<string | any>('');
-  filteredFruits: Observable<string[]>;
-  fruits: any[] = [];
-  allFruits: any[] = [{name: 'Mary'}, {name: 'Shelley'}, {name: 'Igor'}];
+export class HomeComponent implements OnInit {
+  favoriteList: Book[] = [];
+  readingList: any[] = [];
+  finishedList: Book[] = [];
+  andamentoList: Goal[] = [];
+  user_id: string = '';
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  constructor(
+    private localService: LocalService,
+    private annotationService: AnnotationService,
+    private goalService: GoalService,
+  ) {}
 
-  announcer = inject(LiveAnnouncer);
+  ngOnInit(): void {
+    this.user_id = this.localService.getUserId();
+    this.annotationService
+      .getFavorite(this.user_id)
+      .subscribe((response: any) => {
+        this.favoriteList = this.loadBooks(response);
+        // console.log('this.favoriteList', this.favoriteList);
+      });
+    this.annotationService
+      .getFinished(this.user_id)
+      .subscribe((response: any) => {
+        this.finishedList = this.loadBooks(response);
+        // console.log('this.finishedList', this.finishedList);
+      });
+    this.annotationService
+      .getReading(this.user_id)
+      .subscribe((response: any[]) => {
+        let list = this.loadBooks(response);
+        this.readingList = this.separar(list, 2)
+      });
+    this.goalService
+      .getAndamento(this.user_id)
+      .subscribe((response: any[]) => {
+        this.andamentoList = response["goals"];
+        console.log(this.andamentoList )
+      });
 
-  constructor() {
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
-      startWith(null),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.allFruits.slice();
-      }),
-    );
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  separar(base: any, max: any) {
+    var res = [];
+    console.log(base)
+    if(base != undefined){
+      for (var i = 0; i < base.length; i = i+(max-1)) {
 
-    // Add our fruit
-    if (value) {
-      this.fruits.push(value);
+        res.push(base.slice(i,(i+max)));
+        max++;
+
+      }
+
     }
+    //res[res.length-1].push(base[0]); acrescentar o livro 1 no último grupo
 
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.fruitCtrl.setValue(null);
+    return res;
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  loadBooks(books: any): any {
+    let list = [];
 
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
+    if (books.length > 0) {
+      books.forEach((obj: any) => {
+        var bookAux = new Book();
+        console.log(obj);
 
-      this.announcer.announce(`Removed ${fruit}`);
+        bookAux.id = obj.book.id;
+        bookAux.title = obj.book.title;
+        // this.options.push(obj.book.title);
+        bookAux.publisher = obj.book.publisher;
+        bookAux.description = obj.book.description;
+        bookAux.authors = obj.book.Authors;
+        if (obj.book.thumbnail === null) {
+          bookAux.thumbnail = '/./assets/images/noImage.png';
+        } else {
+          bookAux.thumbnail = obj.book.thumbnail;
+        }
+        bookAux.annotation = obj.annotation; //TODO
+        if (obj.annotation != null) {
+          bookAux.annotation.rating = obj.annotation.rating;
+          bookAux.annotation.favorite = obj.annotation.favorite;
+          bookAux.annotation.tags = obj.annotation.tags;
+          bookAux.annotation.progress = obj.annotation.progress;
+        }
+
+        list.push(bookAux);
+      });
+
+
+      return list;
     }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allFruits.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 }

@@ -1,7 +1,7 @@
 <!-- *ngIf="!isLogin" -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-gray mb-3" >
 	<div class="container-fluid">
-		<a class="navbar-brand" [routerLink]="['/booklovers/explorer']">Booklovers</a>
+		<a class="navbar-brand" [routerLink]="['/booklovers/home']">Booklovers</a>
 
 		<!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
 		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
@@ -12,6 +12,7 @@
         <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/home']">Home</a>
         <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/my-books']">Meus livros</a>
         <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/explorer']">Explorar</a>
+        <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/my-goals']">Desafios</a>
         <a class="nav-link"[routerLinkActive]="['active']" [routerLink]="['/booklovers/statistic']">Estatísticas</a>
         <a class="nav-link disabled">Disabled</a>
         <a class="nav-link" type="button" (click)="logout()">Logout</a>

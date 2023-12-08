@@ -11,7 +11,8 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { RoleGuard } from './services/role.guard';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { MyBooksComponent } from './components/my-books/my-books.component';
-import { MyListComponent } from './components/my-list/my-list.component';
+import { MyGoalsComponent } from './components/my-goals/my-goals.component';
+import { GoalComponent } from './components/my-goals/goal/goal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -54,8 +55,13 @@ const routes: Routes = [
     component: ErrorPageComponent,
   },
   {
-    path: "booklovers/my-list",
-    component: MyListComponent,
+    path: "booklovers/my-goals",
+    component: MyGoalsComponent,
+    // canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/goal/:id",
+    component: GoalComponent,
     // canActivate: [AuthGuard, RoleGuard],
   },
   { path: '**', component: ErrorPageComponent, canActivate: [AuthGuard]},

@@ -1,0 +1,10 @@
+.bg-section2 {
+  background-color: #f5f5f5;
+}
+
+.bg-section3 {
+  background-color: #ececec;
+  background-image: url(../../../assets/images/grade-wh.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}

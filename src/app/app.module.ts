@@ -1,7 +1,7 @@
 import { AppRoutingModule } from './app-routing.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbCollapseModule, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbDatepickerModule, NgbModule, NgbProgressbarModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbCollapseModule, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbDatepickerModule, NgbModule, NgbProgressbarModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { CardBoxVComponent } from './components/card-box-v/card-box-v.component';
@@ -31,7 +31,9 @@ import {MatButtonModule} from '@angular/material/button';
 import { HeaderNavComponent } from './shared/header-nav/header-nav.component';
 import { MyBooksComponent } from './components/my-books/my-books.component';
 import {MatSelectModule} from '@angular/material/select';
-import { MyListComponent } from './components/my-list/my-list.component';
+import { MyGoalsComponent } from './components/my-goals/my-goals.component';
+import { GoalComponent } from './components/my-goals/goal/goal.component';
+import { CardGoalHComponent } from './components/card-goal-h/card-goal-h.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,10 @@ import { MyListComponent } from './components/my-list/my-list.component';
     EditBookComponent,
     HeaderNavComponent,
     MyBooksComponent,
-    MyListComponent,
+    MyGoalsComponent,
+    GoalComponent,
+    CardGoalHComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -73,7 +78,7 @@ import { MyListComponent } from './components/my-list/my-list.component';
     BrowserAnimationsModule,
     NgbCollapseModule,
     MatSelectModule,
-
+    NgbCarouselModule,
   ],
   providers: [
     [{ provide: NgbDateAdapter, useClass: CustomAdapter },

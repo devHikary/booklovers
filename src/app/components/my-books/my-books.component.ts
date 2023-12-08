@@ -60,6 +60,7 @@ export class MyBooksComponent implements OnInit{
       this.tagList = tags;
     });
     this.listService.getAllBooks(this.user_id).subscribe((books: any) => {
+      console.log(books)
       this.loadBooks(books);
     });
   }
@@ -139,6 +140,7 @@ export class MyBooksComponent implements OnInit{
     this.bookList = [];
     this.options = [];
 
+    console.log("books",books)
     if (books.length > 0 ){
       books.forEach((obj: any) => {
         var bookAux = new Book();
@@ -156,9 +158,11 @@ export class MyBooksComponent implements OnInit{
           bookAux.thumbnail = obj.book.thumbnail;
         }
         bookAux.annotation = obj.annotation; //TODO
-        if(obj.annotation){
+        if(obj.id != null){
           bookAux.annotation.rating = obj.annotation.rating;
           bookAux.annotation.favorite = obj.annotation.favorite;
+          bookAux.annotation.tags = obj.annotation.tags;
+          bookAux.annotation.progress = obj.annotation.progress;
         }
 
         this.bookList.push(bookAux);

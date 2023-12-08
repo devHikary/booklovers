@@ -16,6 +16,7 @@ import {
   NgbDate,
   NgbDateAdapter,
   NgbDateParserFormatter,
+  NgbDateStruct,
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
 
@@ -49,6 +50,7 @@ export class DetailBookComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+  maxDate = this.calendar.getToday();
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl();
@@ -60,6 +62,8 @@ export class DetailBookComponent implements OnInit {
   @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement> =
     {} as ElementRef;
   public isCollapsed = true;
+
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -105,7 +109,6 @@ export class DetailBookComponent implements OnInit {
             this.loadBook(response['book']);
             this.loadAnnotation(response['annotation']);
 
-            this.setBook();
           });
       }
     });
@@ -117,10 +120,6 @@ export class DetailBookComponent implements OnInit {
 
   removeHTMLTags(str: string) {
     return str.replace(/<[^>]*>/g, '');
-  }
-
-  setBook() {
-    console.log(this.book);
   }
 
   ariaValueText(current: number, max: number) {
@@ -279,6 +278,7 @@ export class DetailBookComponent implements OnInit {
     // this.annotationObj.date_start = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
     // this.annotationObj.date_end = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
     console.log('this.fromDate', this.fromDate);
+    this.annotationObj.date_start = null;
     if (this.fromDate != undefined) {
       this.annotationObj.date_start =
         this.fromDate.month +
@@ -286,14 +286,13 @@ export class DetailBookComponent implements OnInit {
         this.fromDate.day +
         '/' +
         this.fromDate.year;
-      this.annotationObj.date_start = null;
     }
     console.log('this.fromDate', this.annotationObj.date_start);
 
+    this.annotationObj.date_end = null;
     if (this.toDate != undefined) {
       this.annotationObj.date_end =
         this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year;
-      this.annotationObj.date_end = null;
     }
     // this.annotationObj.rating = this.book.rating;
     // this.annotationObj.favorite = this.book.favorite;
@@ -311,15 +310,26 @@ export class DetailBookComponent implements OnInit {
     console.log('save **** ', this.annotationObj);
   }
 
+  // onDateSelection(date: NgbDate) {
+  //   if (!this.fromDate && !this.toDate) {
+  //     this.fromDate = date;
+  //   } else if (
+  //     this.fromDate &&
+  //     !this.toDate &&
+  //     date &&
+  //     date.after(this.fromDate)
+  //   ) {
+  //     this.toDate = date;
+  //   } else {
+  //     this.toDate = null;
+  //     this.fromDate = date;
+  //   }
+  // }
+
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
-    } else if (
-      this.fromDate &&
-      !this.toDate &&
-      date &&
-      date.after(this.fromDate)
-    ) {
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate) || date.equals(this.fromDate)) {
       this.toDate = date;
     } else {
       this.toDate = null;
@@ -338,7 +348,7 @@ export class DetailBookComponent implements OnInit {
   }
 
   isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+    return this.toDate && date.after(this.fromDate) && (date.before(this.toDate) );
   }
 
   isRange(date: NgbDate) {
@@ -352,9 +362,12 @@ export class DetailBookComponent implements OnInit {
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
     const parsed = this.formatter.parse(input);
+    console.log("parsed",parsed);
+    console.log("NgbDate.from(parsed)",NgbDate.from(parsed));
+    console.log("currentValue",currentValue);
     return parsed && this.calendar.isValid(NgbDate.from(parsed))
       ? NgbDate.from(parsed)
-      : currentValue;
+      : null;
   }
 
   editBook(id: string) {

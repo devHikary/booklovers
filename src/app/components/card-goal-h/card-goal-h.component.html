@@ -1,0 +1,38 @@
+<div class="card h-100 card-size">
+  <div class="row justify-content-center mt-1">
+    <div class="col-10" >
+    </div>
+    <div class="col-1 ps-3 text-center">
+      <a title="Detalhes do livro" href="javascript:;" (click)="detailGoal(goal.id)">
+        <i class="bi bi-pencil-square i-card-h"></i>
+      </a>
+    </div>
+  </div>
+  <div class="row g-0">
+
+
+    <div class="col">
+
+      <div class="card-body pe-2 pt-2 ">
+        <h5 class="card-title text-truncate max-width text-capitalize">{{goal.name === undefined? "Não informado" : goal.name}}</h5>
+        <p class="card-text"> Período: {{handleDate(goal.date_start)}} - {{handleDate(goal.date_end)}}</p>
+        <p class="card-text"> Objetivo: {{goal.target}} livros</p>
+        <div class="row">
+          <div class="col-10">
+            <ngb-progressbar [showValue]="true" type="info" [value]="handleProgress(goal.target, goal.amount)"
+              [max]="100"></ngb-progressbar>
+
+          </div>
+          <div class="col-2 text-center">
+            <p class="card-text"><small class="text-muted max-width rap-text">({{goal.amount}} / {{goal.target}})</small></p>
+          </div>
+        </div>
+        <p class="card-text"><small class="text-muted max-width rap-text">Status: {{handleStatus(goal.status)}}</small></p>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+

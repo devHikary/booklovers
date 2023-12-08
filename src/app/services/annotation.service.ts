@@ -27,4 +27,16 @@ export class AnnotationService {
     let request = `${urlAPI}${this.controllerName}`;
     return this.http.put(request, a);
   }
+
+  getFinished(id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}finished/${id}`);
+  }
+
+  getFavorite(id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}favorite/${id}`);
+  }
+
+  getReading(id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}reading/${id}`);
+  }
 }

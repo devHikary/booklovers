@@ -76,6 +76,10 @@ export class LoginComponent implements OnInit {
     this.loginObj.username = this.loginForm.value.username;
     this.loginObj.password = this.localService.encryptPWD(this.loginForm.value.password);
     const de = this.localService.decrypt(this.loginObj.password);
+    console.log(de)
+    console.log(this.loginForm.value.password)
+    console.log(this.loginObj.password)
+
 
   }
 

@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+
+    </div>
+    <div class="col-8">
+      <form class="row" [formGroup]="goalForm" #formDir="ngForm" >
+        <h4>Desafio</h4>
+
+        <div class="col-md-12 pb-2">
+          <label for="name" class="form-label">Nome do desafio</label>
+          <input class="form-control" placeholder="Escreva o nome do desafio / meta 😄" id="name" name="name"
+            formControlName="name">
+          <div *ngIf="name?.errors?.['required'] && formDir.submitted" class="text-danger">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-6 pb-2">
+          <label for="target" class="form-label">Objetivo</label>
+          <input class="form-control" placeholder="Quando livros quero ler" id="target" name="target"
+            formControlName="target">
+          <div *ngIf="target?.errors?.['required'] && formDir.submitted" class="text-danger">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-6 pb-2">
+          <label for="name" class="form-label">Contagem atual</label>
+          <input class="form-control" formControlName="amount" name="amount">
+        </div>
+
+        <div class="col-md-6 pb-2">
+          <label for="dpFromDate" class="form-label">Data de Início
+          </label>
+          <div class="dp-hidden position-absolute">
+
+            <div class="input-group">
+              <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="b"
+                outsideDays="hidden" [startDate]="fromDate!" tabindex="-1"
+                 />
+              <ng-template #b let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+
+          </div>
+
+          <div class="input-group">
+            <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate" formControlName="date_start"
+              [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+              type="button"></button>
+          </div>
+          <div *ngIf="date_start?.errors?.['required'] && formDir.submitted" class="text-danger">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="col-md-6 pb-2">
+          <label for="dpToDate" class="form-label">Data de Fim
+          </label>
+          <div class="input-group">
+            <input #dpToDate class="form-control" placeholder="dd/mm/yyyy" name="dpToDate"
+              [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)"
+              formControlName="date_end" />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+              type="button"></button>
+          </div>
+          <div *ngIf="date_end?.errors?.['required'] && formDir.submitted" class="text-danger">
+            Campo Obrigatório
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <button class="btn btn-light" (click)="cancel()">Cancelar</button>
+          </div>
+          <div class="col d-flex justify-content-end">
+            <button type="submit" class="btn btn-secondary" (click)="save()">Salvar</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

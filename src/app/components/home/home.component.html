@@ -1,31 +1,69 @@
-<div class="container">
+<div class="container-fluid section1-container">
+  <div class="row text-center">
+    <h3>BOOKLOVERS</h3>
+    <hr>
+  </div>
   <div class="row">
-    <div class="col-10">
+    <div class="col-12 col-md-6">
+      <div class="m-auto" style="width: 400px;">
+        <img class="w-100 mb-5" src="../../../assets/images/logo.png"
+          alt="Imagem de um desenho orgânico de uma estante de livros">
 
+      </div>
     </div>
-    <div class="col-2">
-      <form>
-        <mat-form-field class="example-chip-list">
-          <mat-label>Favorite Fruits</mat-label>
-          <mat-chip-grid #chipGrid aria-label="Fruit selection">
-            <mat-chip-row *ngFor="let fruit of fruits" (removed)="remove(fruit)">
-              {{fruit}}
-              <button matChipRemove [attr.aria-label]="'remove ' + fruit">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-          </mat-chip-grid>
-          <input placeholder="New Fruit..." #fruitInput [formControl]="fruitCtrl"
-            [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="add($event)"/>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-              {{fruit}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
+    <div class="col-12 col-md-6">
+      <div class="card h-75">
+        <h5 class="m-2">Desafio</h5>
+        <div class="m-2">
+          <ngb-carousel [interval]="0">
+            <ng-template ngbSlide *ngFor="let item of andamentoList">
+              <app-card-goal-h [goal]="item"></app-card-goal-h>
+
+
+            </ng-template>
+
+          </ngb-carousel>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-9" style="height: 500px;">
+      <div class="card h-75 bg-section2">
+        <h5 class="m-2">Lendo...</h5>
+
+        <ngb-carousel [interval]="0">
+          <ng-template ngbSlide *ngFor="let books of readingList">
+            <div class="row">
+              <div class="col-6" *ngFor="let book of books">
+                <app-card-box-h [book]="book" [annotation]="book.annotation"
+                  [tags]="book.annotation.tags"></app-card-box-h>
+              </div>
+
+            </div>
+          </ng-template>
+
+        </ngb-carousel>
+
+
+
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card h-75 bg-section2">
+        <h5 class="my-2">Favoritos</h5>
+        <div class="col-12 d-flex justify-content-evenly my-1" *ngFor="let book of favoriteList">
+          <app-card-box-mini [book]="book" [annotation]="book.annotation"
+            [tags]="book.annotation.tags"></app-card-box-mini>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row bg-section3">
+    <h5 class="my-2">Livros Finalizados</h5>
+    <div class="col-2 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
+      <app-card-box-v [book]="book" [annotation]="book.annotation"></app-card-box-v>
     </div>
   </div>
 </div>

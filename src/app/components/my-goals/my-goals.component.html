@@ -1,0 +1,42 @@
+<div class="m-2 rounded bg-dot h-100">
+  <div class="container rounded">
+    <div class="row">
+      <div class="col-10">
+        <h4>Desafios</h4>
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-secondary" (click)="newGoal()">Cadastrar desafio</button>
+      </div>
+    </div>
+    <div class="row">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Desafio / Meta</th>
+            <th scope="col">Objetivo</th>
+            <th scope="col">Contagem atual</th>
+            <th scope="col">Início</th>
+            <th scope="col">Fim</th>
+            <th scope="col">Status</th>
+            <th scope="col">Editar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of goalList">
+            <td>{{item.name}}</td>
+            <td>{{item.target}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{handleDate(item.date_start)}}</td>
+            <td>{{handleDate(item.date_end)}}</td>
+            <td>{{handleStatus(item.status)}}</td>
+            <td >
+              <a href="javascript:;" type="button" (click)="editGoal(item.id)"> <i class="bi bi-pencil-square"></i></a>
+              <a href="javascript:;" type="button" (click)="deleteGoal(item.id)" class="ms-2"> <i class="bi bi-trash3 text-danger"></i></a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

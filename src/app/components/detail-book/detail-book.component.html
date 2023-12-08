@@ -9,19 +9,19 @@
     <div class="row">
       <div class="col-md-6">
         <div class="row">
-          <div class="col-7 d-flex justify-content-end pe-0">
+          <div class="col-8 d-flex justify-content-end pe-3">
             <ng-template #t let-fill="fill">
-              <i class="bi-star-fill">
-                <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill"></i>
+              <i class="bi-star-fill i-detail">
+                <i *ngIf="fill > 0" class="bi-star-fill filled i-detail" [style.width.%]="fill"></i>
               </i>
             </ng-template>
 
             <ngb-rating [(rate)]="annotationObj.rating" [starTemplate]="t" [readonly]="false" [max]="5" [formControl]="rateCtrl"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
-          <div class="col-5 ps-5">
+          <div class="col-3">
             <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()" >
-              <i class="bi-heart-fill" [class]="annotationObj.favorite == 1? 'filled-heart' : ''"></i>
+              <i class="bi-heart-fill i-detail" [class]="annotationObj.favorite == 1? 'filled-heart' : ''"></i>
             </a>
           </div>
         </div>
@@ -120,7 +120,7 @@
               <div class="input-group">
                 <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
                   [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="b"
-                  outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" />
+                  outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" [maxDate]="maxDate" />
                 <ng-template #b let-date let-focused="focused">
                   <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
                     [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
