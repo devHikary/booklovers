@@ -13,6 +13,8 @@ import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { MyBooksComponent } from './components/my-books/my-books.component';
 import { MyGoalsComponent } from './components/my-goals/my-goals.component';
 import { GoalComponent } from './components/my-goals/goal/goal.component';
+import { ReportFailureListComponent } from './components/report-failure-list/report-failure-list.component';
+import { ReportFailureComponent } from './components/report-failure-list/report-failure/report-failure.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -62,6 +64,16 @@ const routes: Routes = [
   {
     path: "booklovers/goal/:id",
     component: GoalComponent,
+    // canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/report-failure-list",
+    component: ReportFailureListComponent,
+    // canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/report-failure",
+    component: ReportFailureComponent,
     // canActivate: [AuthGuard, RoleGuard],
   },
   { path: '**', component: ErrorPageComponent, canActivate: [AuthGuard]},

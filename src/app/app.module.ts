@@ -34,6 +34,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { MyGoalsComponent } from './components/my-goals/my-goals.component';
 import { GoalComponent } from './components/my-goals/goal/goal.component';
 import { CardGoalHComponent } from './components/card-goal-h/card-goal-h.component';
+import { ReportFailureListComponent } from './components/report-failure-list/report-failure-list.component';
+import { ReportFailureComponent } from './components/report-failure-list/report-failure/report-failure.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { CardGoalHComponent } from './components/card-goal-h/card-goal-h.compone
     MyGoalsComponent,
     GoalComponent,
     CardGoalHComponent,
+    ReportFailureListComponent,
+    ReportFailureComponent,
 
   ],
   imports: [

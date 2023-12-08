@@ -570,4 +570,8 @@ export class EditBookComponent implements OnInit{
     this.bookForm.controls['thumbnail'].setValue(this.uploadCover);
     this.uploadCover = '';
   }
+
+  reportFailure(){
+    this.router.navigate(['/booklovers/report-failure'], {queryParams: {b: this.book_id, id: 'new'}});
+  }
 }
