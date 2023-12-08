@@ -18,13 +18,13 @@ import { Password } from 'src/app/models/Password';
 export class HeaderNavComponent implements OnInit {
   user: User = new User();
   pwdRequest: Password = new Password();
-  user_id: string = '';
   isMenuCollapsed = true;
   usernameLabel: string = '';
   closeResult: string = '';
 
   isShowHeader: boolean = false;
   isAdm: boolean = false;
+  isGg: boolean = false;
 
   typePwd: string = 'password';
   visibPwd: string = 'visibility';
@@ -58,7 +58,6 @@ export class HeaderNavComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user_id = this.localService.getUserId();
     this.headerService.data.subscribe((arg: boolean) => {
       this.isShowHeader = arg;
     });
@@ -70,6 +69,11 @@ export class HeaderNavComponent implements OnInit {
     this.headerService.dataUser.subscribe((arg: string) => {
       this.usernameLabel = arg;
     });
+
+    this.headerService.dataGg.subscribe((arg: boolean) => {
+      this.isGg = arg;
+    });
+
   }
 
   setUser(response: any) {
@@ -112,7 +116,7 @@ export class HeaderNavComponent implements OnInit {
   editUser() {}
 
   open(content: any) {
-    this.userService.getById(this.user_id).subscribe((response: string) => {
+    this.userService.getById(this.localService.getUserId()).subscribe((response: string) => {
       this.setUser(response);
     });
 
@@ -139,7 +143,7 @@ export class HeaderNavComponent implements OnInit {
       confirmButtonText: 'Sim, deletar meu cadastro',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.delete(this.user_id).subscribe(
+        this.userService.delete(this.localService.getUserId()).subscribe(
           (response) => {
             Swal.fire('Deletado!', 'Registro deletado.', 'success');
             this.modalService.dismissAll();
@@ -188,7 +192,7 @@ export class HeaderNavComponent implements OnInit {
   }
 
   getUser() {
-    this.user.id = this.user_id;
+    this.user.id = this.localService.getUserId();
     this.user.name = this.userForm.value.name_user;
     this.user.username = this.userForm.value.username;
     this.user.email = this.userForm.value.email;
@@ -215,7 +219,7 @@ export class HeaderNavComponent implements OnInit {
   }
 
   getPwd() {
-    this.pwdRequest.id = this.user_id;
+    this.pwdRequest.id = this.localService.getUserId();
     this.pwdRequest.passCurrent = this.localService.encryptPWD(
       this.passwordForm.value.pwdCurrent!
     );

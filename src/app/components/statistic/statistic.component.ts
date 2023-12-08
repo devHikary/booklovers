@@ -35,10 +35,12 @@ export class StatisticComponent implements OnInit{
     this.currentYear = new Date().getFullYear().toString();
     this.user_id = this.localService.getUserId();
     this.statisticService.getFavorite(this.user_id).subscribe((response: any) => {
-      this.favoriteCount = +response[0].count;
+      if(response.length > 0)
+        this.favoriteCount = +response[0].count;
     })
     this.statisticService.getRating('1',this.user_id).subscribe((response: any) => {
-      this.rating = { rating: response[0].rating, count: response[0].count};
+      if(response.length > 0)
+        this.rating = { rating: response[0].rating, count: response[0].count};
     })
     this.statisticService.getMonth(this.user_id).subscribe((response: any) => {
       trackerMonth.forEach(element => {
@@ -78,9 +80,9 @@ export class StatisticComponent implements OnInit{
 
       };
     })
-    this.statisticService.getTheme(this.user_id).subscribe((response: any) => {
-      console.log(response)
-    })
+    // this.statisticService.getTheme(this.user_id).subscribe((response: any) => {
+    //   console.log(response)
+    // })
   }
   public dataList = trackerMonth;
 

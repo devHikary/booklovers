@@ -1,16 +1,16 @@
 <div class="container">
   <div class="row">
-    <div class="col-4">
-
+    <div class="col-12 col-md-4 p-0 pe-2 h-100 d-flex justify-content-center align-items-center">
+      <i class="bi bi-flag icon-report"></i>
     </div>
-    <div class="col-8">
+    <div class="col-md-8 col-12">
       <form class="row" [formGroup]="reportForm" #formDir="ngForm">
         <h4>Registro Falha / Sugestão</h4>
 
         <div class="col-md-12 pb-2">
           <label for="description" class="form-label">Descrição</label>
-          <textarea class="form-control" placeholder="Escreva o nome do desafio / meta 😄" id="description"
-            name="description" formControlName="description"></textarea>
+          <textarea class="form-control" placeholder="Descreva a falha encontrada. Você pode deixar uma sugestão também 😄" id="description"
+            name="description" formControlName="description" style="height: 200px"></textarea>
           <div *ngIf="description?.errors?.['required'] && formDir.submitted" class="text-danger">
             Campo Obrigatório
           </div>

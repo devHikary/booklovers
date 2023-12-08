@@ -1,9 +1,9 @@
 .i-card-h {
   position: relative;
   display: inline-block;
-  font-size: 1.1rem;
+  font-size: 1.0rem;
   padding-right: 0.1rem;
-  letter-spacing: 0.4rem;
+  letter-spacing: 0.3rem;
   color: #d3d3d3;
 }
 

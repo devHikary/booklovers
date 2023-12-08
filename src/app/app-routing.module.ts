@@ -72,7 +72,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
   {
-    path: "booklovers/report-failure-list",
+    path: "booklovers/adm/report-failure-list",
     component: ReportFailureListComponent,
     canActivate: [AuthGuard, RoleGuard],
   },

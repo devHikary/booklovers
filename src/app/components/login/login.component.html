@@ -9,13 +9,14 @@
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="m-auto" style="width: 400px;">
-        <img class="w-100 mb-5" src="../../../assets/images/logo.png" alt="Imagem de um desenho orgânico de uma estante de livros">
+        <img class="w-100 mb-5" src="../../../assets/images/logo.png"
+          alt="Imagem de um desenho orgânico de uma estante de livros">
 
       </div>
 
     </div>
     <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
-      <div *ngIf="!isLogin; else elseBlock" >
+      <div *ngIf="!isLogin; else elseBlock">
         <div class="row fw-semibold">
           <p>Plataforma para gerenciar suas leituras! :)</p>
         </div>
@@ -23,17 +24,27 @@
           <button class="btn btn-outline-dark" (click)="open(content)">Cadastre-se</button>
         </div>
         <div class="row text-center">
-          <p class="text-muted">Já tem conta? Acesse <a href="javascript:;" type="button" (click)="toggleLogin()">aqui</a></p>
+          <p class="text-muted">Já tem conta? Acesse <a href="javascript:;" type="button"
+              (click)="toggleLogin()">aqui</a></p>
 
         </div>
+        <div class="row mt-4 justify-content-center">
+          <div class="col">
+            <button type="button" (click)="signInWithGoogle()" class="btn btn-outline-dark">
+              <i class="bi bi-google"></i>
+              Sign in with Google
+            </button>
+
+          </div>
+        </div>
       </div>
-      <ng-template #elseBlock >
+      <ng-template #elseBlock>
         <form [formGroup]="loginForm" #formDir="ngForm" (keydown.enter)="$event.preventDefault()">
           <div class="col-12 pb-2" style="width: 300px;">
             <label for="username-bl" class="form-label">Usuário
             </label>
-            <input type="text" class="form-control" id="username-bl" formControlName="username"
-              name="username-bl" maxlength="50">
+            <input type="text" class="form-control" id="username-bl" formControlName="username" name="username-bl"
+              maxlength="50">
             <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="text-danger">
               Campo Obrigatório
             </div>
@@ -41,8 +52,8 @@
           <div class="col-12 pb-2">
             <label for="password-bl" class="form-label">Senha
             </label>
-            <input type="password" class="form-control" id="password-bl" formControlName="password"
-              name="password-bl" maxlength="50">
+            <input type="password" class="form-control" id="password-bl" formControlName="password" name="password-bl"
+              maxlength="50">
             <div *ngIf="password?.errors?.['required'] && formDir.submitted" class="text-danger">
               Campo Obrigatório
             </div>
@@ -55,10 +66,12 @@
             <div class="col d-flex justify-content-end">
               <button type="submit" class="btn btn-dark" (click)="login()">Login</button>
             </div>
+
           </div>
+
         </form>
       </ng-template>
-      </div>
+    </div>
   </div>
 </div>
 
@@ -72,8 +85,7 @@
       <div class="col-12 pb-2">
         <label for="name_snp" class="form-label">Nome
         </label>
-        <input type="text" class="form-control" id="name_snp" formControlName="name_snp"
-          name="name_snp" maxlength="50">
+        <input type="text" class="form-control" id="name_snp" formControlName="name_snp" name="name_snp" maxlength="50">
         <div *ngIf="name_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
@@ -81,20 +93,21 @@
       <div class="col-12 pb-2">
         <label for="email_snp" class="form-label">E-mail
         </label>
-        <input type="email" class="form-control" id="email_snp" formControlName="email_snp"
-          name="email_snp" maxlength="50">
+        <input type="email" class="form-control" id="email_snp" formControlName="email_snp" name="email_snp"
+          maxlength="50">
         <div *ngIf="email_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
-        <div *ngIf="(email_snp?.errors?.['email'] || email_snp?.errors?.['pattern']) && formDirSnp.submitted" class="text-danger">
+        <div *ngIf="(email_snp?.errors?.['email'] || email_snp?.errors?.['pattern']) && formDirSnp.submitted"
+          class="text-danger">
           Insira um e-mail válido.
         </div>
       </div>
       <div class="col-12 pb-2">
         <label for="username_snp" class="form-label">Usuário
         </label>
-        <input type="text" class="form-control" id="username_snp" formControlName="username_snp"
-          name="username_snp" maxlength="50">
+        <input type="text" class="form-control" id="username_snp" formControlName="username_snp" name="username_snp"
+          maxlength="50">
         <div *ngIf="username_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
@@ -102,8 +115,8 @@
       <div class="col-12 pb-2">
         <label for="password_snp" class="form-label">Senha
         </label>
-        <input type="password" class="form-control" id="password_snp" formControlName="password_snp"
-          name="password_snp" maxlength="50">
+        <input type="password" class="form-control" id="password_snp" formControlName="password_snp" name="password_snp"
+          maxlength="50">
         <div *ngIf="password_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
         </div>
@@ -122,7 +135,3 @@
     </form>
   </div>
 </ng-template>
-
-
-
-

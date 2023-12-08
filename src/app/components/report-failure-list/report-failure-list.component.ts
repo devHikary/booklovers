@@ -27,7 +27,7 @@ export class ReportFailureListComponent implements OnInit{
   }
 
   newReport(){
-    this.router.navigate(['/booklovers/report-failure/', 'new']);
+    this.router.navigate(['/booklovers/report-failure'], {queryParams: {b: null, id: 'new'}});
   }
 
   handleDate(text: string): string {

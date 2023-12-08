@@ -15,7 +15,7 @@
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/explorer']">Explorar</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/my-goals']">Desafios</a>
           <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/statistic']">Estatísticas</a>
-          <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/report-failure-list']"
+          <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/booklovers/adm/report-failure-list']"
             *ngIf="isAdm">Gerenciamento</a>
 
 
@@ -80,7 +80,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 text-center py-2 d-flex justify-content-center ">
+      <div class="col-md-12 text-center py-2 d-flex justify-content-center " *ngIf="!isGg">
         <a class="alert-link" role="button" (click)="open(contentCngPwd)">Alterar senha</a>
       </div>
       <div class="modal-footer justify-content-between">

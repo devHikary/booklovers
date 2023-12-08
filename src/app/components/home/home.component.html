@@ -13,13 +13,20 @@
     </div>
     <div class="col-12 col-md-6">
       <div class="card p-3">
-        <h5 class="m-2">Desafio</h5>
+        <h5 class="m-2">Desafios</h5>
         <div class="m-2">
-          <ngb-carousel [interval]="0">
-            <ng-template ngbSlide *ngFor="let item of andamentoList">
-              <app-card-goal-h [goal]="item"></app-card-goal-h>
-            </ng-template>
-          </ngb-carousel>
+          <div *ngIf="andamentoList.length > 0">
+            <ngb-carousel [interval]="0">
+              <ng-template ngbSlide *ngFor="let item of andamentoList">
+                <app-card-goal-h [goal]="item"></app-card-goal-h>
+              </ng-template>
+            </ngb-carousel>
+          </div>
+          <div *ngIf="andamentoList.length < 1">
+            <div class="text-center h-100">
+              <p>Nenhum desafio cadastrado</p>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -65,6 +72,11 @@
       </div>
 
 
+      <div *ngIf="readingListSmall.length < 1 || readingList.length < 1">
+        <div class="text-center h-100">
+          <p>Nenhuma leitura em andamento</p>
+        </div>
+      </div>
 
       </div>
     </div>
@@ -75,6 +87,11 @@
           <app-card-box-mini [book]="book" [annotation]="book.annotation"
             [tags]="book.annotation.tags"></app-card-box-mini>
         </div>
+        <div *ngIf="favoriteList.length < 1">
+          <div class="text-center h-100">
+            <p>Nenhum livro cadastrado</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -82,6 +99,11 @@
     <h5 class="my-2">Livros Finalizados</h5>
     <div class="col-md-2 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
       <app-card-box-v [book]="book" [annotation]="book.annotation"></app-card-box-v>
+    </div>
+    <div *ngIf="finishedList.length < 1">
+      <div class="text-center h-100">
+        <p>Nenhum livro cadastrado</p>
+      </div>
     </div>
   </div>
 </div>

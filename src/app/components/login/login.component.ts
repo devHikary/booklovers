@@ -11,6 +11,12 @@ import { LoginService } from 'src/app/services/login.service';
 import { Login } from 'src/app/models/Login';
 import { HeaderService } from 'src/app/services/header.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { auth } from 'src/app/services/firebase';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  User as UserGoogle,
+} from 'firebase/auth';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +25,13 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class LoginComponent implements OnInit {
   user: User = new User();
+  userGg: User = new User();
   loginObj: Login = new Login();
+  loginObjgg: Login = new Login();
   public isLogin: boolean = false;
   public isError: boolean = false;
   public closeResult: string = '';
+  verifyGg: string = '';
 
   public loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -94,28 +103,14 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.isError = false;
+    this.headerService.updateGoogle(false);
     if (this.loginForm.invalid) return;
 
     this.getLogin();
 
     this.loginService.auth(this.loginObj).subscribe(
       (response: any) => {
-        this.localService.saveToken(response['token']);
-        this.headerService.updateToggle(true);
-        this.headerService.updateUser(this.loginObj.username);
-        this.router.navigate(['/booklovers/explorer']);
-
-        const payload = this.localService.decodePayloadJWT(response['token']);
-        this.localService.saveData(
-          'bS',
-          JSON.stringify(payload['permissions'])
-        );
-        this.localService.saveData('id', JSON.stringify(payload['id']));
-        this.localService.saveData(
-          'username',
-          JSON.stringify(payload['username'])
-        );
-
+        this.authorizedUser(response);
       },
       (err) => {
         this.isError = true;
@@ -124,6 +119,18 @@ export class LoginComponent implements OnInit {
         });
       }
     );
+  }
+
+  authorizedUser(response: any) {
+    this.localService.saveToken(response['token']);
+    this.headerService.updateToggle(true);
+    this.headerService.updateUser(this.loginObj.username);
+    this.router.navigate(['/booklovers/explorer']);
+
+    const payload = this.localService.decodePayloadJWT(response['token']);
+    this.localService.saveData('bS', JSON.stringify(payload['permissions']));
+    this.localService.saveData('id', JSON.stringify(payload['id']));
+    this.localService.saveData('username', JSON.stringify(payload['username']));
   }
 
   cancel() {
@@ -185,4 +192,61 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  signInWithGoogle() {
+    this.isError = false;
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        this.userGg.name = result.user.displayName;
+        this.userGg.password = result.user.uid;
+        this.userGg.email = result.user.email;
+        var userAux = result.user.email.split('@');
+        this.userGg.username = userAux[0];
+        this.userGg.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
+
+        this.loginObjgg.password = this.userGg.password;
+        this.loginObjgg.username = this.userGg.username;
+
+        this.userService.add(this.userGg).subscribe(
+          (response: any) => {
+            this.isError = false;
+            this.verifyGg = response.msg;
+            this.authGg();
+          },
+          (e) => {
+            this.verifyGg = e.error.error;
+            this.authGg();
+          }
+        );
+      })
+      .catch((error) => {
+        this.isError = true;
+        this.toastService.show('Atenção! Usuário ou senha incorreta', {
+          classname: 'bg-danger text-light',
+        });
+      });
+  }
+
+  authGg(){
+    if (
+      this.verifyGg == 'E-mail já cadastrado' ||
+      this.verifyGg == 'Registro criado'
+    ) {
+      this.loginService.auth(this.loginObjgg).subscribe(
+        (response: any) => {
+          this.authorizedUser(response);
+          this.headerService.updateGoogle(true);
+        },
+        (err) => {
+          this.isError = true;
+          this.toastService.show('Atenção! Usuário ou senha incorreta', {
+            classname: 'bg-danger text-light',
+          });
+        }
+      );
+    }
+  }
+
 }

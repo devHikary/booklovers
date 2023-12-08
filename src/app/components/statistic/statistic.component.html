@@ -3,8 +3,8 @@
     <h3>Estatística</h3>
     <hr>
   </div>
-  <div class="row m-0 p-4">
-    <div class="col-12 col-md-6">
+  <div class="row m-0 p-2">
+    <div class="col-12 col-md-6 my-4">
       <div class="card p-2 shadow-sm ">
         <div class="row text-center">
           <h4>{{currentYear}}</h4>
@@ -33,17 +33,21 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6">
-      <div class=" ps-2 pe-5 bg-postit h-100 d-flex justify-content-center align-items-center">
-        <div class="col-6 text-center h-25">
+    <div class="col-12 col-md-6 my-4">
+      <div class=" card shadow-sm ps-2 pe-5 bg-postit d-flex justify-content-center align-items-center" style="height: 350px">
+        <div class="col-6 text-center h-25" *ngIf="textPostit.year != '';else templateName">
           <p class="fs-3">Em {{textPostit.year}}, </p>
           <p class="fs-3">você leu {{textPostit.count >1 ? textPostit.count + ' livros' : textPostit.count + ' livro'}}</p>
         </div>
+        <ng-template #templateName>
+          <p class="fs-3">Em {{currentYear}}, </p>
+          <p class="fs-3">você leu 0 livro</p>
+        </ng-template>
       </div>
     </div>
   </div>
-  <div class="row m-0 p-4">
-    <div class="col-12 col-md-6">
+  <div class="row m-0 p-2">
+    <div class="col-12 col-md-6 my-4">
       <div class="card px-5 pt-2 shadow-sm">
         <h4>Livros por ano</h4>
         <div class="chart-container pt-2 pb-3">
@@ -51,9 +55,9 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6 my-4">
       <div class="card px-5 pt-2 text-center shadow-sm h-100 d-flex justify-content-center align-items-center">
-        <p class="fs-3">São {{rating.count}} livros com {{rating.rating}} estrelas</p>
+        <p class="fs-3">São {{rating.count >1 ? rating.count  + ' livros' : rating.count  + ' livro'}} com {{rating.rating}} estrelas</p>
         <div class="d-flex justify-content-center">
           <ng-template #t let-fill="fill">
             <i class="bi-star-fill i-rating fs-3">

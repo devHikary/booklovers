@@ -53,13 +53,16 @@ export class ReportFailureComponent implements OnInit{
   setReport(report: any){
     this.reportForm.setValue({
       id: report.id,
-      book_id: report.book_id,
+      book_id: report.book_id === null? "Não informado" : report.book_id,
       user_id: report.user_id,
       description: report.description,
-      createdAt: report.createdAt,
+      createdAt: this.handleDate(report.createdAt),
       status: report.status,
 
     });
+
+    this.reportForm.controls['book_id'].disable();
+    this.reportForm.controls['createdAt'].disable();
   }
 
   handleDate(text: string): string {

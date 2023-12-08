@@ -8,9 +8,11 @@ export class HeaderService {
 
   private dataSource = new BehaviorSubject(false);
   private dataSourceAdm = new BehaviorSubject(false);
+  private dataSourceGg = new BehaviorSubject(false);
   private dataSourceUser = new BehaviorSubject('username');
   data = this.dataSource.asObservable();
   dataAdm = this.dataSourceAdm.asObservable();
+  dataGg = this.dataSourceGg.asObservable();
   dataUser = this.dataSourceUser.asObservable();
 
   constructor() { }
@@ -21,6 +23,10 @@ export class HeaderService {
 
   updateAdm(toggle: boolean) {
     this.dataSourceAdm.next(toggle);
+  }
+
+  updateGoogle(toggle: boolean) {
+    this.dataSourceGg.next(toggle);
   }
 
   updateUser(name: string) {

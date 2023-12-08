@@ -38,6 +38,9 @@
             </td>
 
           </tr>
+          <tr *ngIf="goalList.length< 1">
+            <td colspan="7" class="text-center">Sem registro</td>
+          </tr>
         </tbody>
       </table>
     </div>

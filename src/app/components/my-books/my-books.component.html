@@ -102,7 +102,7 @@
         <hr>
       </div>
       <div class="row" *ngIf="bookList.length > 0; else elseBlock">
-        <div class="col-6 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
+        <div class="col-md-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
           <app-card-box-h [book]="book" [annotation]="book.annotation" [tags]="book.annotation.tags"></app-card-box-h>
         </div>
       </div>
