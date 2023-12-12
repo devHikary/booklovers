@@ -4,6 +4,9 @@ import { Chart, ChartConfiguration } from 'chart.js';
 import { LocalService } from 'src/app/services/local.service';
 import { StatisticService } from 'src/app/services/statistic.service';
 import { BaseChartDirective } from 'ng2-charts';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-statistic',
@@ -25,6 +28,8 @@ export class StatisticComponent implements OnInit{
     year: '',
     count: '',
   }
+
+  isLoadingPdf: boolean = false;
 
   constructor(
     private localService: LocalService,
@@ -109,6 +114,24 @@ export class StatisticComponent implements OnInit{
 
     }
   };
+
+  exportPDF() {
+    this.isLoadingPdf = true;
+
+    var data = document.getElementById('contentToConvert');
+
+    html2canvas(data).then(canvas => {
+      var imgWidth = 190;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jsPDF('p', 'mm', 'a4');
+      var position = 4;
+      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+      pdf.save('Estatísticas - booklovers.pdf');
+    });
+    this.isLoadingPdf = false;
+  }
 }
 
 var trackerMonth = [

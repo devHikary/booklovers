@@ -4,13 +4,23 @@
       <app-management></app-management>
     </div>
     <div class="col-md-10 col-12">
-      <div class="container rounded">
+      <div class="container rounded" id="contentToConvert">
         <div class="row m-0 p-4 text-center">
           <h3>Permissões</h3>
           <hr>
         </div>
-        <div class="row">
-          <div class="col-10">
+        <div class="row justify-content-between" data-html2canvas-ignore>
+          <div class="col-2">
+            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="permissionList.length > 0" >
+              <ng-container *ngIf="!isLoadingPdf; else templateLoad">
+                Exportar em PDF
+              </ng-container>
+              <ng-template #templateLoad>
+                <div class="spinner-border text-dark" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </ng-template>
+            </button>
           </div>
           <div class="col-2">
             <button class="btn btn-outline-secondary" (click)="newPermission()">Cadastrar</button>
@@ -23,7 +33,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Url</th>
-                <th scope="col">Editar</th>
+                <th scope="col" data-html2canvas-ignore>Editar</th>
               </tr>
             </thead>
             <tbody>
@@ -31,7 +41,7 @@
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.url }}</td>
-                <td>
+                <td data-html2canvas-ignore>
                   <a href="javascript:;" type="button" (click)="editPermission(item.id)"> <i
                       class="bi bi-pencil-square"></i></a>
                       <a href="javascript:;" type="button" (click)="deletePermission(item.id)" class="ms-2"> <i class="bi bi-trash3 text-danger"></i></a>

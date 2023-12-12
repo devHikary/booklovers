@@ -15,71 +15,72 @@ import { ListService } from 'src/app/services/list.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class CardBoxHComponent implements OnInit {
-
   @Input() book: Book = new Book();
   @Input() annotation: Annotation = new Annotation();
   @Input() tags: Tag[] = [];
-  expanded:boolean = false
-  public isCollapsed:boolean = true;
+  expanded: boolean = false;
+  public isCollapsed: boolean = true;
 
   listCtr = new FormControl('');
 
   constructor(
     private router: Router,
     private annotationService: AnnotationService,
-    private listService: ListService,
-  ){}
+    private listService: ListService
+  ) {}
 
   ngOnInit(): void {
-    this.book.description = this.book.description.substring(0, 150) + "...";
+    this.book.description = this.book.description.substring(0, 150) + '...';
   }
-
 
   ariaValueText(current: number, max: number) {
     return `${current} out of ${max} hearts`;
-	}
+  }
 
-  detailBook(id: string){
+  detailBook(id: string) {
     this.router.navigate(['/booklovers/detail-book/', id]);
   }
 
-  toggleFavorite(){
-    if(this.book.annotation.favorite == 1)
-      this.book.annotation.favorite = 0;
-    else{
+  toggleFavorite() {
+    if (this.book.annotation.favorite == 1) this.book.annotation.favorite = 0;
+    else {
       this.book.annotation.favorite = 1;
     }
     this.saveAnnotation();
   }
 
-  toggleRate(){
+  toggleRate() {
     this.saveAnnotation();
   }
 
-  saveAnnotation(){
+  saveAnnotation() {
     if (this.annotation === null) {
       this.annotationService.add(this.annotation).subscribe();
-
     } else {
       this.annotationService.update(this.annotation).subscribe();
     }
   }
 
-  showCheckboxes(){
-    var checkboxes = document.getElementById("checkboxes");
-  if (!this.expanded) {
-    checkboxes.style.display = "block";
-    this.expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    this.expanded = false;
-  }
+  showCheckboxes() {
+    var checkboxes = document.getElementById('checkboxes');
+    if (!this.expanded) {
+      checkboxes.style.display = 'block';
+      this.expanded = true;
+    } else {
+      checkboxes.style.display = 'none';
+      this.expanded = false;
+    }
   }
 
-  saveList(book_id: string){
-    let obj = {book_id: book_id, list_id: this.listCtr.value}
-    this.listService.addBook(obj).subscribe(
-    );
+  saveList(book_id: string) {
+    let obj = { book_id: book_id, list_id: this.listCtr.value };
+    this.listService.addBook(obj).subscribe();
+  }
 
+  handleImage(url: string) {
+    let img = new Image();
+    img.src = url;
+    img.crossOrigin = 'anonymous';
+    return img;
   }
 }

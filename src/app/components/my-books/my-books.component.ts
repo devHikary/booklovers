@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,14 +11,20 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { List } from 'src/app/models/List';
 import { TagService } from 'src/app/services/tag.service';
 import { Tag } from 'src/app/models/Tag';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+import { download } from 'downloadjs';
 
 @Component({
   selector: 'app-my-books',
   templateUrl: './my-books.component.html',
-  styleUrls: ['./my-books.component.css']
+  styleUrls: ['./my-books.component.css'],
 })
-export class MyBooksComponent implements OnInit{
+export class MyBooksComponent implements OnInit {
   bookList: Book[] = [];
+  booksSection: any[] = []
   themeList: any[] = [];
   listList: List[] = [];
   tagList: Tag[] = [];
@@ -25,11 +32,22 @@ export class MyBooksComponent implements OnInit{
   tagObj: Tag = new Tag();
   closeResult = ''; // TODO: retirar
   user_id: string = '';
-  objSelect: any = {name: 'Todos os livros', id: null , type: null, books: null};
+  objSelect: any = {
+    name: 'Todos os livros',
+    id: null,
+    type: null,
+    books: null,
+  };
 
   titleSearchCtr = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<string[]>;
+
+  isLoadingPdf: boolean = false;
+
+  //TODO: teste
+  image_base64: any;
+  url_teste: any;
 
   public tagForm = new FormGroup({
     colorInput: new FormControl(''),
@@ -45,18 +63,18 @@ export class MyBooksComponent implements OnInit{
     private themeService: ThemeService,
     private localService: LocalService,
     private listService: ListService,
-    private tagService: TagService,
-  ){}
+    private tagService: TagService
+  ) {}
 
   ngOnInit(): void {
     this.user_id = this.localService.getUserId();
     this.themeService.getAll().subscribe((themes: any) => {
       this.themeList = themes;
     });
-    this.listService.getAll(this.user_id ).subscribe((lists: any) => {
+    this.listService.getAll(this.user_id).subscribe((lists: any) => {
       this.listList = lists;
     });
-    this.tagService.getAllUser(this.user_id ).subscribe((tags: any) => {
+    this.tagService.getAllUser(this.user_id).subscribe((tags: any) => {
       this.tagList = tags;
     });
     this.listService.getAllBooks(this.user_id).subscribe((books: any) => {
@@ -64,29 +82,33 @@ export class MyBooksComponent implements OnInit{
     });
   }
 
-  get name(){
+  get name() {
     return this.listForm.get('name');
   }
 
-  get title(){
+  get title() {
     return this.tagForm.get('title');
   }
 
-  clearFilter(){
-    this.objSelect = {name: 'Todos os livros', id: null , type: null, books: null};
+  clearFilter() {
+    this.objSelect = {
+      name: 'Todos os livros',
+      id: null,
+      type: null,
+      books: null,
+    };
     this.listService.getAllBooks(this.user_id).subscribe((books: any) => {
       this.loadBooks(books);
     });
-    this.listService.getAll(this.user_id ).subscribe((lists: any) => {
+    this.listService.getAll(this.user_id).subscribe((lists: any) => {
       this.listList = lists;
     });
-    this.tagService.getAllUser(this.user_id ).subscribe((tags: any) => {
+    this.tagService.getAllUser(this.user_id).subscribe((tags: any) => {
       this.tagList = tags;
     });
   }
 
   open(content: any) {
-
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
@@ -101,7 +123,7 @@ export class MyBooksComponent implements OnInit{
 
   filterSideTheme(obj: any) {
     this.objSelect = obj;
-    this.objSelect.type = 'theme'
+    this.objSelect.type = 'theme';
 
     this.themeService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
@@ -111,7 +133,7 @@ export class MyBooksComponent implements OnInit{
   filterSideTag(obj: any) {
     this.objSelect = obj;
     this.objSelect.type = 'tag';
-    this.tagObj.id = obj.id
+    this.tagObj.id = obj.id;
     this.tagForm.controls.title.setValue(this.objSelect.name);
 
     this.tagService.getById(obj.id, this.user_id).subscribe((books) => {
@@ -122,9 +144,8 @@ export class MyBooksComponent implements OnInit{
   filterSideList(obj: any) {
     this.objSelect = obj;
     this.objSelect.type = 'list';
-    this.listObj.id = obj.id
+    this.listObj.id = obj.id;
     this.listForm.controls.name.setValue(this.objSelect.name);
-
 
     this.listService.getById(this.objSelect.id).subscribe((books) => {
       this.loadBooks(books);
@@ -135,7 +156,7 @@ export class MyBooksComponent implements OnInit{
     this.bookList = [];
     this.options = [];
 
-    if (books.length > 0 ){
+    if (books.length > 0) {
       books.forEach((obj: any) => {
         var bookAux = new Book();
 
@@ -145,13 +166,13 @@ export class MyBooksComponent implements OnInit{
         bookAux.publisher = obj.book.publisher;
         bookAux.description = obj.book.description;
         bookAux.authors = obj.book.Authors;
-        if(obj.book.thumbnail === null){
+        if (obj.book.thumbnail === null) {
           bookAux.thumbnail = '/./assets/images/noImage.png';
         } else {
           bookAux.thumbnail = obj.book.thumbnail;
         }
         bookAux.annotation = obj.annotation; //TODO
-        if(obj.id != null){
+        if (obj.id != null) {
           bookAux.annotation.rating = obj.annotation.rating;
           bookAux.annotation.favorite = obj.annotation.favorite;
           bookAux.annotation.tags = obj.annotation.tags;
@@ -160,28 +181,25 @@ export class MyBooksComponent implements OnInit{
 
         this.bookList.push(bookAux);
       });
+
+      this.booksSection = this.separar(this.bookList, 6)
     }
   }
 
-    deleteList(modal: any){
-
+  deleteList(modal: any) {
     Swal.fire({
       title: 'Tem certeza?',
-      text: "Você não poderá reverter isso!",
+      text: 'Você não poderá reverter isso!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, deletar'
+      confirmButtonText: 'Sim, deletar',
     }).then((result) => {
       if (result.isConfirmed) {
         this.listService.delete(this.listObj.id).subscribe(
           (response) => {
-            Swal.fire(
-              'Deletado!',
-              'Registro deletado.',
-              'success'
-            )
+            Swal.fire('Deletado!', 'Registro deletado.', 'success');
             this.modalService.dismissAll();
             this.tagForm.reset();
             this.clearFilter();
@@ -196,11 +214,10 @@ export class MyBooksComponent implements OnInit{
           }
         );
       }
-    })
-
+    });
   }
 
-  saveList(modal: any){
+  saveList(modal: any) {
     if (this.listForm.invalid) {
       return;
     }
@@ -228,34 +245,28 @@ export class MyBooksComponent implements OnInit{
         });
       }
     );
-
   }
 
-  getList(){
+  getList() {
     this.listObj.name = this.listForm.value.name;
     this.listObj.user_id = this.user_id;
     this.listObj.books = null;
   }
 
-  deleteTag(modal: any){
-
+  deleteTag(modal: any) {
     Swal.fire({
       title: 'Tem certeza?',
-      text: "Você não poderá reverter isso!",
+      text: 'Você não poderá reverter isso!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, deletar'
+      confirmButtonText: 'Sim, deletar',
     }).then((result) => {
       if (result.isConfirmed) {
         this.tagService.delete(this.tagObj.id).subscribe(
           (response) => {
-            Swal.fire(
-              'Deletado!',
-              'Registro deletado.',
-              'success'
-            )
+            Swal.fire('Deletado!', 'Registro deletado.', 'success');
             this.modalService.dismissAll();
             this.tagForm.reset();
             this.clearFilter();
@@ -270,23 +281,22 @@ export class MyBooksComponent implements OnInit{
           }
         );
       }
-    })
-
+    });
   }
 
-  getTag(){
+  getTag() {
     this.tagObj.name = this.tagForm.value.title;
     this.tagObj.user_id = this.user_id;
   }
 
-  saveTag(modal: any){
+  saveTag(modal: any) {
     if (this.tagForm.invalid) {
       return;
     }
 
     this.getTag();
 
-    if(this.tagObj.id === null){
+    if (this.tagObj.id === null) {
       this.tagService.add(this.tagObj).subscribe(
         (response) => {
           Swal.fire({
@@ -308,7 +318,7 @@ export class MyBooksComponent implements OnInit{
           });
         }
       );
-    } else{
+    } else {
       this.tagService.update(this.tagObj).subscribe(
         (response) => {
           Swal.fire({
@@ -331,6 +341,57 @@ export class MyBooksComponent implements OnInit{
         }
       );
     }
+  }
 
+  separar(base: any, max: any) {
+    var res = [];
+    if (base != undefined) {
+      for (var i = 0; i < base.length; i = i + (max - 1)) {
+        res.push(base.slice(i, i + max));
+        max++;
+      }
+    }
+
+    return res;
+  }
+
+
+  async exportPDF() {
+    this.isLoadingPdf = true;
+    var data = document.getElementById('header-file');
+    var listItems  = Array.from(document.getElementsByName('book-section'));
+
+    let pdf = new jsPDF('p', 'mm', 'a4');
+
+      for (let i = 0; i < listItems.length; i++) {
+        if (i > 0) {
+          pdf.addPage(); // Add a new page for subsequent pages
+        }
+
+        // pdf.setFontSize(15);
+        //   pdf.text('Meus Livros', 10, 30)
+
+        await html2canvas(data,{allowTaint: false, useCORS: true}).then(canvas => {
+          var imgWidth = 190;
+          var imgHeight = canvas.height * imgWidth / canvas.width;
+
+          const contentDataURL = canvas.toDataURL('image/png')
+
+          var position = 10;
+          pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+        });
+
+        await html2canvas(listItems[i],{allowTaint: false, useCORS: true}).then(canvas => {
+          var imgWidth = 190;
+          var imgHeight = canvas.height * imgWidth / canvas.width;
+
+          const contentDataURL = canvas.toDataURL('image/png')
+
+          var position = 30;
+          pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+        });
+  }
+      pdf.save('Meus livros - booklovers.pdf');
+      this.isLoadingPdf = false;
   }
 }

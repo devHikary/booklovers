@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { Permission } from 'src/app/models/Permission';
 import { PermissionService } from 'src/app/services/permission.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-permission-list',
@@ -11,6 +13,7 @@ import { PermissionService } from 'src/app/services/permission.service';
 })
 export class PermissionListComponent implements OnInit{
   permissionList: Permission[] = [];
+  isLoadingPdf: boolean = false;
 
   constructor(
     private permissionService: PermissionService,
@@ -67,5 +70,23 @@ export class PermissionListComponent implements OnInit{
         );
       }
     })
+  }
+
+  exportPDF() {
+    this.isLoadingPdf = true;
+
+    var data = document.getElementById('contentToConvert');
+
+    html2canvas(data).then(canvas => {
+      var imgWidth = 190;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jsPDF('p', 'mm', 'a4');
+      var position = 4;
+      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+      pdf.save('Lista de permissões - booklovers.pdf');
+    });
+    this.isLoadingPdf = false;
   }
 }

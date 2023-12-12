@@ -3,7 +3,7 @@
     <div class="row text-center">
       <div class="col-12">
         <h2 *ngIf="!isNew">Editar as informações do livro
-          <a title="Adicionar temas" href="javascript:;" (click)="reportFailure()"
+          <a title="Adicionar gênero" href="javascript:;" (click)="reportFailure()"
                class="ms-1">
                <i class="bi bi-exclamation-triangle"></i>
             </a>
@@ -66,7 +66,7 @@
 
               <input type="text" class="form-control text-capitalize" id="title" formControlName="title" name="title"
                 maxlength="50">
-              <button type="button" class="btn btn-outline-dark" (click)="open(content)">Ajuda preenc.</button>
+              <button type="button" class="btn btn-outline-dark" title="Ajuda com o preenchimento das informações" (click)="open(content)">Ajuda preenc.</button>
             </div>
             <div *ngIf="title?.errors?.['required'] && formDir.submitted" class="msgError">
               Campo Obrigatório
@@ -165,14 +165,14 @@
 
 
           <div>
-            <label for="isbn_13" class="form-label">Temas
+            <label for="isbn_13" class="form-label">Gênero
             </label>
-            <a title="Adicionar temas" href="javascript:;" (click)="collapseTheme.toggle()"
-              [attr.aria-expanded]="!isCollapsedTheme" aria-controls="Adicionar temas" class="ms-1">
+            <a title="Adicionar gênero" href="javascript:;" (click)="collapseTheme.toggle()"
+              [attr.aria-expanded]="!isCollapsedTheme" aria-controls="Adicionar gênero" class="ms-1">
               <i class="bi bi-plus-circle size_iPlus text-primary"></i>
             </a>
             <div #collapseTheme="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
-              <input class="form-control ms-0" placeholder="Adicionar tema..." #themeInput [formControl]="themeCtrl"
+              <input class="form-control ms-0" placeholder="Adicionar gênero..." #themeInput [formControl]="themeCtrl"
                 [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
                 matAutocompletePosition='above' />
@@ -208,7 +208,7 @@
         <button class="btn btn-light" (click)="cancel()">Cancelar</button>
       </div>
       <div class="col d-flex justify-content-end">
-        <button class="btn btn-secondary" (click)="save()" [disabled]="formDir.pristine && authorCtrl.pristine && themeCtrl.pristine">Salvar</button>
+        <button class="btn btn-secondary" (click)="save()">Salvar</button>
       </div>
     </div>
     <!-- <label class="image-upload-container btn btn-bwm">
@@ -224,11 +224,11 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body" *ngFor="let bookM of bookListModal">
-    <a title="Detalhes do livro" href="javascript:;" (dblclick)="selectedInfo(bookM.id)">
-      <app-card-box-mini [book]="bookM"></app-card-box-mini>
+    <a title="Seleciona um livro" href="javascript:;" (dblclick)="selectedInfo(bookM.id)">
+      <app-card-box-md [book]="bookM"></app-card-box-md>
     </a>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Salvar</button>
+  <div class="modal-body text-center" *ngIf="bookListModal.length < 1">
+    <p>Não encontramos livros com esse título</p>
   </div>
 </ng-template>

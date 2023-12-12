@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import { Role } from 'src/app/models/Role';
 import { RoleService } from 'src/app/services/role.service';
 import { Router } from '@angular/router';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-role-list',
@@ -11,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class RoleListComponent implements OnInit {
   roleList: Role[] = [];
+  isLoadingPdf: boolean = false;
 
   constructor(private roleService: RoleService, private router: Router) {}
 
@@ -59,5 +62,23 @@ export class RoleListComponent implements OnInit {
         );
       }
     });
+  }
+
+  exportPDF() {
+    this.isLoadingPdf = true;
+
+    var data = document.getElementById('contentToConvert');
+
+    html2canvas(data).then(canvas => {
+      var imgWidth = 190;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jsPDF('p', 'mm', 'a4');
+      var position = 4;
+      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+      pdf.save('Lista de perfis - booklovers.pdf');
+    });
+    this.isLoadingPdf = false;
   }
 }

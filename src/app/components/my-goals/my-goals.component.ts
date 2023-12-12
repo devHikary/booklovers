@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Goal } from 'src/app/models/Goal';
 import { GoalService } from 'src/app/services/goal.service';
 import { LocalService } from 'src/app/services/local.service';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-my-goals',
@@ -13,6 +15,7 @@ import { LocalService } from 'src/app/services/local.service';
 export class MyGoalsComponent implements OnInit{
   user_id: string = '';
   goalList: Goal[] = [];
+  isLoadingPdf: boolean = false;
 
   constructor(
     private localService: LocalService,
@@ -97,5 +100,23 @@ export class MyGoalsComponent implements OnInit{
         );
       }
     })
+  }
+
+  exportPDF() {
+    this.isLoadingPdf = true;
+
+    var data = document.getElementById('contentToConvert');
+
+    html2canvas(data).then(canvas => {
+      var imgWidth = 190;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jsPDF('p', 'mm', 'a4');
+      var position = 4;
+      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+      pdf.save('Meus Desafios - booklovers.pdf');
+    });
+    this.isLoadingPdf = false;
   }
 }

@@ -4,13 +4,24 @@
       <app-management></app-management>
     </div>
     <div class="col-md-10 col-12">
-      <div class="container rounded">
+      <div class="container rounded" id="contentToConvert">
         <div class="row m-0 p-4 text-center">
           <h3>Relatório de falhas e sugestões</h3>
           <hr>
         </div>
-        <div class="row">
-          <div class="col-10">
+        <div class="row justify-content-between" data-html2canvas-ignore>
+          <div class="col-2">
+
+            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="reportList.length > 0" >
+              <ng-container *ngIf="!isLoadingPdf; else templateLoad">
+                Exportar em PDF
+              </ng-container>
+              <ng-template #templateLoad>
+                <div class="spinner-border text-dark" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </ng-template>
+            </button>
           </div>
           <div class="col-2">
             <button class="btn btn-outline-secondary" (click)="newReport()">Relatar falha </button>
@@ -25,7 +36,7 @@
                 <th scope="col">ID Book</th>
                 <th scope="col">Criado em</th>
                 <th scope="col">Status</th>
-                <th scope="col">Editar</th>
+                <th scope="col" data-html2canvas-ignore>Editar</th>
               </tr>
             </thead>
             <tbody>
@@ -35,7 +46,7 @@
                 <td>{{item.book_id === null? "Não informado" : item.book_id }}</td>
                 <td>{{handleDate(item.createdAt)}}</td>
                 <td>{{handleStatus(item.status)}}</td>
-                <td>
+                <td data-html2canvas-ignore>
                   <a href="javascript:;" type="button" (click)="editReport(item.id)"> <i
                       class="bi bi-pencil-square"></i></a>
                 </td>

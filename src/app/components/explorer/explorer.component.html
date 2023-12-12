@@ -44,12 +44,12 @@
           <h4 class="pt-2">Filtro</h4>
         </div>
         <div class="col-3 d-flex align-items-center justify-content-end">
-          <!-- <a class="row" title="Adicionar tema" href="javascript:;" (click)="open(content)">
+          <!-- <a class="row" title="Adicionar gênero" href="javascript:;" (click)="open(content)">
             <i class="bi bi-plus-circle"></i>
           </a> -->
         </div>
       </div>
-      <h5 class="m-2">Temas</h5>
+      <h5 class="m-2">Gênero</h5>
       <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;" *ngFor="let themeSch of themeList"
         (click)="filterSide(themeSch.id)">
         {{themeSch.name}}

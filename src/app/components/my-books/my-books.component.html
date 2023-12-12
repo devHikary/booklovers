@@ -35,7 +35,7 @@
 
           </div>
         </div>
-        <h5 class="m-2">Temas</h5>
+        <h5 class="m-2">Gênero</h5>
         <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;"
           *ngFor="let themeSch of themeList" (click)="filterSideTheme(themeSch)">
           {{themeSch.name}}
@@ -50,7 +50,7 @@
             </a>
           </div>
           <div class="col-3 d-flex align-items-center justify-content-end">
-            <a class="row" title="Adicionar tema" href="javascript:;" (click)="open(contentTag)">
+            <a class="row" title="Adicionar gênero" href="javascript:;" (click)="open(contentTag)">
               <i class="bi bi-plus-circle"></i>
             </a>
           </div>
@@ -61,49 +61,46 @@
         </a>
 
       </div>
-      <div>
-        <div class="header-filter row rounded">
-          <div class="col-9 d-flex align-items-center">
-            <a [routerLink]="['/booklovers/my-list']" href="javascript:;">
-              <h4 class="pt-2">Listas</h4>
 
-            </a>
-          </div>
-          <div class="col-3 d-flex align-items-center justify-content-end">
-            <a class="row" title="Adicionar tema" href="javascript:;" (click)="open(contentList)">
-              <i class="bi bi-plus-circle"></i>
-            </a>
-          </div>
-        </div>
-        <a class="row m-2" type="button" title="{{list.name}}" href="javascript:;" *ngFor="let list of listList"
-          (click)="filterSideList(list)">
-          {{list.name}}
-        </a>
-
-      </div>
     </aside>
 
 
-    <article class="col-md-9 bg-grade">
-      <div class="row">
+    <article class="col-md-9 bg-grade page-break" id="contentToConvert">
+      <div class="row" id="header-file">
 
-        <h3><a type="button" title="Meus livros" href="javascript:;"
-          (click)="clearFilter()">Meus livros</a></h3>
+        <h3><a type="button" title="Meus livros" href="javascript:;" (click)="clearFilter()">Meus livros</a></h3>
         <h5 *ngIf="(objSelect.id === null); else blockElse">
           Todos os livros
         </h5>
         <ng-template #blockElse>
-          <h5>{{objSelect.name}}<a type="button" title="{{objSelect.name}}" href="javascript:;" *ngIf="objSelect.type != 'theme'"
-              (click)="objSelect.type == 'tag'? open(contentTag) : objSelect.type == 'list'? open(contentList) : ''">
+          <h5>{{objSelect.name}}<a type="button" title="{{objSelect.name}}" href="javascript:;"
+              *ngIf="objSelect.type != 'theme'" (click)="objSelect.type == 'tag'? open(contentTag) : '' ">
               <i class="bi bi-pencil-square"></i>
             </a></h5>
 
         </ng-template>
         <hr>
       </div>
+      <div class="row justify-content-end" data-html2canvas-ignore>
+        <div class="col-3">
+          <button (click)="exportPDF()" class="btn btn-outline-secondary" style="min-width: 120px;">
+            <ng-container *ngIf="!isLoadingPdf; else templateLoad">
+              Exportar em PDF
+            </ng-container>
+            <ng-template #templateLoad>
+              <div class="spinner-border text-dark" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </ng-template>
+          </button>
+        </div>
+      </div>
       <div class="row" *ngIf="bookList.length > 0; else elseBlock">
-        <div class="col-md-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
-          <app-card-box-h [book]="book" [annotation]="book.annotation" [tags]="book.annotation.tags"></app-card-box-h>
+
+        <div *ngFor="let books of booksSection" class="book-section row" name="book-section">
+          <div class="col-md-6 col-12 d-flex justify-content-evenly my-1 " *ngFor="let book of books">
+            <app-card-box-h [book]="book" [annotation]="book.annotation" [tags]="book.annotation.tags"></app-card-box-h>
+          </div>
         </div>
       </div>
       <ng-template #elseBlock>
@@ -131,44 +128,18 @@
           <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
 
         </div>
-        <div class="col-md-3 pb-2">
+        <!-- <div class="col-md-3 pb-2">
           <label for="title" class="form-label">Color
           </label>
           <input type="color" class="form-control" id="colorInput" formControlName="colorInput" name="colorInput">
-        </div>
+        </div> -->
       </div>
 
     </form>
   </div>
   <div class="modal-footer justify-content-between">
-    <button type="button" class="btn btn-outline-danger" (click)="deleteTag(contentTag)" *ngIf="objSelect.id != null">Deletar</button>
+    <button type="button" class="btn btn-outline-danger" (click)="deleteTag(contentTag)"
+      *ngIf="objSelect.id != null">Deletar</button>
     <button type="button" class="btn btn-outline-dark" (click)="saveTag(contentTag)">Salvar</button>
-  </div>
-</ng-template>
-
-<ng-template #contentList let-modal>
-  <div class="modal-header">
-
-    <h4 class="modal-title" id="modal-basic-title">Minha Lista</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="listForm" #formDir="ngForm">
-      <div class="mb-3">
-        <div class="col-md-12 pb-2">
-          <label for="name" class="form-label text-center">Nome
-          </label>
-          <input type="text" class="form-control" id="name" formControlName="name" name="name" maxlength="50">
-          <div *ngIf="name?.errors?.['required'] && formDir.submitted" class="msgError">
-            Campo Obrigatório
-          </div>
-        </div>
-      </div>
-
-    </form>
-  </div>
-  <div class="modal-footer justify-content-between">
-    <button type="button" class="btn btn-outline-danger" (click)="deleteList(contentList)">Deletar</button>
-      <button type="button" class="btn btn-outline-dark" (click)="saveList(contentList)">Salvar</button>
   </div>
 </ng-template>

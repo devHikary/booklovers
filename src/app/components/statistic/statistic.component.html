@@ -1,11 +1,38 @@
-<div class="bg-dot">
+<div class="bg-dot" id="contentToConvert">
   <div class="row m-0 p-4 text-center">
-    <h3>Estatística</h3>
+    <h3>Estatística
+      <!-- <button (click)="exportPDF()" data-html2canvas-ignore class="btn btn-outline-secondary" >
+        <ng-container *ngIf="!isLoadingPdf; else templateLoad">
+          Exportar em PDF
+        </ng-container>
+        <ng-template #templateLoad>
+          <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-template>
+      </button> -->
+    </h3>
     <hr>
+    <div class="row justify-content-end" data-html2canvas-ignore>
+      <div class="col-2">
+
+        <button (click)="exportPDF()" class="btn btn-outline-secondary">
+          <ng-container *ngIf="!isLoadingPdf; else templateLoad">
+            Exportar em PDF
+          </ng-container>
+          <ng-template #templateLoad>
+            <div class="spinner-border text-dark" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </ng-template>
+        </button>
+      </div>
+
+    </div>
   </div>
   <div class="row m-0 p-2">
     <div class="col-12 col-md-6 my-4">
-      <div class="card p-2 shadow-sm ">
+      <div class="card p-2 ">
         <div class="row text-center">
           <h4>{{currentYear}}</h4>
         </div>
@@ -34,7 +61,7 @@
       </div>
     </div>
     <div class="col-12 col-md-6 my-4">
-      <div class=" card shadow-sm ps-2 pe-5 bg-postit d-flex justify-content-center align-items-center" style="height: 350px">
+      <div class=" card ps-2 pe-5 bg-postit d-flex justify-content-center align-items-center" style="height: 350px">
         <div class="col-6 text-center h-25" *ngIf="textPostit.year != '';else templateName">
           <p class="fs-3">Em {{textPostit.year}}, </p>
           <p class="fs-3">você leu {{textPostit.count >1 ? textPostit.count + ' livros' : textPostit.count + ' livro'}}</p>
@@ -48,7 +75,7 @@
   </div>
   <div class="row m-0 p-2">
     <div class="col-12 col-md-6 my-4">
-      <div class="card px-5 pt-2 shadow-sm">
+      <div class="card px-5 pt-2">
         <h4>Livros por ano</h4>
         <div class="chart-container pt-2 pb-3">
           <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"> </canvas>
@@ -56,7 +83,7 @@
       </div>
     </div>
     <div class="col-12 col-md-6 my-4">
-      <div class="card px-5 pt-2 text-center shadow-sm h-100 d-flex justify-content-center align-items-center">
+      <div class="card px-5 pt-2 text-center h-100 d-flex justify-content-center align-items-center">
         <p class="fs-3">São {{rating.count >1 ? rating.count  + ' livros' : rating.count  + ' livro'}} com {{rating.rating}} estrelas</p>
         <div class="d-flex justify-content-center">
           <ng-template #t let-fill="fill">

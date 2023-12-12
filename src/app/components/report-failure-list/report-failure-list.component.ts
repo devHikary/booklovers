@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { ReportFailure } from 'src/app/models/ReportFailure';
 import { LocalService } from 'src/app/services/local.service';
 import { ReportFailureService } from 'src/app/services/report-failure.service';
@@ -12,6 +14,7 @@ import { ReportFailureService } from 'src/app/services/report-failure.service';
 export class ReportFailureListComponent implements OnInit{
   reportList: ReportFailure[] = [];
   user_id: string = '';
+  isLoadingPdf: boolean = false;
 
   constructor(
     private localService: LocalService,
@@ -59,5 +62,23 @@ export class ReportFailureListComponent implements OnInit{
 
   editReport(id: string){
     this.router.navigate(['/booklovers/report-failure'], {queryParams: {b: null, id: id}});
+  }
+
+  exportPDF() {
+    this.isLoadingPdf = true;
+
+    var data = document.getElementById('contentToConvert');
+
+    html2canvas(data).then(canvas => {
+      var imgWidth = 190;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jsPDF('p', 'mm', 'a4');
+      var position = 4;
+      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
+      pdf.save('Relatório de Falas e Sugestões - booklovers.pdf');
+    });
+    this.isLoadingPdf = false;
   }
 }

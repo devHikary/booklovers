@@ -27,14 +27,14 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 import { LocalService } from 'src/app/services/local.service';
-import { Location } from "@angular/common";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-book',
   templateUrl: './edit-book.component.html',
-  styleUrls: ['./edit-book.component.css']
+  styleUrls: ['./edit-book.component.css'],
 })
-export class EditBookComponent implements OnInit{
+export class EditBookComponent implements OnInit {
   public book: Book = new Book();
   public bookModal: Book = new Book();
   public bookListModal: Book[] = [];
@@ -45,7 +45,7 @@ export class EditBookComponent implements OnInit{
   localUrl: any;
   autorTeste: any; // TODO: retirar
   uploadCover: any;
-  public isCollapsedThumbnail= true;
+  public isCollapsedThumbnail = true;
   isNew: boolean = true;
   user_id: string = this.localService.getUserId();
 
@@ -98,7 +98,7 @@ export class EditBookComponent implements OnInit{
     private themeService: ThemeService,
     private authorService: AuthorService,
     private localService: LocalService,
-    private location: Location,
+    private location: Location
   ) {
     this.filteredThemes = this.themeCtrl.valueChanges.pipe(
       startWith(''),
@@ -127,7 +127,7 @@ export class EditBookComponent implements OnInit{
       this.allAuthors = response;
     });
     this.activatedRoute.params.subscribe((params) => {
-      if(params['id'] != 'new'){
+      if (params['id'] != 'new') {
         this.bookService.getById(params['id']).subscribe((response: any) => {
           this.book_id = params['id'];
           this.isNew = false;
@@ -137,6 +137,7 @@ export class EditBookComponent implements OnInit{
         });
       }
     });
+
   }
 
   handleUndefined(variable: string) {
@@ -164,7 +165,6 @@ export class EditBookComponent implements OnInit{
     this.selectedThemes = this.book.themes;
     this.selectedAuthors = [];
     this.selectedAuthors = this.book.authors;
-
   }
 
   ariaValueText(current: number, max: number) {
@@ -216,8 +216,7 @@ export class EditBookComponent implements OnInit{
   }
 
   save() {
-    if(this.bookForm.invalid)
-      return;
+    if (this.bookForm.invalid) return;
 
     this.getBook();
 
@@ -309,8 +308,10 @@ export class EditBookComponent implements OnInit{
   loadByAPIGoogle(response: any) {
     this.book.title = response.volumeInfo.title;
     const sub_string = [];
-    sub_string[0] = response.volumeInfo.industryIdentifiers[1].identifier.substr(0,3)
-    sub_string[1] = response.volumeInfo.industryIdentifiers[1].identifier.substr(3)
+    sub_string[0] =
+      response.volumeInfo.industryIdentifiers[1].identifier.substr(0, 3);
+    sub_string[1] =
+      response.volumeInfo.industryIdentifiers[1].identifier.substr(3);
     this.book.isbn_13 = sub_string.join('-');
     this.book.pages = this.handleUndefined(response.volumeInfo.pageCount);
     this.book.release_dt = response.volumeInfo.publishedDate
@@ -343,9 +344,9 @@ export class EditBookComponent implements OnInit{
     this.book.pages = book.pages;
     this.book.release_dt = book.release_dt;
     const sub_string = [];
-    sub_string[0] = book.isbn_13.substring(0,3);
+    sub_string[0] = book.isbn_13.substring(0, 3);
     sub_string[1] = book.isbn_13.substring(3);
-    this.book.isbn_13 = sub_string.join("-");
+    this.book.isbn_13 = sub_string.join('-');
     this.book.themes = book.Themes;
     this.book.release_dt = book.release_dt.split('-').reverse().join('/');
 
@@ -365,19 +366,17 @@ export class EditBookComponent implements OnInit{
     this.book.publisher = this.bookForm.value.publisher!.toLowerCase();
     //this.book.authors = this.bookForm.value.authors;
     this.book.pages = this.bookForm.value.pages!;
-    if(this.bookForm.value.isbn_13.indexOf("-") == -1){
+    if (this.bookForm.value.isbn_13.indexOf('-') == -1) {
       this.book.isbn_13 = this.bookForm.value.isbn_13!;
-    } else{
-      this.book.isbn_13 = this.bookForm.value.isbn_13!.replace("-", "");
+    } else {
+      this.book.isbn_13 = this.bookForm.value.isbn_13!.replace('-', '');
     }
     this.book.thumbnail = this.bookForm.value.thumbnail!;
-    if(this.book.thumbnail == '')
-      this.book.thumbnail = null;
+    if (this.book.thumbnail == '') this.book.thumbnail = null;
     this.book.release_dt = this.bookForm.value
       .release_dt!.split('/')
       .reverse()
       .join('-');
-
   }
 
   open(content: any) {
@@ -411,13 +410,29 @@ export class EditBookComponent implements OnInit{
       // ToDo:retirar
       bookAux.id = element.selfLink;
       // ToDo: voltar essa implementação do id
-      //bookAux.id = element.volumeInfo.industryIdentifiers[0].identifier;
+      const isbn = element.volumeInfo.industryIdentifiers.filter(
+        (book) => book.type == 'ISBN_13'
+      );
+      if (isbn.length < 1) return;
+
+      var sub_string = [];
+      sub_string[0] = isbn[0].identifier.substr(0, 3);
+      sub_string[1] = isbn[0].identifier.substr(3);
+      bookAux.isbn_13 = sub_string.join('-');
+
+      bookAux.pages = this.handleUndefined(element.volumeInfo.pageCount);
+      bookAux.release_dt = element.volumeInfo.publishedDate
+        .split('-')
+        .reverse()
+        .join('/');
 
       bookAux.title = element.volumeInfo.title.toLowerCase();
-      if (element.volumeInfo.authors.length > 0) {
-        element.volumeInfo.authors.forEach((element) => {
-          bookAux.authors.push({ id: null, name: element });
-        });
+      if (element.volumeInfo.authors != undefined) {
+        if (element.volumeInfo.authors.length > 0) {
+          element.volumeInfo.authors.forEach((element) => {
+            bookAux.authors.push({ id: null, name: element });
+          });
+        }
       }
 
       bookAux.publisher =
@@ -425,9 +440,11 @@ export class EditBookComponent implements OnInit{
           ? 'Editora não cadastrado'
           : element.volumeInfo.publisher.toString().toLowerCase();
 
-      if (element.volumeInfo.imageLinks == undefined)
-        bookAux.thumbnail = '/./assets/images/noImage.png';
-      else bookAux.thumbnail = element.volumeInfo.imageLinks?.thumbnail;
+      //TODO: Imagem de capa - export
+      bookAux.thumbnail = '/./assets/images/noImage.png';
+      // if (element.volumeInfo.imageLinks == undefined)
+      //   bookAux.thumbnail = '/./assets/images/noImage.png';
+      // else bookAux.thumbnail = element.volumeInfo.imageLinks?.thumbnail;
 
       //  ToDo: retirar
       // const rndInt = this.randomIntFromInterval(1, 5);
@@ -440,6 +457,7 @@ export class EditBookComponent implements OnInit{
       // ToDo: retirar - fim
       this.bookListModal.push(bookAux);
     });
+
   }
 
   selectedInfo(id: string) {
@@ -554,7 +572,9 @@ export class EditBookComponent implements OnInit{
     this.uploadCover = '';
   }
 
-  reportFailure(){
-    this.router.navigate(['/booklovers/report-failure'], {queryParams: {b: this.book_id, id: 'new'}});
+  reportFailure() {
+    this.router.navigate(['/booklovers/report-failure'], {
+      queryParams: { b: this.book_id, id: 'new' },
+    });
   }
 }

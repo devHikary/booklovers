@@ -43,6 +43,7 @@ import { PermissionComponent } from './components/permission-list/permission/per
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { RoleComponent } from './components/role-list/role/role.component';
 import { ToastGlobalComponent } from './shared/toast-global/toast-global.component';
+import { CardBoxMdComponent } from './components/card-box-md/card-box-md.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { ToastGlobalComponent } from './shared/toast-global/toast-global.compone
     RoleListComponent,
     RoleComponent,
     ToastGlobalComponent,
+    CardBoxMdComponent,
 
   ],
   imports: [
