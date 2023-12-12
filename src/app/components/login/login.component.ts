@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         this.isError = true;
-        this.toastService.show('Atenção! Usuário ou senha incorreta', {
+        this.toastService.show(err.error.message, {
           classname: 'bg-danger text-light',
         });
       }
@@ -216,6 +216,7 @@ export class LoginComponent implements OnInit {
             this.authGg();
           },
           (e) => {
+            console.log(e)
             this.verifyGg = e.error.error;
             this.authGg();
           }
@@ -246,6 +247,11 @@ export class LoginComponent implements OnInit {
           });
         }
       );
+    } else{
+      this.isError = true;
+      this.toastService.show('Erro no servidor! Tente mais tarde', {
+        classname: 'bg-danger text-light',
+      });
     }
   }
 

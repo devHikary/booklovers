@@ -20,6 +20,11 @@ import { PermissionComponent } from './components/permission-list/permission/per
 import { PermissionListComponent } from './components/permission-list/permission-list.component';
 import { RoleComponent } from './components/role-list/role/role.component';
 import { RoleListComponent } from './components/role-list/role-list.component';
+import { ErrorUnavailableComponent } from './components/error-unavailable/error-unavailable.component';
+import { ThemeComponent } from './components/theme-list/theme/theme.component';
+import { ThemeListComponent } from './components/theme-list/theme-list.component';
+import { AuthorListComponent } from './components/author-list/author-list.component';
+import { AuthorComponent } from './components/author-list/author/author.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'booklovers/login', pathMatch: 'full' },
@@ -60,6 +65,10 @@ const routes: Routes = [
   {
     path: "booklovers/error",
     component: ErrorPageComponent,
+  },
+  {
+    path: "booklovers/errorUnavailable",
+    component: ErrorUnavailableComponent,
   },
   {
     path: "booklovers/my-goals",
@@ -104,6 +113,26 @@ const routes: Routes = [
   {
     path: "booklovers/role-list",
     component: RoleListComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/theme/:id",
+    component: ThemeComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/theme-list",
+    component: ThemeListComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/author/:id",
+    component: AuthorComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: "booklovers/author-list",
+    component: AuthorListComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
   { path: '**', component: ErrorPageComponent, canActivate: [AuthGuard]},

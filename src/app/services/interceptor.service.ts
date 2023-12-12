@@ -50,6 +50,8 @@ export class Interceptor implements HttpInterceptor {
       this.router.navigateByUrl(`booklovers/login`);
       // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
       return null; // or EMPTY may be appropriate here
+    } else if((err.status === 503 || err.status === 500)){
+      this.router.navigateByUrl(`booklovers/errorUnavailable`);
     }
     return throwError(err);
   }

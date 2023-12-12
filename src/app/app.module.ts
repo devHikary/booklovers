@@ -5,7 +5,6 @@ import { NgbCarouselModule, NgbCollapseModule, NgbDateAdapter, NgbDateParserForm
 import { AppComponent } from './app.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { CardBoxVComponent } from './components/card-box-v/card-box-v.component';
-import { RatingComponent } from './components/rating/rating.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DetailBookComponent } from './components/detail-book/detail-book.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,13 +43,17 @@ import { RoleListComponent } from './components/role-list/role-list.component';
 import { RoleComponent } from './components/role-list/role/role.component';
 import { ToastGlobalComponent } from './shared/toast-global/toast-global.component';
 import { CardBoxMdComponent } from './components/card-box-md/card-box-md.component';
+import { ErrorUnavailableComponent } from './components/error-unavailable/error-unavailable.component';
+import { ThemeListComponent } from './components/theme-list/theme-list.component';
+import { ThemeComponent } from './components/theme-list/theme/theme.component';
+import { AuthorListComponent } from './components/author-list/author-list.component';
+import { AuthorComponent } from './components/author-list/author/author.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ExplorerComponent,
     CardBoxVComponent,
-    RatingComponent,
     DetailBookComponent,
     SideNavComponent,
     CardBoxHComponent,
@@ -74,6 +77,11 @@ import { CardBoxMdComponent } from './components/card-box-md/card-box-md.compone
     RoleComponent,
     ToastGlobalComponent,
     CardBoxMdComponent,
+    ErrorUnavailableComponent,
+    ThemeListComponent,
+    ThemeComponent,
+    AuthorListComponent,
+    AuthorComponent,
 
   ],
   imports: [

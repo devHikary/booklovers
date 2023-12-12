@@ -15,6 +15,7 @@ import { LocalService } from 'src/app/services/local.service';
 import { Author } from 'src/app/models/Author';
 import { Theme } from 'src/app/models/Theme';
 import { AuthorService } from 'src/app/services/author.service';
+import { AnnotationService } from 'src/app/services/annotation.service';
 
 @Component({
   selector: 'app-explorer',
@@ -49,6 +50,7 @@ export class ExplorerComponent implements OnInit {
     private themeService: ThemeService,
     private localService: LocalService,
     private authorService: AuthorService,
+    private annotationService: AnnotationService,
   ) {}
 
   ngOnInit(): void {
@@ -82,13 +84,13 @@ export class ExplorerComponent implements OnInit {
   }
 
   filterSideTheme(id: string) {
-    this.themeService.getById(id, this.user_id).subscribe((books) => {
+    this.annotationService.getAllByTheme(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }
 
   filterSideAuthor(id: string) {
-    this.authorService.getById(id, this.user_id).subscribe((books) => {
+    this.annotationService.getAllByAuthor(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

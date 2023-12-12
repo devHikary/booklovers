@@ -144,6 +144,5 @@ export class RoleComponent implements OnInit {
     if (!this.isNew) this.role.id = this.roleForm.value.id!;
 
     this.role.name = this.roleForm.value.name!;
-    // this.role.permissions = this.roleForm.value.permissions!;
   }
 }

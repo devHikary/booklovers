@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-12 pe-4 text-center">
+      <i class="bi bi-person-fill icon-author"></i>
+    </div>
+    <div class="col-md-8 col-12">
+      <form class="row" [formGroup]="authorForm" #formDir="ngForm">
+        <h4>Autor</h4>
+
+        <div class="col-md-12 pb-2">
+          <label for="name" class="form-label">Nome</label>
+          <input class="form-control" id="name" name="name" formControlName="name">
+          <div *ngIf="name?.errors?.['required'] && formDir.submitted" class="text-danger">
+            Campo Obrigatório
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col">
+            <button class="btn btn-light" (click)="cancel()">Cancelar</button>
+          </div>
+          <div class="col d-flex justify-content-end">
+            <button type="submit" class="btn btn-secondary" (click)="save()">Salvar</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+

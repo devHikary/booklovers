@@ -39,4 +39,12 @@ export class AnnotationService {
   getReading(id: string) {
     return this.http.get(`${urlAPI}${this.controllerName}reading/${id}`);
   }
+
+  getAllByTheme(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}theme?id=${id}&user_id=${user_id}`);
+  }
+
+  getAllByAuthor(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}author?id=${id}&user_id=${user_id}`);
+  }
 }
