@@ -129,9 +129,15 @@ export class DetailBookComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
-  save(f: any) {
+  save() {
 
     this.getAnnotation();
+    if(this.annotationObj.date_end == null && this.annotationObj.date_start == null && this.annotationObj.favorite == 0 && this.annotationObj.id == null && this.annotationObj.lists.length < 1 && this.annotationObj.pages_read == 0 && this.annotationObj.progress == 0 && this.annotationObj.rating == 0 && this.annotationObj.review == '' && this.annotationObj.tags == null){
+      this.location.back();
+      return;
+    }
+
+    console.log(this.annotationObj)
 
     if (this.isNew) {
       this.annotationService.add(this.annotationObj).subscribe(

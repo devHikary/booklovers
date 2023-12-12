@@ -81,15 +81,17 @@
       </div>
     </div>
     <div class="col-md-3 col-12 mt-2">
-      <div class="card bg-section2 p-3">
+      <div class="card bg-section2  p-3">
         <h5 class="my-2">Favoritos</h5>
-        <div class="col-12 d-flex justify-content-evenly my-1" *ngFor="let book of favoriteList">
-          <app-card-box-mini [book]="book" [annotation]="book.annotation"
-            [tags]="book.annotation.tags"></app-card-box-mini>
-        </div>
-        <div *ngIf="favoriteList.length < 1">
-          <div class="text-center h-100">
-            <p>Nenhum livro cadastrado</p>
+        <div class="favorites-section2">
+          <div class="col-12 d-flex justify-content-evenly my-1 " *ngFor="let book of favoriteList">
+            <app-card-box-mini [book]="book" [annotation]="book.annotation"
+              [tags]="book.annotation.tags"></app-card-box-mini>
+          </div>
+          <div *ngIf="favoriteList.length < 1">
+            <div class="text-center h-100">
+              <p>Nenhum livro cadastrado</p>
+            </div>
           </div>
         </div>
       </div>

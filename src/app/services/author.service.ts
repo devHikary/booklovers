@@ -16,7 +16,11 @@ export class AuthorService {
     return this.http.get(`${urlAPI}${this.controllerName}`);
   }
 
-  getById(id: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}${id}`);
+  getByIdUser(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}u?id=${id}&user_id=${user_id}`);
+  }
+
+  getById(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}id?id=${id}&user_id=${user_id}`);
   }
 }

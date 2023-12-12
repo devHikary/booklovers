@@ -192,8 +192,8 @@
               </mat-autocomplete>
             </div>
             <div class="mt-1 pb-2">
-              <div class="example-chip-list no-wrap card">
-                <mat-chip-grid #chipGridTag aria-label="Seleção de tags" class="no-wrap">
+              <div class="example-chip-list-detail no-wrap-detail card">
+                <mat-chip-grid #chipGridTag aria-label="Seleção de tags" class="no-wrap-detail">
                   <mat-chip-row *ngFor="let author of selectedTags" (removed)="removeTag(author)">
                     {{author.name}}
                     <button matChipRemove [attr.aria-label]="'remove ' + author">
@@ -214,7 +214,7 @@
         <button class="btn btn-light" (click)="cancel()">Cancelar</button>
       </div>
       <div class="col d-flex justify-content-end">
-        <button class="btn btn-secondary" (click)="save(f)">Salvar</button>
+        <button class="btn btn-secondary" (click)="save()">Salvar</button>
       </div>
     </div>
     <!-- <label class="image-upload-container btn btn-bwm">

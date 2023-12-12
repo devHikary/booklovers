@@ -47,7 +47,7 @@ a:hover {
   text-decoration: none;
 }
 
-.example-chip-list {
+.example-chip-list-detail {
   width: 100%;
   height: 68px;
 }
@@ -60,7 +60,7 @@ mat-chip {
   display: inline-block;
 }
 
-.no-wrap {
+.no-wrap-detail {
   flex-wrap: nowrap;
   overflow: auto;
   display: block;

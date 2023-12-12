@@ -12,6 +12,9 @@ import { Observable, map, startWith } from 'rxjs';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.service';
 import { LocalService } from 'src/app/services/local.service';
+import { Author } from 'src/app/models/Author';
+import { Theme } from 'src/app/models/Theme';
+import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
   selector: 'app-explorer',
@@ -20,7 +23,8 @@ import { LocalService } from 'src/app/services/local.service';
 })
 export class ExplorerComponent implements OnInit {
   bookList: Book[] = [];
-  themeList: any[] = [];
+  authorList: Author[] = [];
+  themeList: Theme[] = [];
   public titleSearch: string = ''; // TODO: retirar
   closeResult = ''; // TODO: retirar
   user_id: string = '';
@@ -34,6 +38,9 @@ export class ExplorerComponent implements OnInit {
     title: new FormControl('', [Validators.required]),
   });
 
+  public isCollapsedTheme = true;
+  public isCollapsedAuthor = true;
+
   constructor(
     private booksService: BooksService,
     private modalService: NgbModal,
@@ -41,6 +48,7 @@ export class ExplorerComponent implements OnInit {
     private router: Router,
     private themeService: ThemeService,
     private localService: LocalService,
+    private authorService: AuthorService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +62,9 @@ export class ExplorerComponent implements OnInit {
     });
     this.themeService.getAll().subscribe((themes: any) => {
       this.themeList = themes;
+    });
+    this.authorService.getAll().subscribe((authors: any) => {
+      this.authorList = authors;
     });
   }
 
@@ -70,8 +81,14 @@ export class ExplorerComponent implements OnInit {
     });
   }
 
-  filterSide(id: string) {
+  filterSideTheme(id: string) {
     this.themeService.getById(id, this.user_id).subscribe((books) => {
+      this.loadBooks(books);
+    });
+  }
+
+  filterSideAuthor(id: string) {
+    this.authorService.getById(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

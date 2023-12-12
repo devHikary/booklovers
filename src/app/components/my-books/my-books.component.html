@@ -35,19 +35,67 @@
 
           </div>
         </div>
-        <h5 class="m-2">Gênero</h5>
-        <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;"
-          *ngFor="let themeSch of themeList" (click)="filterSideTheme(themeSch)">
-          {{themeSch.name}}
+        <a title="Exibir mais " href="javascript:;" (click)="collapse.toggle()">
+          <div class="row">
+            <div class="col-10">
+              <h5>Gênero</h5>
+            </div>
+            <div class="col-2">
+              <i class="bi bi-caret-down-fill"></i>
+            </div>
+
+          </div>
+        </a>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
+          <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;"
+            *ngFor="let themeSch of themeList" (click)="filterSideTheme(themeSch)">
+            {{themeSch.name}}
+          </a>
+        </div>
+      </div>
+      <a title="Exibir mais " href="javascript:;" (click)="collapseAuthor.toggle()">
+        <div class="row">
+          <div class="col-10">
+            <h5>Autores</h5>
+          </div>
+          <div class="col-2">
+            <i class="bi bi-caret-down-fill"></i>
+          </div>
+
+        </div>
+      </a>
+      <div #collapseAuthor="ngbCollapse" [(ngbCollapse)]="isCollapsedAuthor">
+        <a class="row m-2" type="button" title="{{authorSch.name}}" href="javascript:;"
+          *ngFor="let authorSch of authorList" (click)="filterSideAuthor(authorSch)">
+          {{authorSch.name}}
         </a>
       </div>
+
       <div>
         <div class="header-filter row rounded">
           <div class="col-9 d-flex align-items-center">
-            <a [routerLink]="['/booklovers/my-list']" href="javascript:;">
-              <h4 class="pt-2">Tag</h4>
+            <h4 class="pt-2">Minhas listas</h4>
+          </div>
+        </div>
+        <a class="row m-2" type="button" title="Lista de livros que estou lendo" href="javascript:;"
+          (click)="filterSideReading()">
+          Lendo...
+        </a>
+        <a class="row m-2" type="button" title="Lista de livros favoritos" href="javascript:;"
+          (click)="filterSideFavorites()">
+          Favoritos
+        </a>
+        <a class="row m-2" type="button" title="Lista de livros que já terminei" href="javascript:;"
+          (click)="filterSideFinished()">
+          Livros finalizados
+        </a>
 
-            </a>
+      </div>
+
+      <div>
+        <div class="header-filter row rounded">
+          <div class="col-9 d-flex align-items-center">
+            <h4 class="pt-2">Tag</h4>
           </div>
           <div class="col-3 d-flex align-items-center justify-content-end">
             <a class="row" title="Adicionar gênero" href="javascript:;" (click)="open(contentTag)">
@@ -57,7 +105,17 @@
         </div>
         <a class="row m-2" type="button" title="{{tag.name}}" href="javascript:;" *ngFor="let tag of tagList"
           (click)="filterSideTag(tag)">
-          {{tag.name}}
+          <div class="row">
+            <div class="col-10">
+              <p class="mb-0">{{tag.name}}</p>
+            </div>
+            <div class="col-2">
+              <a type="button" title="Editar {{objSelect.name}}" href="javascript:;" (click)="open(contentTag)">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+            </div>
+          </div>
+
         </a>
 
       </div>
@@ -73,10 +131,7 @@
           Todos os livros
         </h5>
         <ng-template #blockElse>
-          <h5>{{objSelect.name}}<a type="button" title="{{objSelect.name}}" href="javascript:;"
-              *ngIf="objSelect.type != 'theme'" (click)="objSelect.type == 'tag'? open(contentTag) : '' ">
-              <i class="bi bi-pencil-square"></i>
-            </a></h5>
+          <h5>{{objSelect.name}}</h5>
 
         </ng-template>
         <hr>

@@ -331,9 +331,9 @@ export class EditBookComponent implements OnInit {
     );
     this.html_string = response.volumeInfo.description;
 
-    if (response.volumeInfo.imageLinks == undefined)
+    // if (response.volumeInfo.imageLinks == undefined)
       this.book.thumbnail = '/./assets/images/noImage.png';
-    else this.book.thumbnail = response.volumeInfo.imageLinks?.thumbnail;
+    // else this.book.thumbnail = response.volumeInfo.imageLinks?.thumbnail;
   }
 
   loadBook(book: any) {

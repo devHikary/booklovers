@@ -9,9 +9,9 @@
       <label for="title" class="form-label">Procurar
       </label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="titleSearch" name="titleSearch"
-          aria-label="Procurar por título" matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto"
-          placeholder="Nome do livro" (keyup.enter)="searchBook()">
+        <input type="text" class="form-control" id="titleSearch" name="titleSearch" aria-label="Procurar por título"
+          matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto" placeholder="Nome do livro"
+          (keyup.enter)="searchBook()">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option}}
@@ -38,22 +38,48 @@
 
   </div>
   <div class="row justify-content-center mx-2">
-    <aside class="col-md-3 h-75 rounded ">
+    <aside class="col-md-3 h-75 rounded mb-2">
       <div class="header-filter row rounded">
         <div class="col-9 d-flex align-items-center">
           <h4 class="pt-2">Filtro</h4>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-end">
-          <!-- <a class="row" title="Adicionar gênero" href="javascript:;" (click)="open(content)">
-            <i class="bi bi-plus-circle"></i>
-          </a> -->
-        </div>
       </div>
-      <h5 class="m-2">Gênero</h5>
-      <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;" *ngFor="let themeSch of themeList"
-        (click)="filterSide(themeSch.id)">
-        {{themeSch.name}}
+      <a title="Exibir mais " href="javascript:;" (click)="collapse.toggle()">
+        <div class="row">
+          <div class="col-10">
+            <h5>Gênero</h5>
+          </div>
+          <div class="col-2">
+            <i class="bi bi-caret-down-fill"></i>
+          </div>
+
+        </div>
       </a>
+      <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
+        <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;"
+          *ngFor="let themeSch of themeList" (click)="filterSideTheme(themeSch.id)">
+          {{themeSch.name}}
+        </a>
+
+      </div>
+      <a title="Exibir mais " href="javascript:;" (click)="collapseAuthor.toggle()">
+        <div class="row">
+          <div class="col-10">
+            <h5>Autores</h5>
+          </div>
+          <div class="col-2">
+            <i class="bi bi-caret-down-fill"></i>
+          </div>
+
+        </div>
+      </a>
+      <div #collapseAuthor="ngbCollapse" [(ngbCollapse)]="isCollapsedAuthor">
+        <a class="row m-2" type="button" title="{{authorSch.name}}" href="javascript:;"
+          *ngFor="let authorSch of authorList" (click)="filterSideAuthor(authorSch.id)">
+          {{authorSch.name}}
+        </a>
+      </div>
+
 
     </aside>
     <article class="col-md-9 bg-grade">
@@ -62,11 +88,12 @@
           <app-card-box-v [book]="book" [annotation]="book.annotation"></app-card-box-v>
         </div>
       </div>
-      <ng-template #elseBlock >
+      <ng-template #elseBlock>
         <div class="d-flex flex-column text-center mt-3">
           <h5>Não encontrou o seu livro?</h5>
           <p>Ajude nossa comunidade! :)</p>
-          <p>Cadastre o seu livro<a href="javascript;;" type="button" class="ps-0" click="detailBook(new)"> aqui</a>!</p>
+          <p>Cadastre o seu livro <a href="javascript;;" type="button" class="ps-0" click="detailBook(new)"> aqui</a>!
+          </p>
         </div>
       </ng-template>
     </article>

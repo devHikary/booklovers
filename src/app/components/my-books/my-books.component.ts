@@ -16,6 +16,9 @@ import jsPDF from 'jspdf';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import { download } from 'downloadjs';
+import { Author } from 'src/app/models/Author';
+import { AuthorService } from 'src/app/services/author.service';
+import { AnnotationService } from 'src/app/services/annotation.service';
 
 @Component({
   selector: 'app-my-books',
@@ -24,10 +27,11 @@ import { download } from 'downloadjs';
 })
 export class MyBooksComponent implements OnInit {
   bookList: Book[] = [];
-  booksSection: any[] = []
+  booksSection: any[] = [];
   themeList: any[] = [];
   listList: List[] = [];
   tagList: Tag[] = [];
+  authorList: Author[] = [];
   listObj: List = new List();
   tagObj: Tag = new Tag();
   closeResult = ''; // TODO: retirar
@@ -44,6 +48,8 @@ export class MyBooksComponent implements OnInit {
   filteredOptions: Observable<string[]>;
 
   isLoadingPdf: boolean = false;
+  public isCollapsedTheme = true;
+  public isCollapsedAuthor = true;
 
   //TODO: teste
   image_base64: any;
@@ -63,13 +69,18 @@ export class MyBooksComponent implements OnInit {
     private themeService: ThemeService,
     private localService: LocalService,
     private listService: ListService,
-    private tagService: TagService
+    private tagService: TagService,
+    private authorService: AuthorService,
+    private annotationService: AnnotationService
   ) {}
 
   ngOnInit(): void {
     this.user_id = this.localService.getUserId();
     this.themeService.getAll().subscribe((themes: any) => {
       this.themeList = themes;
+    });
+    this.authorService.getAll().subscribe((authors: any) => {
+      this.authorList = authors;
     });
     this.listService.getAll(this.user_id).subscribe((lists: any) => {
       this.listList = lists;
@@ -130,6 +141,51 @@ export class MyBooksComponent implements OnInit {
     });
   }
 
+  filterSideAuthor(obj: any) {
+    this.objSelect = obj;
+    this.objSelect.type = 'author';
+
+    this.authorService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
+      this.loadBooks(books);
+    });
+  }
+
+  filterSideFinished() {
+    this.objSelect.id = 1;
+    this.objSelect.name = "Livros Finalizados";
+    this.objSelect.type = 'books';
+
+    this.annotationService
+      .getFinished(this.user_id)
+      .subscribe((response: any) => {
+        this.loadBooks(response);
+      });
+  }
+
+  filterSideFavorites() {
+    this.objSelect.id = 1;
+    this.objSelect.name = "Livros Favoritos";
+    this.objSelect.type = 'books';
+
+    this.annotationService
+      .getFavorite(this.user_id)
+      .subscribe((response: any) => {
+        this.loadBooks(response);
+      });
+  }
+
+  filterSideReading() {
+    this.objSelect.id = 1;
+    this.objSelect.name = "Lendo...";
+    this.objSelect.type = 'books';
+
+    this.annotationService
+      .getReading(this.user_id)
+      .subscribe((response: any[]) => {
+        this.loadBooks(response);
+      });
+  }
+
   filterSideTag(obj: any) {
     this.objSelect = obj;
     this.objSelect.type = 'tag';
@@ -182,7 +238,7 @@ export class MyBooksComponent implements OnInit {
         this.bookList.push(bookAux);
       });
 
-      this.booksSection = this.separar(this.bookList, 6)
+      this.booksSection = this.separar(this.bookList, 6);
     }
   }
 
@@ -355,43 +411,47 @@ export class MyBooksComponent implements OnInit {
     return res;
   }
 
-
   async exportPDF() {
     this.isLoadingPdf = true;
     var data = document.getElementById('header-file');
-    var listItems  = Array.from(document.getElementsByName('book-section'));
+    var listItems = Array.from(document.getElementsByName('book-section'));
 
     let pdf = new jsPDF('p', 'mm', 'a4');
 
-      for (let i = 0; i < listItems.length; i++) {
-        if (i > 0) {
-          pdf.addPage(); // Add a new page for subsequent pages
-        }
+    for (let i = 0; i < listItems.length; i++) {
+      if (i > 0) {
+        pdf.addPage(); // Add a new page for subsequent pages
+      }
 
-        // pdf.setFontSize(15);
-        //   pdf.text('Meus Livros', 10, 30)
+      // pdf.setFontSize(15);
+      //   pdf.text('Meus Livros', 10, 30)
 
-        await html2canvas(data,{allowTaint: false, useCORS: true}).then(canvas => {
+      await html2canvas(data, { allowTaint: false, useCORS: true }).then(
+        (canvas) => {
           var imgWidth = 190;
-          var imgHeight = canvas.height * imgWidth / canvas.width;
+          var imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-          const contentDataURL = canvas.toDataURL('image/png')
+          const contentDataURL = canvas.toDataURL('image/png');
 
           var position = 10;
-          pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
-        });
+          pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight);
+        }
+      );
 
-        await html2canvas(listItems[i],{allowTaint: false, useCORS: true}).then(canvas => {
-          var imgWidth = 190;
-          var imgHeight = canvas.height * imgWidth / canvas.width;
+      await html2canvas(listItems[i], {
+        allowTaint: false,
+        useCORS: true,
+      }).then((canvas) => {
+        var imgWidth = 190;
+        var imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-          const contentDataURL = canvas.toDataURL('image/png')
+        const contentDataURL = canvas.toDataURL('image/png');
 
-          var position = 30;
-          pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
-        });
-  }
-      pdf.save('Meus livros - booklovers.pdf');
-      this.isLoadingPdf = false;
+        var position = 30;
+        pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight);
+      });
+    }
+    pdf.save('Meus livros - booklovers.pdf');
+    this.isLoadingPdf = false;
   }
 }
