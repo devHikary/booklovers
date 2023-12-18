@@ -121,4 +121,12 @@ export class HomeComponent implements OnInit {
       return list;
     }
   }
+
+  refreshFavorites(){
+    this.annotationService
+      .getFavorite(this.user_id)
+      .subscribe((response: any) => {
+        this.favoriteList = this.loadBooks(response);
+      });
+  }
 }

@@ -82,7 +82,13 @@
     </div>
     <div class="col-md-3 col-12 mt-2">
       <div class="card bg-section2  p-3">
-        <h5 class="my-2">Favoritos</h5>
+        <div class="col d-flex justify-space-between">
+          <h5 class="my-2">Favoritos</h5>
+          <a title="Atualizar a lista de favoritos" href="javascript:;" (click)="refreshFavorites()" class="d-flex align-items-center i-home ps-2">
+            <i class="bi bi-arrow-clockwise"></i>
+          </a>
+
+        </div>
         <div class="favorites-section2">
           <div class="col-12 d-flex justify-content-evenly my-1 " *ngFor="let book of favoriteList">
             <app-card-box-mini [book]="book" [annotation]="book.annotation"
@@ -100,7 +106,7 @@
   <div class="row bg-section3">
     <h5 class="my-2">Livros Finalizados</h5>
     <div class="col-md-2 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
-      <app-card-box-v [book]="book" [annotation]="book.annotation"></app-card-box-v>
+      <app-card-box-v [book]="book" [annotation]="book.annotation" ></app-card-box-v>
     </div>
     <div *ngIf="finishedList.length < 1">
       <div class="text-center h-100">

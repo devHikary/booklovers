@@ -11,6 +11,9 @@
   scrollbar-width: none; /* Firefox */
 }
 
+.i-home{
+  color: #d3d3d3;
+}
 
 .favorites-section2::-webkit-scrollbar {
   display: none;
