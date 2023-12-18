@@ -15,6 +15,13 @@
   color: #d3d3d3;
 }
 
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+
 .favorites-section2::-webkit-scrollbar {
   display: none;
 }

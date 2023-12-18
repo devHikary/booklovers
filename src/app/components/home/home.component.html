@@ -91,8 +91,11 @@
         </div>
         <div class="favorites-section2">
           <div class="col-12 d-flex justify-content-evenly my-1 " *ngFor="let book of favoriteList">
-            <app-card-box-mini [book]="book" [annotation]="book.annotation"
+            <a title="Detalhes do livro" href="javascript:;" (click)="detailBook(book.id)">
+              <app-card-box-mini [book]="book" [annotation]="book.annotation"
               [tags]="book.annotation.tags"></app-card-box-mini>
+            </a>
+
           </div>
           <div *ngIf="favoriteList.length < 1">
             <div class="text-center h-100">

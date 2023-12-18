@@ -24,6 +24,7 @@ import { AnnotationService } from 'src/app/services/annotation.service';
 import { Book } from 'src/app/models/Book';
 import { GoalService } from 'src/app/services/goal.service';
 import { Goal } from 'src/app/models/Goal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -42,7 +43,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private localService: LocalService,
     private annotationService: AnnotationService,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -128,5 +130,9 @@ export class HomeComponent implements OnInit {
       .subscribe((response: any) => {
         this.favoriteList = this.loadBooks(response);
       });
+  }
+
+  detailBook(id: string){
+    this.router.navigate(['/booklovers/detail-book/', id]);
   }
 }
