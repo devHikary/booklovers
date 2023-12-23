@@ -13,14 +13,13 @@
       </div>
 
     </div>
-    <div class="col-1 ps-3 text-center">
+    <div class="col-1 ps-3 text-center" *ngIf="isEdit">
       <a title="Detalhes do livro" href="javascript:;" (click)="detailBook(book.id)">
         <i class="bi bi-pencil-square i-card-h"></i>
       </a>
     </div>
   </div>
   <div class="row g-0">
-
     <div class="col-4">
 
       <img class="card-img-top img-size ms-2 mt-1" src="{{book.thumbnail}}" alt="thumbnail" >
@@ -43,14 +42,12 @@
 
       </div>
 
-
     </div>
-
 
     <div class="row mb-2">
       <div class="col-5 px-1">
         <div class="row">
-          <div class="col-9">
+          <div class="col-9 ">
             <ng-template #t let-fill="fill">
               <i class="bi-star-fill i-card-h">
                 <i *ngIf="fill > 0" class="bi-star-fill filled i-card-h" [style.width.%]="fill"></i>
@@ -68,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="col-7 px-1 mt-1">
+      <div class="col-md-7 col-lg-7 col-7 col-xxl-7  px-1 mt-1">
         <ngb-progressbar [showValue]="true" type="info" [value]="book.annotation.progress"
           [max]="100"></ngb-progressbar>
       </div>

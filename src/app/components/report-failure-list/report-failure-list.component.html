@@ -10,9 +10,10 @@
           <hr>
         </div>
         <div class="row justify-content-between" data-html2canvas-ignore>
-          <div class="col-2">
+          <div class="col-3">
 
-            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="reportList.length > 0" >
+            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="reportList.length > 0"
+              title="Exportar em PDF">
               <ng-container *ngIf="!isLoadingPdf; else templateLoad">
                 Exportar em PDF
               </ng-container>
@@ -23,37 +24,40 @@
               </ng-template>
             </button>
           </div>
-          <div class="col-2">
-            <button class="btn btn-outline-secondary" (click)="newReport()">Relatar falha </button>
+          <div class="col-3 d-flex justify-content-end">
+            <button class="btn btn-outline-secondary" (click)="newReport()" title="Relatar problema/ sugestão">Relatar falha </button>
           </div>
         </div>
         <div class="row pt-2">
-          <table class="table">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">ID Book</th>
-                <th scope="col">Criado em</th>
-                <th scope="col">Status</th>
-                <th scope="col" data-html2canvas-ignore>Editar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of reportList">
-                <td>{{item.id}}</td>
-                <td>{{item.description}}</td>
-                <td>{{item.book_id === null? "Não informado" : item.book_id }}</td>
-                <td>{{handleDate(item.createdAt)}}</td>
-                <td>{{handleStatus(item.status)}}</td>
-                <td data-html2canvas-ignore>
-                  <a href="javascript:;" type="button" (click)="editReport(item.id)"> <i
-                      class="bi bi-pencil-square"></i></a>
-                </td>
+          <div class="col  scrol-report">
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">ID Book</th>
+                  <th scope="col">Criado em</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" data-html2canvas-ignore>Editar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of reportList">
+                  <td>{{item.id}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.book_id === null? "Não informado" : item.book_id }}</td>
+                  <td>{{handleDate(item.createdAt)}}</td>
+                  <td>{{handleStatus(item.status)}}</td>
+                  <td data-html2canvas-ignore>
+                    <a href="javascript:;" type="button" (click)="editReport(item.id)" title="Editar"> <i
+                        class="bi bi-pencil-square"></i></a>
+                  </td>
 
-              </tr>
-            </tbody>
-          </table>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div class="row justify-content-center mt-1">
     <div class="col-10" >
     </div>
-    <div class="col-1 ps-3 text-center">
+    <div class="col-1 ps-3 text-center" *ngIf="isEdit">
       <a title="Detalhes do livro" href="javascript:;" (click)="detailGoal(goal.id)">
         <i class="bi bi-pencil-square i-card-h"></i>
       </a>

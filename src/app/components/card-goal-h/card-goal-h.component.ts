@@ -8,6 +8,7 @@ import { Goal } from 'src/app/models/Goal';
 })
 export class CardGoalHComponent {
   @Input() goal: Goal = new Goal();
+  @Input() isEdit: boolean = true;
 
   detailGoal(id: string){
 

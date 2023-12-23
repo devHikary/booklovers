@@ -18,6 +18,7 @@ export class CardBoxHComponent implements OnInit {
   @Input() book: Book = new Book();
   @Input() annotation: Annotation = new Annotation();
   @Input() tags: Tag[] = [];
+  @Input() isEdit: boolean = true;
   expanded: boolean = false;
   public isCollapsed: boolean = true;
 

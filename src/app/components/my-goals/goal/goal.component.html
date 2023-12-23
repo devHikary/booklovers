@@ -4,7 +4,7 @@
       <i class="bi bi-trophy-fill icon-goal"></i>
     </div>
     <div class="col-md-8 col-12">
-      <form class="row" [formGroup]="goalForm" #formDir="ngForm" >
+      <form class="row" [formGroup]="goalForm" #formDir="ngForm">
         <h4>Desafio</h4>
 
         <div class="col-md-12 pb-2">
@@ -18,12 +18,15 @@
         <div class="col-md-6 pb-2">
           <label for="target" class="form-label">Objetivo</label>
           <input class="form-control" placeholder="Quando livros quero ler" id="target" name="target"
-            formControlName="target">
+            formControlName="target" type="number" min="1" step="1">
           <div *ngIf="target?.errors?.['required'] && formDir.submitted" class="text-danger">
             Campo Obrigatório
           </div>
+          <div *ngIf="target?.errors?.['min'] && formDir.submitted" class="text-danger">
+            Valor inválido
+          </div>
         </div>
-        <div class="col-md-6 pb-2">
+        <div class="col-md-6 pb-2" *ngIf="!isNew">
           <label for="name" class="form-label">Contagem atual</label>
           <input class="form-control" formControlName="amount" name="amount">
         </div>
@@ -36,8 +39,7 @@
             <div class="input-group">
               <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
                 [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="b"
-                outsideDays="hidden" [startDate]="fromDate!" tabindex="-1"
-                 />
+                outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" />
               <ng-template #b let-date let-focused="focused">
                 <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
                   [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
@@ -50,8 +52,9 @@
           </div>
 
           <div class="input-group">
-            <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate" formControlName="date_start"
-              [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
+            <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate"
+              formControlName="date_start" [value]="formatter.format(fromDate)"
+              (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
             <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
               type="button"></button>
           </div>

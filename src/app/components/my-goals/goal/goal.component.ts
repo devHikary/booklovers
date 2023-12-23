@@ -2,7 +2,11 @@ import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbDateParserFormatter,
+} from '@ng-bootstrap/ng-bootstrap';
 import { Goal } from 'src/app/models/Goal';
 import { GoalService } from 'src/app/services/goal.service';
 import { LocalService } from 'src/app/services/local.service';
@@ -11,9 +15,9 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-goal',
   templateUrl: './goal.component.html',
-  styleUrls: ['./goal.component.css']
+  styleUrls: ['./goal.component.css'],
 })
-export class GoalComponent implements OnInit{
+export class GoalComponent implements OnInit {
   goal: Goal = new Goal();
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
@@ -24,12 +28,11 @@ export class GoalComponent implements OnInit{
   public goalForm = new FormGroup({
     id: new FormControl(null),
     name: new FormControl('', [Validators.required]),
-    target: new FormControl(0, [Validators.required]),
+    target: new FormControl(1, [Validators.required, Validators.min(1)]),
     amount: new FormControl(0),
     date_start: new FormControl('', [Validators.required]),
     date_end: new FormControl('', [Validators.required]),
     status: new FormControl(0),
-
   });
 
   constructor(
@@ -38,25 +41,21 @@ export class GoalComponent implements OnInit{
     private location: Location,
     private localService: LocalService,
     private goalService: GoalService,
-    private activatedRoute: ActivatedRoute,
-  ){}
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       if (params['id'] != 'new') {
-        this.goalService
-          .getById(params['id'])
-          .subscribe((response: any) => {
-            this.isNew = false;
-
-
-            this.setGoal(response);
-          });
+        this.goalService.getById(params['id']).subscribe((response: any) => {
+          this.isNew = false;
+          this.setGoal(response);
+        });
       }
     });
   }
 
-  setGoal(goal: any){
+  setGoal(goal: any) {
     this.goalForm.setValue({
       id: goal.id,
       name: goal.name,
@@ -65,7 +64,6 @@ export class GoalComponent implements OnInit{
       date_start: goal.date_start,
       date_end: goal.date_end,
       status: goal.status,
-
     });
 
     if (goal.date_start != null) {
@@ -100,7 +98,10 @@ export class GoalComponent implements OnInit{
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate) || date.equals(this.fromDate)) {
+    } else if (
+      (this.fromDate && !this.toDate && date.after(this.fromDate)) ||
+      date.equals(this.fromDate)
+    ) {
       this.toDate = date;
     } else {
       this.toDate = null;
@@ -119,7 +120,7 @@ export class GoalComponent implements OnInit{
   }
 
   isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && (date.before(this.toDate) );
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
 
   isRange(date: NgbDate) {
@@ -142,66 +143,77 @@ export class GoalComponent implements OnInit{
     this.location.back();
   }
 
-  save(){
-    if(this.toDate != undefined)
-      this.goalForm.controls.date_end.setValue(this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year);
-    if(this.fromDate != undefined)
-      this.goalForm.controls.date_start.setValue(this.fromDate.month + '/' + this.fromDate.day + '/' + this.fromDate.year);
+  save() {
+    if (this.toDate != undefined)
+      this.goalForm.controls.date_end.setValue(
+        this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year
+      );
+    if (this.fromDate != undefined)
+      this.goalForm.controls.date_start.setValue(
+        this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year
+      );
 
-    if(this.goalForm.invalid)
-      return
+    if (this.goalForm.get('target').value < 1) return;
 
-      this.getGoal();
+    if (this.goalForm.invalid) return;
 
-      if(this.isNew){
-        this.goalService.add(this.goal).subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Salvo',
-              text: 'Registro salvo com sucesso',
-              icon: 'success',
-              timer: 2000,
-            });
-            //this.router.navigate(['/booklovers/explorer/']);
-            this.location.back();
-          },
-          (e) => {
-            Swal.fire({
-              title: 'Erro!',
-              text: e.error.error,
-              icon: 'error',
-              timer: 2000,
-            });
-          }
-        );
-      }else{
-        this.goalService.update(this.goal).subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Salvo',
-              text: 'Registro salvo com sucesso',
-              icon: 'success',
-              timer: 2000,
-            });
-            //this.router.navigate(['/booklovers/explorer/']);
-            this.location.back();
-          },
-          (e) => {
-            Swal.fire({
-              title: 'Erro!',
-              text: e.error.error,
-              icon: 'error',
-              timer: 2000,
-            });
-          }
-        );
-      }
 
+    this.getGoal();
+
+    if (this.isNew) {
+      this.goalService.add(this.goal).subscribe(
+        (response) => {
+          Swal.fire({
+            title: 'Salvo',
+            text: 'Registro salvo com sucesso',
+            icon: 'success',
+            timer: 2000,
+          });
+          //this.router.navigate(['/booklovers/explorer/']);
+          this.location.back();
+        },
+        (e) => {
+          Swal.fire({
+            title: 'Erro!',
+            text: e.error.error,
+            icon: 'error',
+            timer: 2000,
+          });
+        }
+      );
+    } else {
+      this.goalService.update(this.goal).subscribe(
+        (response) => {
+          Swal.fire({
+            title: 'Salvo',
+            text: 'Registro salvo com sucesso',
+            icon: 'success',
+            timer: 2000,
+          });
+          //this.router.navigate(['/booklovers/explorer/']);
+          this.location.back();
+        },
+        (e) => {
+          Swal.fire({
+            title: 'Erro!',
+            text: e.error.error,
+            icon: 'error',
+            timer: 2000,
+          });
+        }
+      );
+    }
   }
 
-  getGoal(){
-    if(!this.isNew)
-      this.goal.id = this.goalForm.value.id!;
+  getGoal() {
+    this.goalForm.controls.date_start.setValue(
+      this.fromDate.month + '/' + this.fromDate.day + '/' + this.fromDate.year
+    );
+    this.goalForm.controls.date_end.setValue(
+      this.toDate.month + '/' + this.toDate.day + '/' + this.toDate.year
+    );
+
+    if (!this.isNew) this.goal.id = this.goalForm.value.id!;
 
     this.goal.user_id = this.localService.getUserId();
     this.goal.name = this.goalForm.value.name!;
@@ -210,5 +222,4 @@ export class GoalComponent implements OnInit{
     this.goal.date_start = this.goalForm.value.date_start!;
     this.goal.date_end = this.goalForm.value.date_end!;
   }
-
 }

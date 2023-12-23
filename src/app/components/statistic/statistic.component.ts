@@ -85,9 +85,6 @@ export class StatisticComponent implements OnInit{
 
       };
     })
-    // this.statisticService.getTheme(this.user_id).subscribe((response: any) => {
-    //   console.log(response)
-    // })
   }
   public dataList = trackerMonth;
 

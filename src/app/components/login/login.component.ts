@@ -216,7 +216,6 @@ export class LoginComponent implements OnInit {
             this.authGg();
           },
           (e) => {
-            console.log(e)
             this.verifyGg = e.error.error;
             this.authGg();
           }

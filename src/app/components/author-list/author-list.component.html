@@ -10,8 +10,8 @@
           <hr>
         </div>
         <div class="row justify-content-between" data-html2canvas-ignore>
-          <div class="col-2">
-            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="authorList.length > 0" >
+          <div class="col-3">
+            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="authorList.length > 0" title="Exportar em pdf">
               <ng-container *ngIf="!isLoadingPdf; else templateLoad">
                 Exportar em PDF
               </ng-container>
@@ -22,8 +22,8 @@
               </ng-template>
             </button>
           </div>
-          <div class="col-2">
-            <button class="btn btn-outline-secondary" (click)="newAuthor()">Cadastrar</button>
+          <div class="col-3 d-flex justify-content-end">
+            <button class="btn btn-outline-secondary" (click)="newAuthor()" title="Cadastrar novo autor">Cadastrar</button>
           </div>
         </div>
         <div class="row pt-2">
@@ -32,7 +32,7 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
-                <th scope="col" data-html2canvas-ignore>Editar</th>
+                <th scope="col" data-html2canvas-ignore>Ação</th>
               </tr>
             </thead>
             <tbody>
@@ -40,9 +40,9 @@
                 <td>{{item.id}}</td>
                 <td>{{item.name }}</td>
                 <td data-html2canvas-ignore>
-                  <a href="javascript:;" type="button" (click)="editAuthor(item.id)"> <i
+                  <a href="javascript:;" type="button" (click)="editAuthor(item.id)" title="Editar"> <i
                       class="bi bi-pencil-square"></i></a>
-                      <a href="javascript:;" type="button" (click)="deleteAuthor(item.id)" class="ms-2"> <i class="bi bi-trash3 text-danger"></i></a>
+                      <a href="javascript:;" type="button" (click)="deleteAuthor(item.id)" class="ms-2" title="Deletar"> <i class="bi bi-trash3 text-danger"></i></a>
                 </td>
 
               </tr>

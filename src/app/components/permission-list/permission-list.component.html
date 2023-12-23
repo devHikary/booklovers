@@ -10,8 +10,9 @@
           <hr>
         </div>
         <div class="row justify-content-between" data-html2canvas-ignore>
-          <div class="col-2">
-            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="permissionList.length > 0" >
+          <div class="col-3">
+            <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="permissionList.length > 0"
+              title="Exportar em PDF">
               <ng-container *ngIf="!isLoadingPdf; else templateLoad">
                 Exportar em PDF
               </ng-container>
@@ -22,34 +23,38 @@
               </ng-template>
             </button>
           </div>
-          <div class="col-2">
-            <button class="btn btn-outline-secondary" (click)="newPermission()">Cadastrar</button>
+          <div class="col-3 d-flex justify-content-end">
+            <button class="btn btn-outline-secondary" (click)="newPermission()" title="Cadastrar nova permissão">Cadastrar</button>
           </div>
         </div>
         <div class="row pt-2">
-          <table class="table">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">URL</th>
-                <th scope="col" data-html2canvas-ignore>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of permissionList">
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.url }}</td>
-                <td data-html2canvas-ignore>
-                  <a href="javascript:;" type="button" (click)="editPermission(item.id)"> <i
-                      class="bi bi-pencil-square"></i></a>
-                      <a href="javascript:;" type="button" (click)="deletePermission(item.id)" class="ms-2"> <i class="bi bi-trash3 text-danger"></i></a>
-                </td>
+          <div class="col scrol-permission">
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">URL</th>
+                  <th scope="col" data-html2canvas-ignore>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of permissionList">
+                  <td>{{item.id}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.url }}</td>
+                  <td data-html2canvas-ignore>
+                    <a href="javascript:;" type="button" (click)="editPermission(item.id)" title="Editar"> <i
+                        class="bi bi-pencil-square"></i></a>
+                        <a href="javascript:;" type="button" (click)="deletePermission(item.id)" class="ms-2"
+                        title="Deletar"> <i class="bi bi-trash3 text-danger"></i></a>
+                  </td>
 
-              </tr>
-            </tbody>
-          </table>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>

@@ -137,8 +137,6 @@ export class DetailBookComponent implements OnInit {
       return;
     }
 
-    console.log(this.annotationObj)
-
     if (this.isNew) {
       this.annotationService.add(this.annotationObj).subscribe(
         (response) => {

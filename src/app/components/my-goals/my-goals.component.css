@@ -5,3 +5,9 @@
 .bg-dot{
   background-image: url(../../../assets/images/dot.png);
 }
+
+.scrol-goal{
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}

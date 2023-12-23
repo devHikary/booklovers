@@ -5,9 +5,9 @@
       <hr>
     </div>
     <div class="row justify-content-between" data-html2canvas-ignore>
-      <div class="col-2">
+      <div class="col-3">
 
-        <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="goalList.length > 0" >
+        <button (click)="exportPDF()" class="btn btn-outline-secondary" *ngIf="goalList.length > 0" title="Exportar em PDF" >
           <ng-container *ngIf="!isLoadingPdf; else templateLoad">
             Exportar em PDF
           </ng-container>
@@ -19,45 +19,47 @@
         </button>
       </div>
 
-      <div class="col-2">
-        <button class="btn btn-outline-secondary" (click)="newGoal()">Cadastrar desafio</button>
+      <div class="col-3 d-flex justify-content-end">
+        <button class="btn btn-outline-secondary" (click)="newGoal()" title="Cadastrar novo desafio">Cadastrar desafio</button>
       </div>
 
 
     </div>
     <div class="row pt-2">
-      <table class="table">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Desafio / Meta</th>
-            <th scope="col">Objetivo</th>
-            <th scope="col">Contagem atual</th>
-            <th scope="col">Início</th>
-            <th scope="col">Fim</th>
-            <th scope="col">Status</th>
-            <th scope="col">Editar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of goalList">
-            <td>{{item.name}}</td>
-            <td>{{item.target}}</td>
-            <td>{{item.amount}}</td>
-            <td>{{handleDate(item.date_start)}}</td>
-            <td>{{handleDate(item.date_end)}}</td>
-            <td>{{handleStatus(item.status)}}</td>
-            <td>
-              <a href="javascript:;" type="button" (click)="editGoal(item.id)"> <i class="bi bi-pencil-square"></i></a>
-              <a href="javascript:;" type="button" (click)="deleteGoal(item.id)" class="ms-2"> <i
-                  class="bi bi-trash3 text-danger"></i></a>
-            </td>
+      <div class="col-12 scrol-goal">
+        <table class="table ">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Desafio / Meta</th>
+              <th scope="col">Objetivo</th>
+              <th scope="col">Contagem atual</th>
+              <th scope="col">Início</th>
+              <th scope="col">Fim</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of goalList">
+              <td>{{item.name}}</td>
+              <td>{{item.target}}</td>
+              <td>{{item.amount}}</td>
+              <td>{{handleDate(item.date_start)}}</td>
+              <td>{{handleDate(item.date_end)}}</td>
+              <td>{{handleStatus(item.status)}}</td>
+              <td>
+                <a href="javascript:;" type="button" (click)="editGoal(item.id)" title="Editar"> <i class="bi bi-pencil-square"></i></a>
+                <a href="javascript:;" type="button" (click)="deleteGoal(item.id)" class="ms-2" title="Deletar"> <i
+                    class="bi bi-trash3 text-danger"></i></a>
+              </td>
 
-          </tr>
-          <tr *ngIf="goalList.length< 1">
-            <td colspan="7" class="text-center">Sem registro</td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+            <tr *ngIf="goalList.length< 1">
+              <td colspan="7" class="text-center">Sem registro</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
