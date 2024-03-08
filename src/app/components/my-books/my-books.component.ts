@@ -136,7 +136,7 @@ export class MyBooksComponent implements OnInit {
     this.objSelect = obj;
     this.objSelect.type = 'theme';
 
-    this.themeService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
+    this.annotationService.getAllByTheme(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }
@@ -145,7 +145,7 @@ export class MyBooksComponent implements OnInit {
     this.objSelect = obj;
     this.objSelect.type = 'author';
 
-    this.authorService.getByIdUser(obj.id, this.user_id).subscribe((books) => {
+    this.annotationService.getAllByAuthor(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

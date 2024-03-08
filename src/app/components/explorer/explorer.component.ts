@@ -84,13 +84,13 @@ export class ExplorerComponent implements OnInit {
   }
 
   filterSideTheme(id: string) {
-    this.annotationService.getAllByTheme(id, this.user_id).subscribe((books) => {
+    this.themeService.getByIdUser(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }
 
   filterSideAuthor(id: string) {
-    this.annotationService.getAllByAuthor(id, this.user_id).subscribe((books) => {
+    this.authorService.getByIdUser(id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }
