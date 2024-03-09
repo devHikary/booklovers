@@ -2,19 +2,21 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { environment } from "src/environments/environment";
+const { APIKEY, AUTHDOMAIN, PROJECTID, STORAGEBUCKET, MESSAGEINGSENDERID, APPID, MEASUREMENTID} = environment;
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAuoamAPMgAMWsFxrWGXV_NJrgKPuEqtnc",
-  authDomain: "app-booklovers-bcf9f.firebaseapp.com",
-  projectId: "app-booklovers-bcf9f",
-  storageBucket: "app-booklovers-bcf9f.appspot.com",
-  messagingSenderId: "658144585254",
-  appId: "1:658144585254:web:c831b7ae247e1089bbe8e7",
-  measurementId: "G-P33Q7E5PHJ"
+  apiKey: APIKEY,
+  authDomain: AUTHDOMAIN,
+  projectId: PROJECTID,
+  storageBucket: STORAGEBUCKET,
+  messagingSenderId: MESSAGEINGSENDERID,
+  appId: APPID,
+  measurementId: MEASUREMENTID
 };
 
 // Initialize Firebase
