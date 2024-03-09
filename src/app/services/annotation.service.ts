@@ -47,4 +47,8 @@ export class AnnotationService {
   getAllByAuthor(id: string, user_id: string) {
     return this.http.get(`${urlAPI}${this.controllerName}author?id=${id}&user_id=${user_id}`);
   }
+
+  getAllByTag(id: string, user_id: string) {
+    return this.http.get(`${urlAPI}${this.controllerName}tag?id=${id}&user_id=${user_id}`);
+  }
 }

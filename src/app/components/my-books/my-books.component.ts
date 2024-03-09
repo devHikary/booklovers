@@ -192,7 +192,7 @@ export class MyBooksComponent implements OnInit {
     this.tagObj.id = obj.id;
     this.tagForm.controls.title.setValue(this.objSelect.name);
 
-    this.tagService.getById(obj.id, this.user_id).subscribe((books) => {
+    this.annotationService.getAllByTag(obj.id, this.user_id).subscribe((books) => {
       this.loadBooks(books);
     });
   }

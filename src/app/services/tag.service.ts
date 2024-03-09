@@ -28,10 +28,6 @@ export class TagService {
     return this.http.get(`${urlAPI}${this.controllerName}user/${user_id}`);
   }
 
-  getById(id: string, user_id: string) {
-    return this.http.get(`${urlAPI}${this.controllerName}${id}/u/${user_id}`);
-  }
-
   public delete(id: string){
     return this.http.delete(`${urlAPI}${this.controllerName}${id}`);
   }
