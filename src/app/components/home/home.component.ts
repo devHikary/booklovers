@@ -54,15 +54,13 @@ export class HomeComponent implements OnInit {
     this.user_id = this.localService.getUserId();
     this.annotationService
       .getFavorite(this.user_id)
-      .subscribe((response: any) => {
+      .subscribe((response: any[]) => {
         this.favoriteList = this.loadBooks(response);
-        // g('this.favoriteList', this.favoriteList);
       });
     this.annotationService
       .getFinished(this.user_id)
-      .subscribe((response: any) => {
+      .subscribe((response: any[]) => {
         this.finishedList = this.loadBooks(response);
-        // g('this.finishedList', this.finishedList);
       });
     this.annotationService
       .getReading(this.user_id)
@@ -93,13 +91,12 @@ export class HomeComponent implements OnInit {
     return res;
   }
 
-  loadBooks(books: any): any {
+  loadBooks(books: any[]): any[]{
     let list = [];
 
     if (books.length > 0) {
       books.forEach((obj: any) => {
         var bookAux = new Book();
-
         bookAux.id = obj.book.id;
         bookAux.title = obj.book.title;
         // this.options.push(obj.book.title);
@@ -122,8 +119,8 @@ export class HomeComponent implements OnInit {
         list.push(bookAux);
       });
 
-      return list;
     }
+    return list;
   }
 
   refreshFavorites(){
