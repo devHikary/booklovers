@@ -1,10 +1,11 @@
 import Swal from 'sweetalert2';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Annotation } from 'src/app/models/Annotation';
 import { Book } from 'src/app/models/Book';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { LocalService } from 'src/app/services/local.service';
+
 
 @Component({
   selector: 'app-card-box-v',
@@ -14,6 +15,7 @@ import { LocalService } from 'src/app/services/local.service';
 export class CardBoxVComponent {
   @Input() book: Book = new Book();
   @Input() annotation: Annotation = new Annotation();
+  @Output() annotationChange = new EventEmitter<Annotation>();
 
   constructor(
     private router: Router,
@@ -50,10 +52,20 @@ export class CardBoxVComponent {
       this.annotation.book_id = this.book.id;
       this.annotation.user_id = this.localService.getUserId();
       this.annotation.favorite = this.book.annotation.favorite;
-      this.annotationService.add(this.annotation).subscribe();
+      this.annotationService.add(this.annotation).subscribe((response: Annotation) =>{
+        this.annotationChange.emit(response);
+      });
 
     } else {
-      this.annotationService.update(this.annotation).subscribe();
+      if(this.annotation.id === null){
+        this.annotation.book_id = this.book.id;
+        this.annotation.user_id = this.localService.getUserId();
+        this.annotation.favorite = this.book.annotation.favorite;
+        this.annotationService.add(this.annotation).subscribe();
+      }else{
+        this.annotationService.update(this.annotation).subscribe();
+      }
+
     }
   }
 }
