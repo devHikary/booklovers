@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Crypto from 'crypto-js';
 import jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
-const { SECRET, KEY, IV } = environment;
+const { NG_APP_SECRET, NG_APP_KEY, NG_APP_IV } = import.meta.env;
 
 @Injectable({
   providedIn: 'root',
@@ -47,9 +47,9 @@ export class LocalService {
   }
 
   public encryptPWD(txt: string): string {
-    var key = Crypto.enc.Hex.parse(KEY);
+    var key = Crypto.enc.Hex.parse(NG_APP_KEY);
 
-    var iv = Crypto.enc.Hex.parse(IV);
+    var iv = Crypto.enc.Hex.parse(NG_APP_IV);
     var encrypted = Crypto.AES.encrypt(txt, key, { iv: iv });
 
 
@@ -57,11 +57,11 @@ export class LocalService {
   }
 
   public encrypt(txt: string): string {
-    return Crypto.AES.encrypt(txt, SECRET).toString();
+    return Crypto.AES.encrypt(txt, NG_APP_SECRET).toString();
   }
 
   public decrypt(txt: string): string {
-    return Crypto.AES.decrypt(txt, SECRET).toString(Crypto.enc.Utf8);
+    return Crypto.AES.decrypt(txt, NG_APP_SECRET).toString(Crypto.enc.Utf8);
   }
 
   public decryptBase64(token: string): any {
