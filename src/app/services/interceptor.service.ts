@@ -14,6 +14,7 @@ import { HeaderService } from './header.service';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
+  isLogin: boolean = false;
   constructor(
     private localService: LocalService,
     private router: Router,
@@ -31,11 +32,14 @@ export class Interceptor implements HttpInterceptor {
       !request.url.includes('/booklovers/login') &&
       !request.url.includes('https://www.googleapis')
     ) {
+      this.isLogin = false;
       request = request.clone({
         setHeaders: {
           Authorization: 'Bearer ' + token,
         },
       });
+    } else{
+      this.isLogin = true;
     }
     return next
       .handle(request)
@@ -44,13 +48,13 @@ export class Interceptor implements HttpInterceptor {
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     //handle your auth error or rethrow
-    if (err.status === 401 || err.status === 403) {
+    if ((err.status === 401 || err.status === 403) && !this.isLogin) {
       this.headerService.updateToggle(false);
       this.localService.clearStorage();
       this.router.navigateByUrl(`booklovers/login`);
       // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
       return null; // or EMPTY may be appropriate here
-    } else if((err.status === 503 || err.status === 500)){
+    } else if((err.status === 503 || err.status === 500)&& !this.isLogin){
       this.router.navigateByUrl(`booklovers/errorUnavailable`);
     }
     return throwError(err);
