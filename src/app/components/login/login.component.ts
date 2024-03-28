@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     private localService: LocalService,
     private loginService: LoginService,
     private headerService: HeaderService,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -161,7 +161,7 @@ export class LoginComponent implements OnInit {
     this.user.password = this.localService.encryptPWD(
       this.signupForm.value.password_snp!
     );
-    this.user.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
+    this.user.role_id = import.meta.env['NG_APP_ROLEID'];
   }
 
   saveUser(modal: any) {
