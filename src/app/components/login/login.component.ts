@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
   public isError: boolean = false;
   public closeResult: string = '';
   verifyGg: string = '';
+  msgError: string = 'Sistema indisponível. Aguarde um momento!';
 
   public loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -114,7 +115,9 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         this.isError = true;
-        this.toastService.show(err.error.message, {
+        if(err.status != 404 || err.status != 0)
+          this.msgError = err.error.message
+        this.toastService.show(this.msgError, {
           classname: 'bg-danger text-light',
         });
       }
@@ -204,7 +207,7 @@ export class LoginComponent implements OnInit {
         this.userGg.email = result.user.email;
         var userAux = result.user.email.split('@');
         this.userGg.username = userAux[0];
-        this.userGg.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
+        this.userGg.role_id = import.meta.env['NG_APP_ROLEID'];
 
         this.loginObjgg.password = this.userGg.password;
         this.loginObjgg.username = this.userGg.username;
