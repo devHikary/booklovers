@@ -5,7 +5,7 @@
   </div>
   <div class="row">
     <div class="col-12 col-md-6">
-      <div class="m-auto" style="width: 400px;">
+      <div class="m-auto" style="width: 20rem;">
         <img class="w-100 mb-5" src="../../../assets/images/logo.png"
           alt="Imagem de um desenho orgânico de uma estante de livros">
 
@@ -103,7 +103,7 @@
   </div>
   <div class="row bg-section3">
     <h5 class="my-2">Livros Finalizados</h5>
-    <div class="col-md-3 col-lg-2 col-6 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
+    <div class="col-md-3 col-sm-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
       <app-card-box-v [book]="book" [annotation]="book.annotation" ></app-card-box-v>
     </div>
     <div *ngIf="finishedList.length < 1">

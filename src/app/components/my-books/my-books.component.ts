@@ -119,7 +119,7 @@ export class MyBooksComponent implements OnInit {
     });
   }
 
-  open(content: any) {
+  open(content: any, isAdd: boolean) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
@@ -127,9 +127,15 @@ export class MyBooksComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
         },
         (reason) => {
-          this.closeResult = `Dismissed`;
+          this.closeResult = `Dismissed ${reason}`;
+          
         }
       );
+
+      if(isAdd){
+        this.objSelect.id = null,
+        this.tagForm.controls['title'].reset();
+      }
   }
 
   filterSideTheme(obj: any) {
@@ -352,7 +358,7 @@ export class MyBooksComponent implements OnInit {
 
     this.getTag();
 
-    if (this.tagObj.id === null) {
+    if (this.objSelect.id === null) {
       this.tagService.add(this.tagObj).subscribe(
         (response) => {
           Swal.fire({

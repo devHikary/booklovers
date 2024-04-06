@@ -2,14 +2,14 @@
   <div class="card bg-card p-4">
     <div class="row text-center">
       <div class="col-12 mb-2">
-        <h2>Sobre o livro </h2>
+        <h2>Minhas Anotações </h2>
 
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <div class="row">
-          <div class="col-8 d-flex justify-content-end pe-3">
+        <div class="row justify-content-center">
+          <div class="col-lg-7 col-9 d-flex justify-content-end pe-0">
             <ng-template #t let-fill="fill">
               <i class="bi-star-fill i-detail">
                 <i *ngIf="fill > 0" class="bi-star-fill filled i-detail" [style.width.%]="fill"></i>
@@ -19,7 +19,7 @@
             <ngb-rating [(rate)]="annotationObj.rating" [starTemplate]="t" [readonly]="false" [max]="5" [formControl]="rateCtrl"
               [ariaValueText]="ariaValueText"></ngb-rating>
           </div>
-          <div class="col-3">
+          <div class="col-lg-5 col-3">
             <a title="Favoritar o livro" href="javascript:;" (click)="toggleFavorite()" >
               <i class="bi-heart-fill i-detail" [class]="annotationObj.favorite == 1? 'filled-heart' : ''"></i>
             </a>
@@ -104,7 +104,7 @@
       </div>
       <div class="col-md-6">
         <form class="row" #f="ngForm">
-          <h4>Minhas Anotações</h4>
+          <!-- <h4>Minhas Anotações</h4> -->
 
           <div class="col-md-12 pb-2">
             <label for="review" class="form-label">Citação/ avaliação </label>

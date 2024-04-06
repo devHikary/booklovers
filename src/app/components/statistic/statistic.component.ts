@@ -50,7 +50,7 @@ export class StatisticComponent implements OnInit{
     this.statisticService.getMonth(this.user_id).subscribe((response: any) => {
       trackerMonth.forEach(element => {
         response.forEach((r: any) =>{
-          if(element.id == r.month)
+          if(element.id == (r.month - 1))
             element.status = r.count;
         })
       });

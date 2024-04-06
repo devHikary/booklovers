@@ -28,6 +28,7 @@
   background-image: url(../../../assets/images/postit-bl.png);
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
 }
 
 .n-book{

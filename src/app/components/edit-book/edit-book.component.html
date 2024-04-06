@@ -3,9 +3,9 @@
     <div class="row text-center">
       <div class="col-12">
         <h2 *ngIf="!isNew">Editar as informações do livro
-          <a title="Adicionar gênero" href="javascript:;" (click)="reportFailure()"
+          <a title="Relatar falha/ sugestão" href="javascript:;" (click)="reportFailure()"
                class="ms-1">
-               <i class="bi bi-exclamation-triangle"></i>
+               <i class="bi bi-exclamation-triangle text-secondary"></i>
             </a>
         </h2>
         <h2 *ngIf="isNew">Cadastrar livro</h2>
@@ -13,28 +13,6 @@
     </div>
     <div class="row">
       <div class="col-md-6 mt-3">
-        <!-- <div class="row">
-          <div class="col-8 d-flex justify-content-end pe-5">
-            <ng-template #t let-fill="fill">
-              <i class="bi-star-fill">
-                <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill"></i>
-              </i>
-            </ng-template>
-
-            <ngb-rating [(rate)]="book.annotation.rating" [starTemplate]="t" [readonly]="false" [max]="5"
-              [ariaValueText]="ariaValueText"></ngb-rating>
-          </div>
-          <div class="col-4">
-            <ng-template #heart let-fill="fill">
-              <i class="bi-heart-fill">
-                <i *ngIf="fill > 0" class="bi-heart-fill filled-heart" [style.width.%]="fill"></i>
-              </i>
-            </ng-template>
-
-            <ngb-rating [(rate)]="book.annotation.favorite" [starTemplate]="heart" [readonly]="false" [max]="1"
-              [ariaValueText]="ariaValueText"></ngb-rating>
-          </div>
-        </div> -->
         <div class="row text-center">
           <a href="javascript:;" title="Adicionar capa do livro" (click)="collapseThumbnail.toggle()"
             [attr.aria-expanded]="!isCollapsedThumbnail" aria-controls="Adicionar autores">
@@ -64,7 +42,7 @@
             </label>
             <div class="input-group">
 
-              <input type="text" class="form-control text-capitalize" id="title" formControlName="title" name="title"
+              <input type="text" class="form-control" id="title" formControlName="title" name="title"
                 maxlength="50">
               <button type="button" class="btn btn-outline-dark" title="Ajuda com o preenchimento das informações" (click)="open(content)">Ajuda preenc.</button>
             </div>
@@ -73,7 +51,7 @@
             </div>
           </div>
           <div class="col-md-12 pb-2">
-            <label for="subtitle" class="form-label text-capitalize">Subtítulo
+            <label for="subtitle" class="form-label">Subtítulo
             </label>
             <input type="text" class="form-control" id="subtitle" formControlName="subtitle" name="subtitle"
               maxlength="50">
@@ -221,10 +199,10 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Livros relacionados</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close('Close')"></button>
   </div>
   <div class="modal-body" *ngFor="let bookM of bookListModal">
-    <a title="Seleciona um livro" href="javascript:;" (dblclick)="selectedInfo(bookM.id)">
+    <a title="Seleciona um livro" href="javascript:;" (click)="selectedInfo(bookM.id)">
       <app-card-box-md [book]="bookM"></app-card-box-md>
     </a>
   </div>

@@ -21,20 +21,17 @@
 }
 
 .card-img-top{
-  max-height: 350px;
+  max-width: 10rem;
+  max-height: 200px;
 }
 
 .max-width{
-  max-width: 16rem;
-  max-height: 16rem;
+  max-width: 14rem;
+  max-height: 14rem;
 }
 
 .card-size{
   width: 100%;
-}
-
-.img-size{
-  max-height: 200px;
 }
 
 .wrap-text{
