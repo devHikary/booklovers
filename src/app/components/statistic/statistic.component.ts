@@ -30,6 +30,80 @@ export class StatisticComponent implements OnInit{
   }
 
   isLoadingPdf: boolean = false;
+  public trackerMonth: any[] = [
+    {
+      id: 13,
+      label: 'J',
+      status: 0,
+      name: 'Janeiro',
+    },
+    {
+      id: 2,
+      label: 'F',
+      status: 0,
+      name: 'Fevereiro',
+    },
+    {
+      id: 3,
+      label: 'M',
+      status: 0,
+      name: 'Março',
+    },
+    {
+      id: 4,
+      label: 'A',
+      status: 0,
+      name: 'Abril',
+    },
+    {
+      id: 5,
+      label: 'M',
+      status: 0,
+      name: 'Maio',
+    },
+    {
+      id: 6,
+      label: 'J',
+      status: 0,
+      name: 'Junho',
+    },
+    {
+      id: 7,
+      label: 'J',
+      status: 0,
+      name: 'Julho',
+    },
+    {
+      id: 8,
+      label: 'A',
+      status: 0,
+      name: 'Agosto',
+    },
+    {
+      id: 9,
+      label: 'S',
+      status: 0,
+      name: 'Setembro',
+    },
+    {
+      id: 10,
+      label: 'O',
+      status: 0,
+      name: 'Outubro',
+    },
+    {
+      id: 11,
+      label: 'N',
+      status: 0,
+      name: 'Novembro',
+    },
+    {
+      id: 12,
+      label: 'D',
+      status: 0,
+      name: 'Dezembro',
+    },
+  ];
 
   constructor(
     private localService: LocalService,
@@ -37,6 +111,7 @@ export class StatisticComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
+    this.initTrackerMonth();
     this.currentYear = new Date().getFullYear().toString();
     this.user_id = this.localService.getUserId();
     this.statisticService.getFavorite(this.user_id).subscribe((response: any) => {
@@ -48,9 +123,9 @@ export class StatisticComponent implements OnInit{
         this.rating = { rating: response[0].rating, count: response[0].count};
     })
     this.statisticService.getMonth(this.user_id).subscribe((response: any) => {
-      trackerMonth.forEach(element => {
+      this.trackerMonth.forEach(element => {
         response.forEach((r: any) =>{
-          if(element.id == (r.month - 1))
+          if(element.id == (r.month))
             element.status = r.count;
         })
       });
@@ -86,7 +161,6 @@ export class StatisticComponent implements OnInit{
       };
     })
   }
-  public dataList = trackerMonth;
 
   bgColor(status: number) {
     if (status == 0) {
@@ -129,79 +203,10 @@ export class StatisticComponent implements OnInit{
     });
     this.isLoadingPdf = false;
   }
-}
 
-var trackerMonth = [
-  {
-    id: 1,
-    label: 'J',
-    status: 0,
-    name: 'Janeiro',
-  },
-  {
-    id: 2,
-    label: 'F',
-    status: 0,
-    name: 'Fevereiro',
-  },
-  {
-    id: 3,
-    label: 'M',
-    status: 0,
-    name: 'Março',
-  },
-  {
-    id: 4,
-    label: 'A',
-    status: 0,
-    name: 'Abril',
-  },
-  {
-    id: 5,
-    label: 'M',
-    status: 0,
-    name: 'Maio',
-  },
-  {
-    id: 6,
-    label: 'J',
-    status: 0,
-    name: 'Junho',
-  },
-  {
-    id: 7,
-    label: 'J',
-    status: 0,
-    name: 'Julho',
-  },
-  {
-    id: 8,
-    label: 'A',
-    status: 0,
-    name: 'Agosto',
-  },
-  {
-    id: 9,
-    label: 'S',
-    status: 0,
-    name: 'Setembro',
-  },
-  {
-    id: 10,
-    label: 'O',
-    status: 0,
-    name: 'Outubro',
-  },
-  {
-    id: 11,
-    label: 'N',
-    status: 0,
-    name: 'Novembro',
-  },
-  {
-    id: 12,
-    label: 'D',
-    status: 0,
-    name: 'Dezembro',
-  },
-];
+  initTrackerMonth(){
+    this.trackerMonth.map( getsu =>{
+      getsu.status = 0;
+    })
+  }
+}

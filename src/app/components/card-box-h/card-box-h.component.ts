@@ -31,7 +31,7 @@ export class CardBoxHComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.book.description = this.book.description.substring(0, 150) + '...';
+    this.book.description = this.book.description.substring(0, 130) + '...';
   }
 
   ariaValueText(current: number, max: number) {

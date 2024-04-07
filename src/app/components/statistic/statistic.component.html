@@ -1,21 +1,9 @@
 <div class="bg-dot" id="contentToConvert">
   <div class="row m-0 p-2 text-center">
-    <h3>Estatísticas
-      <!-- <button (click)="exportPDF()" data-html2canvas-ignore class="btn btn-outline-secondary" >
-        <ng-container *ngIf="!isLoadingPdf; else templateLoad">
-          Exportar em PDF
-        </ng-container>
-        <ng-template #templateLoad>
-          <div class="spinner-border text-dark" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </ng-template>
-      </button> -->
-    </h3>
-    <hr>
+    <h3>Estatísticas</h3>
+    <hr />
     <div class="row justify-content-end" data-html2canvas-ignore>
       <div class="col-md-2 col-4">
-
         <button (click)="exportPDF()" class="btn btn-outline-secondary">
           <ng-container *ngIf="!isLoadingPdf; else templateLoad">
             Exportar em PDF
@@ -27,20 +15,29 @@
           </ng-template>
         </button>
       </div>
-
     </div>
   </div>
   <div class="row m-0 p-2">
     <div class="col-12 col-md-6 my-4">
-      <div class="card p-2 ">
+      <div class="card p-2">
         <div class="row text-center">
-          <h4>Quantidades de livros em {{currentYear}}</h4>
+          <h4>Quantidades de livros em {{ currentYear }}</h4>
         </div>
         <div class="row px-3 pt-2">
-          <div class="col-2 d-flex flex-column align-items-center" *ngFor="let m of dataList">
-            <div class="bg-circle rounded-circle" [ngStyle]="{'background-color': bgColor(m.status)}"
-              ngbTooltip="{{m.status > 1? m.status+' livros': m.status+' livro' }}"></div>
-            <div class="rounded-circle" ngbTooltip="{{m.name}}">{{m.label}}</div>
+          <div
+            class="col-2 d-flex flex-column align-items-center"
+            *ngFor="let m of trackerMonth"
+          >
+            <div
+              class="bg-circle rounded-circle"
+              [ngStyle]="{ 'background-color': bgColor(m.status) }"
+              ngbTooltip="{{
+                m.status > 1 ? m.status + ' livros' : m.status + ' livro'
+              }}"
+            ></div>
+            <div class="rounded-circle" ngbTooltip="{{ m.name }}">
+              {{ m.label }}
+            </div>
           </div>
           <div class="row m-2">
             <h5>Legenda:</h5>
@@ -61,13 +58,26 @@
       </div>
     </div>
     <div class="col-12 col-md-6 my-4">
-      <div class=" card ps-2 pe-5 bg-postit d-flex justify-content-center align-items-center" style="height: 22rem">
-        <div class="col-6 text-center h-25" *ngIf="textPostit.year != '';else templateName">
-          <p class="fs-3">Em {{textPostit.year}}, </p>
-          <p class="fs-3">você leu {{textPostit.count >1 ? textPostit.count + ' livros' : textPostit.count + ' livro'}}</p>
+      <div
+        class="card ps-2 pe-5 bg-postit d-flex justify-content-center align-items-center"
+        style="height: 22rem"
+      >
+        <div
+          class="col-6 text-center h-25"
+          *ngIf="textPostit.year != ''; else templateName"
+        >
+          <p class="fs-3">Em {{ textPostit.year }},</p>
+          <p class="fs-3">
+            você leu
+            {{
+              textPostit.count > 1
+                ? textPostit.count + " livros"
+                : textPostit.count + " livro"
+            }}
+          </p>
         </div>
         <ng-template #templateName>
-          <p class="fs-3">Em {{currentYear}}, </p>
+          <p class="fs-3">Em {{ currentYear }},</p>
           <p class="fs-3">você leu 0 livro</p>
         </ng-template>
       </div>
@@ -78,23 +88,55 @@
       <div class="card px-5 pt-2">
         <h4>Livros por ano</h4>
         <div class="chart-container pt-2 pb-3">
-          <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"> </canvas>
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="'bar'"
+          >
+          </canvas>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-6 my-4">
-      <div class="card px-5 pt-2 text-center h-100 d-flex justify-content-center align-items-center">
-        <p class="fs-3">São {{rating.count >1 ? rating.count  + ' livros' : rating.count  + ' livro'}} com {{rating.rating}} estrelas</p>
+      <div
+        class="card px-5 pt-2 text-center h-100 d-flex justify-content-center align-items-center"
+      >
+        <p class="fs-3">
+          São
+          {{
+            rating.count > 1
+              ? rating.count + " livros"
+              : rating.count + " livro"
+          }}
+          com {{ rating.rating }} estrelas
+        </p>
         <div class="d-flex justify-content-center">
           <ng-template #t let-fill="fill">
             <i class="bi-star-fill i-rating fs-3">
-              <i *ngIf="fill > 0" class="bi-star-fill filled i-rating" [style.width.%]="fill"></i>
+              <i
+                *ngIf="fill > 0"
+                class="bi-star-fill filled i-rating"
+                [style.width.%]="fill"
+              ></i>
             </i>
           </ng-template>
 
-          <ngb-rating [(rate)]="rating.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+          <ngb-rating
+            [(rate)]="rating.rating"
+            [starTemplate]="t"
+            [readonly]="true"
+            [max]="5"
+          ></ngb-rating>
         </div>
-        <p class="fs-3">Você favoritou {{favoriteCount >1 ? favoriteCount + ' livros' : favoriteCount + ' livro'}}</p>
+        <p class="fs-3">
+          Você favoritou
+          {{
+            favoriteCount > 1
+              ? favoriteCount + " livros"
+              : favoriteCount + " livro"
+          }}
+        </p>
         <p class="fs-3">
           <i class="bi bi-heart-fill text-danger"></i>
         </p>

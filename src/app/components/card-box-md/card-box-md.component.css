@@ -2,3 +2,7 @@
   width: 120px;
   height: 160px;
 }
+
+max-width-md{
+  max-width: 26rem;
+}
