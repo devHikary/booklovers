@@ -15,6 +15,7 @@ import jsPDF from 'jspdf';
 export class MyGoalsComponent implements OnInit{
   user_id: string = '';
   goalList: Goal[] = [];
+  tableExport: any[] = [];
   isLoadingPdf: boolean = false;
 
   constructor(
@@ -105,18 +106,80 @@ export class MyGoalsComponent implements OnInit{
   exportPDF() {
     this.isLoadingPdf = true;
 
-    var data = document.getElementById('contentToConvert');
+    var data: any[] = [];
 
-    html2canvas(data).then(canvas => {
-      var imgWidth = 190;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
+    const columns = this.getColumns(this.goalList);
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jsPDF('p', 'mm', 'a4');
-      var position = 4;
-      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
-      pdf.save('Meus Desafios - booklovers.pdf');
+    let date = new Date();
+    var hour = date.toLocaleTimeString();
+    var today = date.toLocaleDateString();
+    const doc = new jsPDF('p', 'mm', 'a4');
+    doc.text(`Lista de Desafio - Booklovers - ${today} ${hour}`, 10, 10)
+    doc.table(1, 20, this.tableExport, columns, {
+      margins: 0,
+      padding: 1,
+      fontSize: 9,
+      autoSize: false,
+      printHeaders: true,
     });
+    doc.save(`Lista_Desafios_Booklovers_${today}_${hour}.pdf`);
     this.isLoadingPdf = false;
+  }
+
+  getColumns(data: any[]): string[] {
+    const columns = [];
+    data.forEach(row => {
+      var objTemp = new Object();
+      Object.keys(row).forEach(col => {
+
+        var colConvert = this.handleHeader(col);
+        if ((!columns.includes(colConvert)&&(colConvert != 'Não definido'))) {
+          columns.push(colConvert);
+        }
+        if(colConvert == 'Status')
+          row[col] = this.handleStatus(row[col]);
+        if((colConvert == 'Data fim') || (colConvert == 'Data  inicio') )
+          row[col] = this.handleDate(row[col]);
+
+        if(typeof row[col] == 'number' ){
+          row[col] = row[col].toString();
+        }
+
+
+        if((colConvert != 'Não definido'))
+          objTemp[colConvert] = row[col];
+      });
+      this.tableExport.push(objTemp);
+    });
+    return columns;
+  }
+
+  handleHeader(name: string): string {
+    let result = ''
+    switch (name) {
+      case 'name':
+        result = 'Desafio'
+        break;
+      case 'target':
+        result = 'Objetivo'
+        break;
+      case 'amount':
+        result = 'Contagem Atual'
+        break;
+      case 'date_end':
+        result = 'Data fim'
+        break;
+      case 'date_start':
+        result = 'Data  inicio'
+        break;
+      case 'status':
+        result = 'Status'
+        break;
+      default:
+        result = 'Não definido'
+        break;
+    }
+
+    return result;
   }
 }

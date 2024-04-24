@@ -1,14 +1,16 @@
 <div class="container-fluid section1-container">
   <div class="row text-center">
     <h3>BOOKLOVERS</h3>
-    <hr>
+    <hr />
   </div>
   <div class="row">
     <div class="col-12 col-md-6">
-      <div class="m-auto" style="width: 20rem;">
-        <img class="w-100 mb-5" src="../../../assets/images/logo.png"
-          alt="Imagem de um desenho orgânico de uma estante de livros">
-
+      <div class="m-auto" style="width: 20rem">
+        <img
+          class="w-100 mb-5"
+          src="../../../assets/images/logo.png"
+          alt="Imagem de um desenho orgânico de uma estante de livros"
+        />
       </div>
     </div>
     <div class="col-12 col-md-6">
@@ -18,7 +20,10 @@
           <div *ngIf="andamentoList.length > 0">
             <ngb-carousel [interval]="0">
               <ng-template ngbSlide *ngFor="let item of andamentoList">
-                <app-card-goal-h [goal]="item" [isEdit]="false"></app-card-goal-h>
+                <app-card-goal-h
+                  [goal]="item"
+                  [isEdit]="false"
+                ></app-card-goal-h>
               </ng-template>
             </ngb-carousel>
           </div>
@@ -27,70 +32,92 @@
               <p>Nenhum desafio em andamento</p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
   <div class="row m-2 mb-4">
     <div class="col-lg-9 col-12 mt-2">
-      <div class="card  bg-section2 p-3">
+      <div class="card bg-section2 p-3">
         <h5 class="m-2">Lendo...</h5>
 
         <div *ngIf="currentWindowWidth >= 600">
           <ngb-carousel [interval]="0">
-
-          <ng-template ngbSlide *ngFor="let books of readingList">
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-6" *ngFor="let book of books">
-                <app-card-box-h [book]="book" [annotation]="book.annotation"
-                  [tags]="book.annotation.tags" [isEdit]="false"></app-card-box-h>
+            <ng-template ngbSlide *ngFor="let books of readingList">
+              <div class="row">
+                <div
+                  class="col-sm-12 col-md-6 col-6"
+                  *ngFor="let book of books"
+                >
+                  <a
+                    title="Detalhes do livro"
+                    href="javascript:;"
+                    (click)="detailBook(book.id)"
+                  >
+                    <app-card-box-h
+                      [book]="book"
+                      [annotation]="book.annotation"
+                      [tags]="book.annotation.tags"
+                      [isEdit]="false"
+                    ></app-card-box-h>
+                  </a>
+                </div>
               </div>
-
-            </div>
-          </ng-template>
-
-        </ngb-carousel>
-      </div>
+            </ng-template>
+          </ngb-carousel>
+        </div>
 
         <div *ngIf="currentWindowWidth < 600">
           <ngb-carousel [interval]="0">
-
-          <ng-template ngbSlide *ngFor="let book of readingListSmall">
-            <div class="row">
-                <app-card-box-h [book]="book" [annotation]="book.annotation"
-                  [tags]="book.annotation.tags" [isEdit]="false"></app-card-box-h>
-
-            </div>
-          </ng-template>
-
-        </ngb-carousel>
-      </div>
-
-      <div *ngIf="readingListSmall.length < 1 || readingList.length < 1">
-        <div class="text-center h-100">
-          <p>Nenhuma leitura em andamento</p>
+            <ng-template ngbSlide *ngFor="let book of readingListSmall">
+              <div class="row">
+                <app-card-box-h
+                  [book]="book"
+                  [annotation]="book.annotation"
+                  [tags]="book.annotation.tags"
+                  [isEdit]="false"
+                ></app-card-box-h>
+              </div>
+            </ng-template>
+          </ngb-carousel>
         </div>
-      </div>
 
+        <div *ngIf="readingListSmall.length < 1 || readingList.length < 1">
+          <div class="text-center h-100">
+            <p>Nenhuma leitura em andamento</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-lg-3 col-12 mt-2">
       <div class="card bg-section2 p-3">
         <div class="col d-flex justify-space-between">
           <h5 class="my-2">Favoritos</h5>
-          <a title="Atualizar a lista de favoritos" href="javascript:;" (click)="refreshFavorites()" class="d-flex align-items-center i-home ps-2">
+          <a
+            title="Atualizar a lista de favoritos"
+            href="javascript:;"
+            (click)="refreshFavorites()"
+            class="d-flex align-items-center i-home ps-2"
+          >
             <i class="bi bi-arrow-clockwise"></i>
           </a>
-
         </div>
         <div class="favorites-section2">
-          <div class="col-12 d-flex justify-content-evenly my-1 " *ngFor="let book of favoriteList">
-            <a title="Detalhes do livro" href="javascript:;" (click)="detailBook(book.id)">
-              <app-card-box-mini [book]="book" [annotation]="book.annotation"
-              [tags]="book.annotation.tags"></app-card-box-mini>
+          <div
+            class="col-12 d-flex justify-content-evenly my-1"
+            *ngFor="let book of favoriteList"
+          >
+            <a
+              title="Detalhes do livro"
+              href="javascript:;"
+              (click)="detailBook(book.id)"
+            >
+              <app-card-box-mini
+                [book]="book"
+                [annotation]="book.annotation"
+                [tags]="book.annotation.tags"
+              ></app-card-box-mini>
             </a>
-
           </div>
           <div *ngIf="favoriteList.length < 1">
             <div class="text-center h-100">
@@ -103,8 +130,14 @@
   </div>
   <div class="row bg-section3">
     <h5 class="my-2">Livros Finalizados</h5>
-    <div class="col-md-3 col-sm-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of finishedList">
-      <app-card-box-v [book]="book" [annotation]="book.annotation" ></app-card-box-v>
+    <div
+      class="col-md-3 col-sm-6 col-12 d-flex justify-content-evenly my-1"
+      *ngFor="let book of finishedList"
+    >
+      <app-card-box-v
+        [book]="book"
+        [annotation]="book.annotation"
+      ></app-card-box-v>
     </div>
     <div *ngIf="finishedList.length < 1">
       <div class="text-center h-100">

@@ -128,7 +128,7 @@ export class LoginComponent implements OnInit {
     this.localService.saveToken(response['token']);
     this.headerService.updateToggle(true);
     this.headerService.updateUser(this.loginObj.username);
-    this.router.navigate(['/booklovers/explorer']);
+    this.router.navigate(['/booklovers/home']);
 
     const payload = this.localService.decodePayloadJWT(response['token']);
     this.localService.saveData('bS', JSON.stringify(payload['permissions']));

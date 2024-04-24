@@ -47,7 +47,7 @@
                   <td>{{item.description}}</td>
                   <td>{{item.book_id === null? "Não informado" : item.book_id }}</td>
                   <td>{{handleDate(item.createdAt)}}</td>
-                  <td>{{handleStatus(item.status)}}</td>
+                  <td>{{item.status}}</td>
                   <td data-html2canvas-ignore>
                     <a href="javascript:;" type="button" (click)="editReport(item.id)" title="Editar"> <i
                         class="bi bi-pencil-square"></i></a>

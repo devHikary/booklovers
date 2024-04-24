@@ -13,6 +13,7 @@ import jsPDF from 'jspdf';
 })
 export class RoleListComponent implements OnInit {
   roleList: Role[] = [];
+  tableExport: any[] = [];
   isLoadingPdf: boolean = false;
 
   constructor(private roleService: RoleService, private router: Router) {}
@@ -67,18 +68,63 @@ export class RoleListComponent implements OnInit {
   exportPDF() {
     this.isLoadingPdf = true;
 
-    var data = document.getElementById('contentToConvert');
+    var data: any[] = [];
 
-    html2canvas(data).then(canvas => {
-      var imgWidth = 190;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
+    const columns = this.getColumns(this.roleList);
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jsPDF('p', 'mm', 'a4');
-      var position = 4;
-      pdf.addImage(contentDataURL, 'PNG', 8, position, imgWidth, imgHeight)
-      pdf.save('Lista de perfis - booklovers.pdf');
+    let date = new Date();
+    var hour = date.toLocaleTimeString();
+    var today = date.toLocaleDateString();
+    const doc = new jsPDF('p', 'mm', 'a4');
+    doc.text(`Lista de Perfis - Booklovers - ${today} ${hour}`, 10, 10)
+    doc.table(60, 20, this.tableExport, columns, {
+      margins: 0,
+      padding: 1,
+      fontSize: 9,
+      autoSize: true,
+      printHeaders: true
     });
+    doc.save(`Lista_Perfis_Booklovers_${today}_${hour}.pdf`);
     this.isLoadingPdf = false;
+  }
+
+  getColumns(data: any[]): string[] {
+    const columns = [];
+    data.forEach(row => {
+      var objTemp = new Object();
+      Object.keys(row).forEach(col => {
+        var colConvert = this.handleHeader(col);
+        if (!columns.includes(colConvert)) {
+          columns.push(colConvert);
+
+        }
+        objTemp[colConvert] = row[col];
+      });
+      this.tableExport.push(objTemp);
+    });
+    return columns;
+  }
+
+  handleHeader(name: string): string {
+    let result = ''
+    switch (name) {
+      case 'id':
+        result = 'ID'
+        break;
+      case 'name':
+        result = 'Perfil'
+        break;
+      case 'createdAt':
+        result = 'Data de criação'
+        break;
+      case 'updatedAt':
+        result = 'Data de atualização'
+        break;
+      default:
+        result = 'Não definido'
+        break;
+    }
+
+    return result;
   }
 }
