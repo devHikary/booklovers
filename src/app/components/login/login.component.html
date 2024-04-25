@@ -1,12 +1,12 @@
 <!-- <ngb-toast [autohide]="true" [delay]="5000" *ngIf="isError" class="bg-danger text-light toast"> I am a simple static toast. </ngb-toast> -->
 <app-toast-global></app-toast-global>
 
-<div class="container-fluid section1-container my-2 pt-2 rounded">
-  <div class="row text-center">
+<div class="container-fluid my-2 pt-2 rounded">
+  <div class="row text-center section1-container">
     <h3>BOOKLOVERS</h3>
     <hr>
   </div>
-  <div class="row">
+  <div class="row section1-container">
     <div class="col-12 col-md-6">
       <div class="m-auto" style="width: 20rem;">
         <img class="w-100 mb-5" src="../../../assets/images/logo.png"
@@ -71,6 +71,41 @@
 
         </form>
       </ng-template>
+    </div>
+  </div>
+  <div class="row text-center m-5">
+    <h4>Venha fazer parte da comunidade!</h4>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-6 d-flex justify-content-center  ">
+      <img class="w-100 mb-5 size-img " src="../../../assets/images/quad1.png" alt="">
+    </div>
+    <div class="col-12 col-sm-6 d-flex justify-content-center ">
+      <img class="w-100 mb-5 size-img" src="../../../assets/images/quad2.png" alt="">
+    </div>
+    <div class="col-12 col-sm-6 d-flex justify-content-center ">
+      <img class="w-100 mb-5 size-img" src="../../../assets/images/quad3.png" alt="">
+    </div>
+    <div class="col-12 col-sm-6 d-flex justify-content-center ">
+      <img class="w-100 mb-5 size-img" src="../../../assets/images/quad4.png" alt="">
+    </div>
+  </div>
+  <div class="row bg-section-ft pt-5">
+    <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
+      <div class="row fw-semibold">
+        <p>Plataforma para gerenciar suas leituras! :)</p>
+      </div>
+      <div class="row mb-3">
+        <button class="btn btn-outline-dark" (click)="open(content)">Cadastre-se</button>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="m-auto" style="width: 20rem;">
+        <img class="w-100 mb-5" src="../../../assets/images/img-books.png"
+          alt="Imagem de um desenho orgânico de uma estante de livros">
+
+      </div>
+
     </div>
   </div>
 </div>
