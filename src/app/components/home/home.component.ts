@@ -134,4 +134,8 @@ export class HomeComponent implements OnInit {
   detailBook(id: string){
     this.router.navigate(['/booklovers/detail-book/', id]);
   }
+
+  detailGoal(id: string){
+    this.router.navigate(['/booklovers/goal/', id]);
+  }
 }

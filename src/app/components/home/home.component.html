@@ -20,10 +20,16 @@
           <div *ngIf="andamentoList.length > 0">
             <ngb-carousel [interval]="0">
               <ng-template ngbSlide *ngFor="let item of andamentoList">
-                <app-card-goal-h
-                  [goal]="item"
-                  [isEdit]="false"
-                ></app-card-goal-h>
+                <a
+                  title="Detalhes do desafio"
+                  href="javascript:;"
+                  (click)="detailGoal(item.id)"
+                >
+                  <app-card-goal-h
+                    [goal]="item"
+                    [isEdit]="false"
+                  ></app-card-goal-h>
+                </a>
               </ng-template>
             </ngb-carousel>
           </div>
