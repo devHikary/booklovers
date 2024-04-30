@@ -63,6 +63,7 @@ export class ReportFailureComponent implements OnInit{
 
     this.reportForm.controls['book_id'].disable();
     this.reportForm.controls['createdAt'].disable();
+    this.reportForm.controls['description'].disable();
   }
 
   handleDate(text: string): string {

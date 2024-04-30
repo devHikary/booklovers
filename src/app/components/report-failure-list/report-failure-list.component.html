@@ -44,10 +44,10 @@
               <tbody>
                 <tr *ngFor="let item of reportList">
                   <td>{{item.id}}</td>
-                  <td>{{item.description}}</td>
+                  <td class="text-truncate" style="max-width: 350px;">{{item.description}}</td>
                   <td>{{item.book_id === null? "Não informado" : item.book_id }}</td>
                   <td>{{handleDate(item.createdAt)}}</td>
-                  <td>{{item.status}}</td>
+                  <td>{{handleStatus(item.status)}}</td>
                   <td data-html2canvas-ignore>
                     <a href="javascript:;" type="button" (click)="editReport(item.id)" title="Editar"> <i
                         class="bi bi-pencil-square"></i></a>

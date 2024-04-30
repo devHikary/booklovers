@@ -94,6 +94,51 @@ export class ReportFailureListComponent implements OnInit {
     this.router.navigate(['/booklovers/report-failure'], { queryParams: { b: null, id: id } });
   }
 
+  columnsTable: any[] = [
+    {
+      name: 'ID',
+      prompt: 'ID',
+      align: "left",
+      padding: 1,
+      width: 60,
+    },
+    {
+      name: 'ID do livro',
+      prompt: 'ID do livro',
+      align: "left",
+      padding: 1,
+      width: 40,
+    },
+    {
+      name: 'Descrição',
+      prompt: 'Descrição',
+      align: "left",
+      padding: 1,
+      width: 90,
+    },
+    {
+      name: 'Status',
+      prompt: 'Status',
+      align: "left",
+      padding: 1,
+      width: 20,
+    },
+    {
+      name: 'Data de criação ',
+      prompt: 'Data de criação',
+      align: "left",
+      padding: 1,
+      width: 30,
+    },
+    {
+      name: 'Data de atualização',
+      prompt: 'Data de atualização',
+      align: "left",
+      padding: 1,
+      width: 30,
+    },
+  ]
+
   exportPDF() {
     this.isLoadingPdf = true;
 
@@ -107,11 +152,11 @@ export class ReportFailureListComponent implements OnInit {
     var today = date.toLocaleDateString();
     const doc = new jsPDF('p', 'mm', 'a4');
     doc.text(`Relatório de Falhas e Sugestões - Booklovers - ${today} ${hour}`, 10, 10)
-    doc.table(1, 20, this.tableExport, columns, {
+    doc.table(1, 20, this.tableExport, this.columnsTable, {
       margins: 0,
       padding: 1,
       fontSize: 9,
-      autoSize: true,
+      autoSize: false,
       printHeaders: true
     });
     doc.save(`Relatorio_FalhasSugestões_Booklovers_${today}_${hour}.pdf`);
