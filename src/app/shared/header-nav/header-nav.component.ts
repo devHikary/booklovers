@@ -196,7 +196,7 @@ export class HeaderNavComponent implements OnInit {
     this.user.name = this.userForm.value.name_user;
     this.user.username = this.userForm.value.username;
     this.user.email = this.userForm.value.email;
-    this.user.role_id = '6ccc7600-ded8-4676-8b05-8f28cad4b028';
+    this.user.role_id = import.meta.env['NG_APP_ROLEID'];
   }
 
   togglePwd() {

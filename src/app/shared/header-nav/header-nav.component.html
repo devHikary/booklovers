@@ -66,15 +66,15 @@
         <div class="col-md-12 pb-2">
           <label for="username" class="form-label text-center">Usuário
           </label>
-          <input type="text" class="form-control" id="name" formControlName="username" name="username" maxlength="50">
+          <input type="text" class="form-control text-lowercase" id="name" formControlName="username" name="username" maxlength="50">
           <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="text-danger ">
             <small>Campo Obrigatório </small>
           </div>
         </div>
         <div class="col-md-12 pb-2">
-          <label for="email" class="form-label text-center">Email
+          <label for="email" class="form-label text-center">E-mail
           </label>
-          <input type="text" class="form-control" id="email" formControlName="email" name="email" maxlength="50">
+          <input type="text" class="form-control text-lowercase" id="email" formControlName="email" name="email" maxlength="50">
           <div *ngIf="email?.errors?.['required'] && formDir.submitted" class="text-danger">
             <small>Campo Obrigatório </small>
           </div>
@@ -99,10 +99,10 @@
   <div class="modal-body">
     <form class="row g-3" [formGroup]="passwordForm" #formDirPwd="ngForm" autocomplete="off">
       <div class="col-md-12">
-        <label for="pwdCurrent" class="form-label">Senha Atual
+        <label for="pwdCurrent" class="form-label">Senha atual
 
         </label>
-        <input type={{typePwd}} class="form-control" id="pwdCurrent" formControlName="pwdCurrent" maxlength="50"
+        <input type="password" class="form-control" id="pwdCurrent" formControlName="pwdCurrent" maxlength="50"
           name="pwdCurrent">
         <div *ngIf="pwdCurrent?.errors?.['required'] && formDirPwd.submitted" class="text-danger ">
           <small>Campo Obrigatório</small>
@@ -110,7 +110,7 @@
         </div>
       </div>
       <div class="col-md-12">
-        <label for="passwordUser" class="form-label">Senha Nova
+        <label for="passwordUser" class="form-label">Senha nova
 
         </label>
         <input type={{typePwd}} class="form-control" id="passwordUser" formControlName="passwordUser" maxlength="50"
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div class="col-md-12">
-        <label for="confirmPwd" class="form-label">Confirmação Senha Nova
+        <label for="confirmPwd" class="form-label">Confirmação da senha
         </label>
         <input type={{typePwd}} class="form-control" id="confirmPwd" formControlName="confirmPwd" maxlength="50"
           name="confirmPwd">

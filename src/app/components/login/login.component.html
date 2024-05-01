@@ -43,7 +43,7 @@
           <div class="col-12 pb-2" style="width: 300px;">
             <label for="username-bl" class="form-label">Usuário
             </label>
-            <input type="text" class="form-control" id="username-bl" formControlName="username" name="username-bl"
+            <input type="text" class="form-control text-lowercase" id="username-bl" formControlName="username" name="username-bl"
               maxlength="50">
             <div *ngIf="username?.errors?.['required'] && formDir.submitted" class="text-danger">
               Campo Obrigatório
@@ -128,7 +128,7 @@
       <div class="col-12 pb-2">
         <label for="email_snp" class="form-label">E-mail
         </label>
-        <input type="email" class="form-control" id="email_snp" formControlName="email_snp" name="email_snp"
+        <input type="email" class="form-control text-lowercase" id="email_snp" formControlName="email_snp" name="email_snp"
           maxlength="50">
         <div *ngIf="email_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
@@ -141,7 +141,7 @@
       <div class="col-12 pb-2">
         <label for="username_snp" class="form-label">Usuário
         </label>
-        <input type="text" class="form-control" id="username_snp" formControlName="username_snp" name="username_snp"
+        <input type="text" class="form-control text-lowercase" id="username_snp" formControlName="username_snp" name="username_snp"
           maxlength="50">
         <div *ngIf="username_snp?.errors?.['required'] && formDirSnp.submitted" class="text-danger">
           Campo Obrigatório
