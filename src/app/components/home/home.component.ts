@@ -138,4 +138,10 @@ export class HomeComponent implements OnInit {
   detailGoal(id: string){
     this.router.navigate(['/booklovers/goal/', id]);
   }
+
+  reportFailure() {
+    this.router.navigate(['/booklovers/report-failure'], {
+      queryParams: { b: null, id: 'new' },
+    });
+  }
 }
