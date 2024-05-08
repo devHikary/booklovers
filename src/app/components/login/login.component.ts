@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
   }
 
   getLogin() {
-    this.loginObj.username = this.loginForm.value.username;
+    this.loginObj.username = this.loginForm.value.username.toLowerCase();
     this.loginObj.password = this.localService.encryptPWD(
       this.loginForm.value.password
     );

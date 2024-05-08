@@ -40,17 +40,17 @@ const routes: Routes = [
   {
     path: "booklovers/detail-book/:id",
     component: DetailBookComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/edit-book/:id",
     component: EditBookComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/home",
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: "booklovers/my-books",
