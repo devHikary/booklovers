@@ -156,6 +156,8 @@ export class ExplorerComponent implements OnInit {
       if(obj.annotation){
         bookAux.annotation.rating = obj.annotation.rating;
         bookAux.annotation.favorite = obj.annotation.favorite;
+      }else{
+        bookAux.annotation = new Annotation();
       }
 
       this.bookList.push(bookAux);

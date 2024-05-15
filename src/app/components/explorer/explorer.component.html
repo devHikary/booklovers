@@ -10,7 +10,7 @@
       </label>
       <div class="d-flex">
         <input type="text" class="form-control" id="titleSearch" name="titleSearch" aria-label="Procurar por título"
-          matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto" placeholder="Nome do livro"
+          matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto" placeholder="Título do livro"
           (keyup.enter)="searchBook()">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">

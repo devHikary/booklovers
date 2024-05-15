@@ -21,51 +21,41 @@ export class CardBoxVComponent {
     private router: Router,
     private annotationService: AnnotationService,
     private localService: LocalService,
-  ){}
+  ) { }
 
   ariaValueText(current: number, max: number) {
     return `${current} out of ${max} hearts`;
-	}
+  }
 
-  detailBook(id: string){
+  detailBook(id: string) {
     this.router.navigate(['/booklovers/detail-book/', id]);
   }
 
-  toggleFavorite(){
-    if(this.book.annotation == null)
-      this.book.annotation = new Annotation();
-    if(this.book.annotation.favorite == 1)
-    this.book.annotation.favorite = 0;
-    else{
+  toggleFavorite() {
+    if (this.book.annotation.favorite == 1)
+      this.book.annotation.favorite = 0;
+    else {
       this.book.annotation.favorite = 1;
     }
-      this.saveAnnotation();
-  }
-
-  toggleRate(){
     this.saveAnnotation();
   }
 
-  saveAnnotation(){
-    if (this.annotation === null) {
-      this.annotation = new Annotation();
+  toggleRate() {
+    this.saveAnnotation();
+  }
+
+  saveAnnotation() {
+    if (this.annotation.id === null) {
       this.annotation.book_id = this.book.id;
       this.annotation.user_id = this.localService.getUserId();
       this.annotation.favorite = this.book.annotation.favorite;
-      this.annotationService.add(this.annotation).subscribe((response: Annotation) =>{
-        this.annotationChange.emit(response);
+      this.annotationService.add(this.annotation).subscribe({
+        next: (result: Annotation) => {
+          this.annotationChange.emit(result);
+        }
       });
-
     } else {
-      if(this.annotation.id === null){
-        this.annotation.book_id = this.book.id;
-        this.annotation.user_id = this.localService.getUserId();
-        this.annotation.favorite = this.book.annotation.favorite;
-        this.annotationService.add(this.annotation).subscribe();
-      }else{
-        this.annotationService.update(this.annotation).subscribe();
-      }
-
+      this.annotationService.update(this.annotation).subscribe();
     }
   }
 }
