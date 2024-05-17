@@ -188,6 +188,12 @@ export class ExplorerComponent implements OnInit {
   detailBook(id: string){
     this.router.navigate(['/booklovers/edit-book/', id]);
   }
+
+  reportFailure() {
+    this.router.navigate(['/booklovers/report-failure'], {
+      queryParams: { b: null, id: 'new' },
+    });
+  }
 }
 
 const themeMock = [

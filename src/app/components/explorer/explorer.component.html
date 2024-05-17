@@ -1,34 +1,54 @@
 <div class="container-explorer mx-4 my-2 rounded">
   <div class="row m-0 p-4 text-center">
     <h3>Explorar</h3>
-    <hr>
+    <hr />
   </div>
   <div class="row d-flex justify-content-center p-2">
     <div class="col-3"></div>
     <div class="col-md-6 m-1">
-      <label for="title" class="form-label">Procurar
-      </label>
+      <label for="title" class="form-label">Procurar </label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="titleSearch" name="titleSearch" aria-label="Procurar por título"
-          matInput [formControl]="titleSearchCtr" [matAutocomplete]="auto" placeholder="Título do livro"
-          (keyup.enter)="searchBook()">
+        <input
+          type="text"
+          class="form-control"
+          id="titleSearch"
+          name="titleSearch"
+          aria-label="Procurar por título"
+          matInput
+          [formControl]="titleSearchCtr"
+          [matAutocomplete]="auto"
+          placeholder="Título do livro"
+          (keyup.enter)="searchBook()"
+        />
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option}}
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option"
+          >
+            {{ option }}
           </mat-option>
         </mat-autocomplete>
         <button class="btn btn-dark ms-2" (click)="searchBook()">
           <i class="bi bi-search"></i>
         </button>
-
       </div>
     </div>
     <div class="col-md-2 m-1 col-6 d-flex align-items-end">
       <button class="btn btn-outline-dark" (click)="detailBook('new')">
         Cadastrar livro
       </button>
+      <a
+        title="Relatar falha/ sugestão"
+        href="javascript:;"
+        (click)="reportFailure()"
+        class="ms-1 pb-1"
+      >
+        <i class="bi bi-exclamation-triangle text-secondary"></i>
+      </a>
     </div>
-
+    <div class="col-md-2 m-1 col-6 d-flex align-items-end">
+      
+    </div>
   </div>
   <div class="row justify-content-center mx-2">
     <aside class="col-md-3 h-75 rounded mb-2">
@@ -45,17 +65,25 @@
           <div class="col-2">
             <i class="bi bi-caret-down-fill"></i>
           </div>
-
         </div>
       </a>
       <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsedTheme">
-        <a class="row m-2" type="button" title="{{themeSch.name}}" href="javascript:;"
-          *ngFor="let themeSch of themeList" (click)="filterSideTheme(themeSch.id)">
-          {{themeSch.name}}
+        <a
+          class="row m-2"
+          type="button"
+          title="{{ themeSch.name }}"
+          href="javascript:;"
+          *ngFor="let themeSch of themeList"
+          (click)="filterSideTheme(themeSch.id)"
+        >
+          {{ themeSch.name }}
         </a>
-
       </div>
-      <a title="Exibir mais " href="javascript:;" (click)="collapseAuthor.toggle()">
+      <a
+        title="Exibir mais "
+        href="javascript:;"
+        (click)="collapseAuthor.toggle()"
+      >
         <div class="row">
           <div class="col-10">
             <h5>Autores</h5>
@@ -63,29 +91,40 @@
           <div class="col-2">
             <i class="bi bi-caret-down-fill"></i>
           </div>
-
         </div>
       </a>
       <div #collapseAuthor="ngbCollapse" [(ngbCollapse)]="isCollapsedAuthor">
-        <a class="row m-2" type="button" title="{{authorSch.name}}" href="javascript:;"
-          *ngFor="let authorSch of authorList" (click)="filterSideAuthor(authorSch.id)">
-          {{authorSch.name}}
+        <a
+          class="row m-2"
+          type="button"
+          title="{{ authorSch.name }}"
+          href="javascript:;"
+          *ngFor="let authorSch of authorList"
+          (click)="filterSideAuthor(authorSch.id)"
+        >
+          {{ authorSch.name }}
         </a>
       </div>
-
-
     </aside>
     <article class="col-md-9 bg-grade">
       <div class="row" *ngIf="bookList.length > 0; else elseBlock">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 d-flex justify-content-evenly my-1" *ngFor="let book of bookList">
-          <app-card-box-v [book]="book" [(annotation)]="book.annotation"></app-card-box-v>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 d-flex justify-content-evenly my-1"
+          *ngFor="let book of bookList"
+        >
+          <app-card-box-v
+            [book]="book"
+            [(annotation)]="book.annotation"
+          ></app-card-box-v>
         </div>
       </div>
       <ng-template #elseBlock>
         <div class="d-flex flex-column text-center mt-3">
           <h5>Não encontrou o seu livro?</h5>
           <p>Ajude nossa comunidade! :)</p>
-          <p>Cadastre o seu livro <a type="button" class="ps-0" click="detailBook(new)"> aqui</a>!
+          <p>
+            Cadastre o seu livro
+            <a type="button" class="ps-0" click="detailBook(new)"> aqui</a>!
           </p>
         </div>
       </ng-template>
@@ -96,27 +135,47 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Minha Tag</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="tagForm">
       <div class="mb-3">
         <div class="col-md-12 pb-2">
-          <label for="title" class="form-label text-center">Título
-          </label>
-          <input type="text" class="form-control" id="title" formControlName="title" name="title" maxlength="50">
-
+          <label for="title" class="form-label text-center">Título </label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            formControlName="title"
+            name="title"
+            maxlength="50"
+          />
         </div>
         <div class="col-md-3 pb-2">
-          <label for="title" class="form-label">Color
-          </label>
-          <input type="color" class="form-control" id="colorInput" formControlName="colorInput" name="colorInput">
+          <label for="title" class="form-label">Color </label>
+          <input
+            type="color"
+            class="form-control"
+            id="colorInput"
+            formControlName="colorInput"
+            name="colorInput"
+          />
         </div>
       </div>
-
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Salvar</button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Salvar
+    </button>
   </div>
 </ng-template>
