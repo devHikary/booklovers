@@ -6,6 +6,8 @@ import { GoalService } from 'src/app/services/goal.service';
 import { LocalService } from 'src/app/services/local.service';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-my-goals',
@@ -27,6 +29,9 @@ export class MyGoalsComponent implements OnInit{
   ngOnInit(): void {
     this.user_id = this.localService.getUserId();
     this.getAll();
+    logEvent(analytics, 'page_view',{
+      page_title: "Desafios"
+    });
   }
 
   getAll(){

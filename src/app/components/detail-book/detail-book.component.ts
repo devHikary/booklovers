@@ -32,6 +32,8 @@ import { LocalService } from 'src/app/services/local.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
 import { Location } from '@angular/common';
 import { TagService } from 'src/app/services/tag.service';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-detail-book',
@@ -147,6 +149,7 @@ export class DetailBookComponent implements OnInit {
             timer: 2000,
           });
           //this.router.navigate(['/booklovers/explorer']);
+          logEvent(analytics, 'annotation_created');
           this.location.back();
         },
         (e) => {

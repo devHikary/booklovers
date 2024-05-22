@@ -16,6 +16,8 @@ import { Author } from 'src/app/models/Author';
 import { Theme } from 'src/app/models/Theme';
 import { AuthorService } from 'src/app/services/author.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { analytics } from 'src/app/services/firebase';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 @Component({
   selector: 'app-explorer',
@@ -68,6 +70,10 @@ export class ExplorerComponent implements OnInit {
     this.authorService.getAll().subscribe((authors: any) => {
       this.authorList = authors;
     });
+
+    logEvent(analytics, 'page_view',{
+      page_title: "Explorar"
+    });
   }
 
   //  ToDo: retirar depois
@@ -80,6 +86,7 @@ export class ExplorerComponent implements OnInit {
     // const t = this.titleSearchCtr.value.split(' ').join('%');
     this.booksService.getByTitle(this.titleSearchCtr.value.toLowerCase(), this.user_id).subscribe((books: any) => {
       this.loadBooks(books);
+      logEvent(analytics, 'search');
     });
   }
 

@@ -19,6 +19,8 @@ import { download } from 'downloadjs';
 import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 import { AnnotationService } from 'src/app/services/annotation.service';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-my-books',
@@ -116,6 +118,10 @@ export class MyBooksComponent implements OnInit {
     });
     this.tagService.getAllUser(this.user_id).subscribe((tags: any) => {
       this.tagList = tags;
+    });
+
+    logEvent(analytics, 'page_view',{
+      page_title: "Meu livros"
     });
   }
 

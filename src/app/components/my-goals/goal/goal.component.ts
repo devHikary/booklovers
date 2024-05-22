@@ -11,6 +11,8 @@ import { Goal } from 'src/app/models/Goal';
 import { GoalService } from 'src/app/services/goal.service';
 import { LocalService } from 'src/app/services/local.service';
 import { ActivatedRoute } from '@angular/router';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-goal',
@@ -170,6 +172,7 @@ export class GoalComponent implements OnInit {
             timer: 2000,
           });
           //this.router.navigate(['/booklovers/explorer/']);
+          logEvent(analytics, 'goal_created');
           this.location.back();
         },
         (e) => {

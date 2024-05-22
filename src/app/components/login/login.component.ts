@@ -11,12 +11,13 @@ import { LoginService } from 'src/app/services/login.service';
 import { Login } from 'src/app/models/Login';
 import { HeaderService } from 'src/app/services/header.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { auth } from 'src/app/services/firebase';
+import { analytics, auth } from 'src/app/services/firebase';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   User as UserGoogle,
 } from 'firebase/auth';
+import { logEvent } from 'firebase/analytics';
 
 @Component({
   selector: 'app-login',
@@ -184,6 +185,7 @@ export class LoginComponent implements OnInit {
         });
         modal.close('savepwd');
         this.signupForm.reset();
+        logEvent(analytics, 'sign_up');
       },
       (e) => {
         Swal.fire({
@@ -241,6 +243,7 @@ export class LoginComponent implements OnInit {
         (response: any) => {
           this.authorizedUser(response);
           this.headerService.updateGoogle(true);
+          logEvent(analytics, 'sign_up');
         },
         (err) => {
           this.isError = true;

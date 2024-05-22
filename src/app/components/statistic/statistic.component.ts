@@ -7,6 +7,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Swal from 'sweetalert2';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-statistic',
@@ -160,6 +162,10 @@ export class StatisticComponent implements OnInit{
 
       };
     })
+    logEvent(analytics, 'page_view',{
+      page_title: "Estatísticas"
+    });
+  
   }
 
   bgColor(status: number) {

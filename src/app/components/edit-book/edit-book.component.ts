@@ -28,6 +28,8 @@ import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 import { LocalService } from 'src/app/services/local.service';
 import { Location } from '@angular/common';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from 'src/app/services/firebase';
 
 @Component({
   selector: 'app-edit-book',
@@ -230,6 +232,7 @@ export class EditBookComponent implements OnInit {
             timer: 2000,
           });
           //this.router.navigate(['/booklovers/explorer/']);
+          logEvent(analytics, 'book_created');
           this.location.back();
         },
         (e) => {
